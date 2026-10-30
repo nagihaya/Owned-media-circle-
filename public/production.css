@@ -2679,8 +2679,9 @@ html {
 }
 
 /* ===== 記事準備中の枠（中身のないカード） ===== */
+/* 押しても何も起きないが、マウスを乗せるとふちは黒くなる（本物のカードと同じ） */
 .post-card-placeholder {
-  pointer-events: none;
+  cursor: default;
 }
 .post-card-placeholder .thumb {
   display: grid;

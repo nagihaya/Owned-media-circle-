@@ -104,3 +104,19 @@ test("stored image paths only match generated UUID webp files", () => {
   ])
     assert.equal(MEDIA_PATH.test(p), false, p);
 });
+test("public origin setting tolerates spaces, quotes and trailing slash", async () => {
+  const { configuredOrigin, approvedOrigin } =
+    await import("../server/auth.mjs");
+  assert.equal(
+    configuredOrigin(' "https://tbiz-media.onrender.com/" '),
+    "https://tbiz-media.onrender.com",
+  );
+  assert.equal(configuredOrigin("http://tbiz-media.onrender.com"), "");
+  assert.equal(configuredOrigin("tbiz-media.onrender.com"), "");
+  const prev = process.env.TBIZ_PUBLIC_ORIGIN;
+  process.env.TBIZ_PUBLIC_ORIGIN = "https://tbiz-media.onrender.com/ ";
+  assert.equal(approvedOrigin("https://tbiz-media.onrender.com"), true);
+  assert.equal(approvedOrigin("https://evil.example"), false);
+  if (prev === undefined) delete process.env.TBIZ_PUBLIC_ORIGIN;
+  else process.env.TBIZ_PUBLIC_ORIGIN = prev;
+});

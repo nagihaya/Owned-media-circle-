@@ -23,6 +23,7 @@ import {
   csrfGuard,
   csrfToken,
   scheduledAuthorized,
+  configuredOrigin,
 } from "./auth.mjs";
 import { INDUSTRIES, SIZES, TYPES } from "./validation.mjs";
 import { maintenance } from "./maintenance.mjs";
@@ -185,11 +186,8 @@ for (const [route, title] of Object.entries(names))
               : undefined,
       });
     const s = data.settings;
-    const origin = process.env.TBIZ_PUBLIC_ORIGIN || "";
-    const canonical =
-      origin && /^https:\/\//.test(origin)
-        ? origin.replace(/\/$/, "") + route
-        : "";
+    const origin = configuredOrigin(process.env.TBIZ_PUBLIC_ORIGIN);
+    const canonical = origin ? origin + route : "";
     res.set("Cache-Control", "no-store");
     const csrf = csrfToken(req, res);
     res.render("page", {

@@ -23,6 +23,23 @@ export function equal(a, b) {
     y = Buffer.from(b);
   return x.length === y.length && timingSafeEqual(x, y);
 }
+// Reads an origin setting such as "https://example.com/" (spaces, quotes and a
+// trailing path are tolerated). Returns "" unless it is a plain https origin.
+export function configuredOrigin(value) {
+  const v = String(value || "")
+    .trim()
+    .replace(/^(['"])(.*)\1$/, "$2")
+    .trim();
+  if (!v) return "";
+  try {
+    const u = new URL(v);
+    return u.protocol === "https:" && !u.username && !u.password
+      ? u.origin
+      : "";
+  } catch {
+    return "";
+  }
+}
 export function approvedOrigin(origin) {
   if (typeof origin !== "string") return false;
   const port = Number(process.env.PORT || 3000);
@@ -33,13 +50,10 @@ export function approvedOrigin(origin) {
   for (const value of [
     process.env.TBIZ_PUBLIC_ORIGIN,
     process.env.TBIZ_PREVIEW_ORIGIN,
-  ])
-    if (value)
-      try {
-        const u = new URL(value);
-        if (u.protocol === "https:" && !u.username && !u.password)
-          allowed.add(u.origin);
-      } catch {}
+  ]) {
+    const o = configuredOrigin(value);
+    if (o) allowed.add(o);
+  }
   return allowed.has(origin);
 }
 export function cookieOptions(req) {
@@ -175,12 +189,18 @@ async function exchangeGoogleCode(code, redirectUri) {
 }
 export async function startLogin(req, res) {
   const origin = req.query.origin;
-  if (!approvedOrigin(origin))
+  if (!approvedOrigin(origin)) {
+    const set = configuredOrigin(process.env.TBIZ_PUBLIC_ORIGIN);
+    const reason = !process.env.TBIZ_PUBLIC_ORIGIN
+      ? "サーバー設定 TBIZ_PUBLIC_ORIGIN が未設定です。"
+      : !set
+        ? "サーバー設定 TBIZ_PUBLIC_ORIGIN の形式が正しくありません（https:// で始まるURLを入れてください）。"
+        : `TBIZ_PUBLIC_ORIGIN（${set}）と、開いているサイトのURL（${typeof origin === "string" ? origin.slice(0, 200) : "不明"}）が一致しません。`;
     return res
       .status(400)
-      .send(
-        "サイトのログインURLが未設定、または許可されていません。管理者は公開オリジンを設定してください。",
-      );
+      .type("text/plain; charset=utf-8")
+      .send("サイトのログインURLが許可されていません。\n" + reason);
+  }
   let client;
   try {
     client = googleClient();

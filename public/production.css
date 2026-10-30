@@ -1614,3 +1614,20 @@ form.filters.search-form,
     transition: none;
   }
 }
+/* 左右にのぞく写真は 45px 程度に抑える（表示枠を中央の写真＋左右45pxに限定） */
+.hero .hero-slider {
+  --slide-peek: 45px;
+  --slide-gap: 16px;
+}
+.hero-slider .slider-stage {
+  width: min(
+    100vw,
+    calc(var(--slide-w) + 2 * (var(--slide-gap) + var(--slide-peek)))
+  );
+  margin: 0 auto;
+}
+@media (max-width: 800px) {
+  .hero .hero-slider {
+    --slide-gap: 8px;
+  }
+}

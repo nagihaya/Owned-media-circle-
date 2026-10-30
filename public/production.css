@@ -2050,3 +2050,15 @@ header.nav {
   padding-left: var(--safe-inline, 16px);
   padding-right: var(--safe-inline-end, 16px);
 }
+/* 1行ヘッダー：メニューはサイト名の右に左寄せ、SNSアイコンだけ右端 */
+@media (min-width: 1100px) {
+  header.nav {
+    gap: 40px;
+  }
+  header.nav .navlinks {
+    justify-content: flex-start;
+  }
+  header.nav .navlinks a.instagram-link {
+    margin-left: auto;
+  }
+}

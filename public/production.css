@@ -67,7 +67,7 @@
   margin: auto;
 }
 .slider-dot.is-active::before {
-  background: #005bac;
+  background: #000;
 }
 .slider-dots {
   gap: 0;
@@ -79,15 +79,15 @@
 .tag-cloud a {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #005bac;
+  border: 1px solid #000;
   border-radius: 4px;
   padding: 10px 14px;
-  color: #005bac;
+  color: #000;
   font-weight: 800;
   min-height: 44px;
 }
 .tag-cloud a:hover {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .thumb img {
@@ -147,7 +147,7 @@
   margin-top: 4px;
 }
 .text-link {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -159,7 +159,7 @@
   margin-top: 30px;
 }
 .pagination a {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   padding: 8px;
 }
@@ -248,7 +248,7 @@ dialog pre {
   margin-bottom: 24px;
 }
 .admin-tabs a {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   padding: 8px 0;
 }
@@ -315,12 +315,12 @@ dialog pre {
   border-radius: 4px;
 }
 .navlinks a[aria-current="page"] {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   text-underline-offset: 8px;
 }
 .utility-links a:active {
-  background: #005bac;
+  background: #000;
 }
 .admin-layout input[type="checkbox"] {
   width: 20px;
@@ -332,7 +332,7 @@ dialog pre {
   padding-left: 12px;
 }
 .status-ok {
-  border-left: 4px solid #005bac;
+  border-left: 4px solid #000;
   padding-left: 12px;
 }
 @media (max-width: 800px) {
@@ -589,7 +589,7 @@ body {
   height: 4px;
   width: 0;
   transform: translateY(-50%);
-  background: #005bac;
+  background: #000;
 }
 .slider-dot.is-active::before {
   background: #d5dbe0;
@@ -604,7 +604,7 @@ body {
   background: #8a98a3;
 }
 .slider-dot:focus-visible {
-  outline: 3px solid #005bac;
+  outline: 3px solid #000;
   outline-offset: 2px;
 }
 @keyframes slider-progress {
@@ -667,7 +667,7 @@ body {
   height: 100%;
 }
 .hero-slider .slide a:focus-visible {
-  outline: 3px solid #005bac;
+  outline: 3px solid #000;
   outline-offset: -3px;
 }
 .admin-hint {
@@ -691,8 +691,8 @@ body {
 
 /* ===== ボタン・ナビのデザイン調整（2026-10-30） ===== */
 :root {
-  --tbiz-blue: #005bac;
-  --tbiz-blue-dark: #00468a;
+  --tbiz-blue: #000;
+  --tbiz-blue-dark: #333;
   --tbiz-line: #dde3e9;
   --tbiz-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -835,7 +835,7 @@ body {
 }
 .quick-search-row input:focus {
   border-color: var(--tbiz-blue);
-  outline: 2px solid rgba(0, 91, 172, 0.25);
+  outline: 2px solid rgba(0, 0, 0, 0.25);
   outline-offset: 1px;
 }
 
@@ -973,7 +973,7 @@ form.search-form select {
 form.search-form select {
   appearance: none;
   padding-right: 36px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23005bac' stroke-width='1.8'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   cursor: pointer;
@@ -985,7 +985,7 @@ form.search-form select:hover {
 form.search-form input[type="search"]:focus,
 form.search-form select:focus {
   border-color: var(--tbiz-blue);
-  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.18);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.18);
   outline: none;
 }
 form.search-form .search-exact {
@@ -1040,11 +1040,11 @@ main .page:not(.page-home) {
    - 時間のかかる操作はボタン内に処理中表示
    ========================================================================== */
 :root {
-  --hig-accent: #005bac;
-  --hig-accent-pressed: #004a8c;
-  --hig-tint-bg: rgba(0, 91, 172, 0.1);
-  --hig-tint-bg-hover: rgba(0, 91, 172, 0.16);
-  --hig-tint-bg-pressed: rgba(0, 91, 172, 0.24);
+  --hig-accent: #000;
+  --hig-accent-pressed: #333;
+  --hig-tint-bg: rgba(0, 0, 0, 0.1);
+  --hig-tint-bg-hover: rgba(0, 0, 0, 0.16);
+  --hig-tint-bg-pressed: rgba(0, 0, 0, 0.24);
   --hig-gray-bg: rgba(118, 118, 128, 0.12);
   --hig-gray-bg-hover: rgba(118, 118, 128, 0.18);
   --hig-font:
@@ -1432,7 +1432,7 @@ form.filters.search-form,
   transition: color 0.15s;
 }
 .site-footer-social a:hover {
-  color: #005bac;
+  color: #000;
 }
 .site-footer-social svg {
   width: 22px;
@@ -1469,12 +1469,12 @@ form.filters.search-form,
   transition: color 0.15s;
 }
 .site-footer-col a:hover {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 .site-footer a:focus-visible {
-  outline: 3px solid #005bac;
+  outline: 3px solid #000;
   outline-offset: 2px;
 }
 .site-footer-copy {
@@ -1718,7 +1718,7 @@ form.filters.search-form,
     transform: scale(0.94);
   }
   .menu-toggle:focus-visible {
-    outline: 3px solid #005bac;
+    outline: 3px solid #000;
     outline-offset: 2px;
   }
   /* ヘッダー：ロゴ・掲載について・三本線を1行に。編集ログインはメニューの中へ */
@@ -1772,7 +1772,7 @@ form.filters.search-form,
     display: none;
   }
   .js .nav .navlinks.is-open a[aria-current="page"] {
-    box-shadow: inset 3px 0 0 #005bac;
+    box-shadow: inset 3px 0 0 #000;
     padding-left: 14px;
   }
   .js .nav .navlinks.is-open .instagram-link {
@@ -1787,7 +1787,7 @@ form.filters.search-form,
     justify-content: center;
     border: 0;
     border-radius: 4px;
-    background: #005bac;
+    background: #000;
     color: #fff;
     font-weight: 600;
   }
@@ -1880,14 +1880,14 @@ form.filters.search-form,
   }
   .js .nav .navlinks.is-open a:hover {
     background: transparent;
-    color: #005bac;
+    color: #000;
   }
   .js .nav .navlinks.is-open a[aria-current="page"] {
     padding-left: 14px;
   }
   .js .nav .navlinks.is-open .nav-login {
     border-radius: 4px;
-    background: #005bac;
+    background: #000;
     color: #fff;
   }
 }
@@ -1940,7 +1940,7 @@ form.filters.search-form,
   text-decoration: none;
 }
 .site-footer-admin:hover {
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -1964,7 +1964,7 @@ form.filters.search-form,
   display: none;
 }
 .nav .navlinks a.sns-link:hover {
-  color: #005bac;
+  color: #000;
 }
 .x-icon {
   width: 18px;
@@ -2061,4 +2061,22 @@ header.nav {
   header.nav .navlinks a.instagram-link {
     margin-left: auto;
   }
+}
+
+/* 黒テーマ：黒い面（注目の記事）の上のボタンは白抜きにする */
+.feature .btn {
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+}
+.feature .btn:hover {
+  background: #e6e6e6;
+  color: #000;
+}
+.feature .btn:active {
+  background: #d0d0d0;
+  color: #000;
+}
+.feature .btn:focus-visible {
+  outline-color: #fff;
 }

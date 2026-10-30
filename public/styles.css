@@ -787,10 +787,10 @@ button:disabled {
   --paper: #fff;
   --card: #fff;
   --line: #c9d1d8;
-  --accent: #0068b7;
-  --accent-dark: #005a9c;
-  --blue: #0068b7;
-  --soft: #eef5fb;
+  --accent: #000;
+  --accent-dark: #333;
+  --blue: #000;
+  --soft: #f0f1f3;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 body {
@@ -1035,9 +1035,9 @@ body {
   --paper: #fff;
   --card: #fff;
   --line: #000;
-  --accent: #005bac;
-  --accent-dark: #005bac;
-  --blue: #005bac;
+  --accent: #000;
+  --accent-dark: #333;
+  --blue: #000;
   --soft: #fff;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   color-scheme: light;
@@ -1047,13 +1047,13 @@ body {
   color: #000;
 }
 .topline {
-  background: #005bac;
+  background: #000;
 }
 .nav {
   border-color: #000;
 }
 .brand-mark {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .brand small,
@@ -1065,20 +1065,20 @@ body {
   color: #000;
 }
 .navlinks a:hover {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .skip-link {
   background: #fff;
   color: #000;
-  border-color: #005bac;
+  border-color: #000;
 }
 .hero-art {
-  background: #005bac;
+  background: #000;
   box-shadow: none;
 }
 .hero-art:before {
-  background: #005bac;
+  background: #000;
 }
 .hero-art .art-label {
   color: #fff;
@@ -1091,7 +1091,7 @@ body {
   opacity: 0.2;
 }
 .btn {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .btn:hover {
@@ -1099,16 +1099,16 @@ body {
   color: #fff;
 }
 .btn.alt {
-  color: #005bac;
+  color: #000;
   background: #fff;
-  border-color: #005bac;
+  border-color: #000;
 }
 .feature {
   background: #000;
   color: #fff;
 }
 .feature-visual {
-  background: #005bac;
+  background: #000;
 }
 .feature-visual:after {
   border-color: #fff;
@@ -1138,14 +1138,14 @@ body {
   border-color: #000;
 }
 .card:hover {
-  box-shadow: 0 0 0 3px #005bac;
+  box-shadow: 0 0 0 3px #000;
 }
 .thumb,
 .thumb.t1,
 .thumb.t2,
 .thumb.t3,
 .thumb.t4 {
-  background: #005bac;
+  background: #000;
 }
 .thumb:after {
   border-color: #fff;
@@ -1156,17 +1156,17 @@ body {
   border-color: #000;
 }
 .tag-cloud button {
-  color: #005bac;
+  color: #000;
   background: #fff;
-  border-color: #005bac;
+  border-color: #000;
 }
 .tag-cloud button:hover {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .cta {
   background: #fff;
-  border-left-color: #005bac;
+  border-left-color: #000;
 }
 .filters {
   background: #fff;
@@ -1181,16 +1181,16 @@ body {
   border-color: #000;
 }
 .filters button {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .notice {
   background: #fff;
   color: #000;
-  border-left-color: #005bac;
+  border-left-color: #000;
 }
 .toggle {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .toggle.off {
@@ -1203,9 +1203,9 @@ body {
 }
 /* Tags are the only multicolor exception: color supports quick recognition without carrying meaning alone. */
 .card-tags .pill:nth-child(1) {
-  background: #e8f1ff;
-  color: #0b4f9c;
-  border-color: #7aa6dc;
+  background: #f0f1f3;
+  color: #000;
+  border-color: #c9ced4;
 }
 .card-tags .pill:nth-child(2) {
   background: #e8f7ef;
@@ -1213,9 +1213,9 @@ body {
   border-color: #76b691;
 }
 .feature-meta .pill:nth-child(1) {
-  background: #e8f1ff;
-  color: #0b4f9c;
-  border-color: #7aa6dc;
+  background: #f0f1f3;
+  color: #000;
+  border-color: #c9ced4;
 }
 .feature-meta .pill:nth-child(2) {
   background: #e8f7ef;
@@ -1262,7 +1262,7 @@ body {
   background: #000;
 }
 .utility-links .login-link {
-  background: #005bac;
+  background: #000;
 }
 .utility-links a:hover {
   background: #000;
@@ -1270,7 +1270,7 @@ body {
 }
 .utility-links .publish-link:hover,
 .utility-links .publish-link:focus-visible {
-  background: #005bac;
+  background: #000;
   color: #fff;
 }
 .navlinks {
@@ -1314,7 +1314,7 @@ body {
   stroke-width: 1.8;
 }
 .instagram-link:hover {
-  color: #005bac;
+  color: #000;
 }
 .footer-actions {
   display: flex;
@@ -1330,7 +1330,7 @@ body {
   align-items: center;
   min-height: 44px;
   padding: 8px 4px;
-  color: #005bac;
+  color: #000;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1383,7 +1383,7 @@ body {
   line-height: 1;
 }
 .slider-control:hover {
-  background: #005bac;
+  background: #000;
 }
 .slider-control.prev {
   left: 14px;
@@ -1409,7 +1409,7 @@ body {
   background: #000;
 }
 .slider-dot.is-active {
-  background: #005bac;
+  background: #000;
 }
 .quick-search {
   max-width: 640px;

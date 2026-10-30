@@ -145,6 +145,7 @@ export function mapArticle(a) {
     size: a.company_size,
     type: a.article_type,
     visible: Boolean(a.visible),
+    featured: Boolean(a.featured),
     manualTags: Boolean(a.manual_tags),
     revision: a.revision,
     classificationStatus: a.classification_status,
@@ -211,19 +212,22 @@ export async function slides(publicOnly = true) {
   );
 }
 export async function homeData() {
-  const [s, sl, interview, knowledge, featured] = await Promise.all([
+  const [s, sl, interview, knowledge, latest, featured] = await Promise.all([
     settings(),
     slides(),
     articleList({ category: "interviews" }),
     articleList({ category: "knowledge" }),
     articleList(),
+    query(
+      "SELECT * FROM articles WHERE visible=1 AND featured=1 ORDER BY published_at DESC,created_at DESC,id DESC LIMIT 3",
+    ).then((rows) => rows.map(mapArticle)),
   ]);
   return {
     settings: publicSettings(s),
     slides: sl,
     interviews: interview.items.slice(0, 4),
     knowledge: knowledge.items.slice(0, 4),
-    featured: featured.items[0] || null,
+    featured: featured.length ? featured : latest.items.slice(0, 3),
   };
 }
 export async function countEvent(kind, key) {

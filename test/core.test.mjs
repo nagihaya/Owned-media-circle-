@@ -259,3 +259,18 @@ test("company size choices are 大企業 and スタートアップ・ベンチ�
   const { SIZES } = await import("../server/validation.mjs");
   assert.deepEqual(SIZES, ["大企業", "スタートアップ・ベンチャー"]);
 });
+test("article schema accepts the featured flag and defaults it to false", async () => {
+  const v = {
+    title: "記事",
+    lead: "冒頭",
+    noteUrl: "https://note.com/tbiz/n/n123abc",
+    publishedAt: "2026-01-02T09:00:00+09:00",
+    industry: null,
+    size: null,
+    type: null,
+    visible: true,
+    imageUrl: "",
+  };
+  assert.equal(articleSchema.parse(v).featured, false);
+  assert.equal(articleSchema.parse({ ...v, featured: true }).featured, true);
+});

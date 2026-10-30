@@ -6,6 +6,7 @@ import {
   migrateV4,
   migrateV5,
   migrateV6,
+  migrateV7,
 } from "./v2.mjs";
 export async function migrate() {
   await query(
@@ -20,6 +21,7 @@ export async function migrate() {
     await migrateV4();
     await migrateV5();
     await migrateV6();
+    await migrateV7();
     return;
   }
   const statements = [
@@ -59,6 +61,7 @@ export async function migrate() {
   await migrateV4();
   await migrateV5();
   await migrateV6();
+  await migrateV7();
 }
 if (
   process.argv[1] &&

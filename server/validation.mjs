@@ -116,6 +116,7 @@ export const articleSchema = z
     size: enumNullable(SIZES),
     type: enumNullable(TYPES),
     visible: z.boolean(),
+    featured: z.boolean().default(false),
     imageUrl: webUrl.or(z.literal("")),
     revision: z.number().int().nonnegative().optional(),
   })

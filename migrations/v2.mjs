@@ -111,3 +111,23 @@ export async function migrateV6() {
   await query("UPDATE articles SET company_size=NULL WHERE company_size='SMB'");
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (6)");
 }
+// v7: editors pick up to 3 featured articles for the home page.
+export async function migrateV7() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=7"))
+      .length
+  )
+    return;
+  const cols = await query(
+    "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='articles' AND COLUMN_NAME='featured'",
+  );
+  if (!cols.length)
+    try {
+      await query(
+        "ALTER TABLE articles ADD COLUMN featured BOOLEAN NOT NULL DEFAULT FALSE",
+      );
+    } catch (e) {
+      if (e.code !== "ER_DUP_FIELDNAME") throw e;
+    }
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (7)");
+}

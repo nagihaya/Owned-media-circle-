@@ -246,12 +246,24 @@ admin.put("/logo", async (req, res) => {
 admin.get("/articles", async (req, res) =>
   res.json(await articleList(req.query, true)),
 );
+// 注目の記事は3件まで（自分自身は数えない）
+async function featuredFull(exceptId) {
+  const [r] = await query(
+    "SELECT COUNT(*) AS n FROM articles WHERE featured=1 AND id<>?",
+    [exceptId || ""],
+  );
+  return Number(r.n) >= 3;
+}
+const FEATURED_FULL =
+  "注目の記事は3件までです。ほかの記事の「注目の記事にする」を外してから保存してください。";
 admin.post("/articles", async (req, res) => {
   const v = articleSchema.parse(req.body);
+  if (v.featured && (await featuredFull()))
+    return res.status(409).json({ error: FEATURED_FULL });
   const image = v.imageUrl ? await storeImageUrl(v.imageUrl) : "";
   try {
     await query(
-      "INSERT INTO articles (id,note_url,title,intro_text,image_url,published_at,industry,company_size,article_type,visible,manual_tags,classification_status) VALUES (?,?,?,?,?,?,?,?,?,?,1,?)",
+      "INSERT INTO articles (id,note_url,title,intro_text,image_url,published_at,industry,company_size,article_type,visible,featured,manual_tags,classification_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,1,?)",
       [
         randomUUID(),
         v.noteUrl,
@@ -263,6 +275,7 @@ admin.post("/articles", async (req, res) => {
         v.size,
         v.type,
         v.visible,
+        v.featured,
         "manual",
       ],
     );
@@ -277,10 +290,12 @@ admin.put("/articles/:id", async (req, res) => {
   const v = articleSchema.parse(req.body);
   if (v.revision === undefined)
     return res.status(400).json({ error: "記事版が必要です。" });
+  if (v.featured && (await featuredFull(req.params.id)))
+    return res.status(409).json({ error: FEATURED_FULL });
   const image = v.imageUrl ? await storeImageUrl(v.imageUrl) : "";
   try {
     const r = await query(
-      "UPDATE articles SET note_url=?,title=?,intro_text=?,image_url=?,published_at=?,industry=?,company_size=?,article_type=?,visible=?,manual_tags=1,classification_status=?,revision=revision+1 WHERE id=? AND revision=?",
+      "UPDATE articles SET note_url=?,title=?,intro_text=?,image_url=?,published_at=?,industry=?,company_size=?,article_type=?,visible=?,featured=?,manual_tags=1,classification_status=?,revision=revision+1 WHERE id=? AND revision=?",
       [
         v.noteUrl,
         v.title,
@@ -291,6 +306,7 @@ admin.put("/articles/:id", async (req, res) => {
         v.size,
         v.type,
         v.visible,
+        v.featured,
         "manual",
         req.params.id,
         v.revision,

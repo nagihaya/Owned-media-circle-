@@ -2002,3 +2002,51 @@ form.filters.search-form,
     font-size: 16px;
   }
 }
+
+/* ===== PC：ヘッダーを1行に（サイト名の右にメニュー）。収まる幅（1100px以上）のみ ===== */
+@media (min-width: 1100px) {
+  header.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0;
+    border-bottom: 1px solid var(--tbiz-line, #dde3e9);
+  }
+  header.nav .brand-row {
+    flex: none;
+    margin: 0;
+    min-height: 72px;
+  }
+  header.nav .navlinks {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    margin: 0;
+    border: 0;
+    gap: 0;
+    min-width: 0;
+  }
+  header.nav .navlinks a {
+    min-height: 72px;
+    padding: 0 12px;
+    font-size: 15px;
+  }
+  header.nav .navlinks a::after {
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+  }
+  header.nav .navlinks a.instagram-link {
+    margin-left: 12px;
+  }
+  header.nav .navlinks a.instagram-link,
+  header.nav .navlinks a.sns-link {
+    padding: 0 6px;
+    min-width: 40px;
+  }
+}
+/* ヘッダーにも本文と同じ左右の余白を付ける（全幅共通） */
+header.nav {
+  padding-left: var(--safe-inline, 16px);
+  padding-right: var(--safe-inline-end, 16px);
+}

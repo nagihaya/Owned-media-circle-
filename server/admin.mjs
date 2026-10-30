@@ -13,7 +13,7 @@ import {
 } from "./db.mjs";
 import { requireEditor, requireAdmin, csrfGuard, emailHash } from "./auth.mjs";
 import { settingSchema, articleSchema, safeUrl } from "./validation.mjs";
-import { serviceReady, storeImage, storeImageUrl } from "./media.mjs";
+import { aiReady, storeImage, storeImageUrl, MEDIA_PATH } from "./media.mjs";
 import { syncRss, importNote, enrichPending } from "./rss.mjs";
 import { maintenance } from "./maintenance.mjs";
 import { formsSchema, googleFormUrl } from "./google-forms.mjs";
@@ -97,7 +97,11 @@ admin.get("/status", async (req, res) => {
   );
   res.json({
     formProvider: "google",
-    serviceConfigured: serviceReady(),
+    aiConfigured: aiReady(),
+    loginConfigured: Boolean(
+      process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
+    ),
+    cronConfigured: Boolean(process.env.TBIZ_CRON_SECRET),
     bootstrapConfigured: Boolean(process.env.TBIZ_ADMIN_EMAIL),
     states: states.map((x) => ({ ...x, data: parseJson(x.data) })),
     jobs,
@@ -181,7 +185,7 @@ admin.post("/upload", upload.single("file"), async (req, res) => {
 });
 admin.put("/logo", async (req, res) => {
   const { url } = z
-    .object({ url: z.string().startsWith("/manus-storage/").max(768) })
+    .object({ url: z.string().regex(MEDIA_PATH).max(768) })
     .strict()
     .parse(req.body);
   await query(
@@ -333,17 +337,3 @@ admin.post("/mail/retry", requireAdmin, (req, res) =>
       "サイト側のメール送信は停止しています。Googleフォーム側で通知を設定してください。",
   }),
 );
-admin.put("/schedules", requireAdmin, async (req, res) => {
-  const v = z
-    .object({
-      taskUid: z.string().min(1).max(191),
-      kind: z.enum(["rss", "maintenance"]),
-    })
-    .strict()
-    .parse(req.body);
-  await query(
-    "INSERT INTO app_jobs (task_uid,kind) VALUES (?,?) ON DUPLICATE KEY UPDATE kind=VALUES(kind),active=1",
-    [v.taskUid, v.kind],
-  );
-  res.json({ ok: true });
-});

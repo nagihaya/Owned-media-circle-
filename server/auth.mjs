@@ -1,11 +1,17 @@
-import { SignJWT, jwtVerify } from "jose";
-import { randomBytes, createHmac, timingSafeEqual } from "node:crypto";
+import { SignJWT, jwtVerify, createRemoteJWKSet } from "jose";
+import {
+  randomBytes,
+  createHash,
+  createHmac,
+  timingSafeEqual,
+} from "node:crypto";
 import { query } from "./db.mjs";
 const COOKIE = "webdev_app_session";
+const APP_ID = "tbiz-media";
 const secret = () => {
-  if (!process.env.MANUS_JWT_SECRET)
-    throw new Error("Manus signing key unavailable");
-  return new TextEncoder().encode(process.env.MANUS_JWT_SECRET);
+  const v = process.env.TBIZ_SESSION_SECRET;
+  if (!v || v.length < 32) throw new Error("Session signing key unavailable");
+  return new TextEncoder().encode(v);
 };
 export const emailHash = (e) =>
   createHmac("sha256", secret()).update(e.trim().toLowerCase()).digest("hex");
@@ -54,7 +60,7 @@ export async function verifyProjectToken(token) {
     algorithms: ["HS256"],
   });
   if (
-    payload.appId !== process.env.MANUS_PROJECT_ID ||
+    payload.appId !== APP_ID ||
     typeof payload.openId !== "string" ||
     typeof payload.exp !== "number"
   )
@@ -66,7 +72,6 @@ export async function currentUser(req) {
   if (!token) return null;
   try {
     const p = await verifyProjectToken(token);
-    if (p.openId.startsWith("cron_")) return null;
     if (p.jti) {
       const rows = await query(
         "SELECT jti FROM sessions WHERE jti=? AND open_id=? AND expires_at>UTC_TIMESTAMP()",
@@ -107,32 +112,66 @@ export function csrfToken(req, res) {
 export function csrfGuard(req, res, next) {
   const v = req.get("x-csrf-token") || req.body?._csrf;
   if (!req.cookies?.tbiz_form || !equal(v, digest(req.cookies.tbiz_form)))
-    return res
-      .status(403)
-      .json({
-        error: "安全確認が失敗しました。ページを再読み込みしてください。",
-      });
+    return res.status(403).json({
+      error: "安全確認が失敗しました。ページを再読み込みしてください。",
+    });
   if (req.get("sec-fetch-site") === "cross-site")
     return res
       .status(403)
       .json({ error: "異なるサイトからの操作はできません。" });
   next();
 }
-async function oauthRpc(method, body) {
-  const base = process.env.MANUS_OAUTH_API_URL;
-  if (!base) throw new Error("OAuth API unavailable");
-  const r = await fetch(
-    `${base.replace(/\/$/, "")}/webdev.v1.WebDevAuthPublicService/${method}`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(15000),
-    },
-  );
-  const j = await r.json();
-  if (!r.ok || j.error) throw new Error("OAuth request failed");
-  return j;
+const GOOGLE_AUTH = "https://accounts.google.com/o/oauth2/v2/auth";
+const GOOGLE_TOKEN = "https://oauth2.googleapis.com/token";
+const GOOGLE_ISSUERS = ["https://accounts.google.com", "accounts.google.com"];
+let googleKeys;
+const googleJwks = () =>
+  (googleKeys ||= createRemoteJWKSet(
+    new URL("https://www.googleapis.com/oauth2/v3/certs"),
+  ));
+function googleClient() {
+  const id = process.env.GOOGLE_CLIENT_ID,
+    secret = process.env.GOOGLE_CLIENT_SECRET;
+  if (!id || !secret) throw new Error("Google login is not configured");
+  return { id, secret };
+}
+export async function verifyGoogleIdToken(idToken, nonce, keys = googleJwks()) {
+  const { payload } = await jwtVerify(idToken, keys, {
+    issuer: GOOGLE_ISSUERS,
+    audience: process.env.GOOGLE_CLIENT_ID,
+    algorithms: ["RS256"],
+  });
+  if (typeof payload.sub !== "string" || !payload.sub)
+    throw new Error("Invalid identity");
+  if (typeof nonce !== "string" || !equal(payload.nonce, nonce))
+    throw new Error("Nonce mismatch");
+  return {
+    openId: "google:" + payload.sub,
+    name: String(payload.name || ""),
+    email:
+      payload.email_verified === true && typeof payload.email === "string"
+        ? payload.email
+        : null,
+  };
+}
+async function exchangeGoogleCode(code, redirectUri) {
+  const c = googleClient();
+  const r = await fetch(GOOGLE_TOKEN, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      code,
+      client_id: c.id,
+      client_secret: c.secret,
+      redirect_uri: redirectUri,
+      grant_type: "authorization_code",
+    }),
+    signal: AbortSignal.timeout(15000),
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || typeof j.id_token !== "string")
+    throw new Error("Token exchange failed");
+  return j.id_token;
 }
 export async function startLogin(req, res) {
   const origin = req.query.origin;
@@ -142,10 +181,20 @@ export async function startLogin(req, res) {
       .send(
         "サイトのログインURLが未設定、または許可されていません。管理者は公開オリジンを設定してください。",
       );
+  let client;
+  try {
+    client = googleClient();
+  } catch {
+    return res
+      .status(503)
+      .send(
+        "Googleログインが未設定です。管理者はサーバー設定を確認してください。",
+      );
+  }
   const redirectUri = origin + "/auth/callback",
     nonce = randomBytes(32).toString("hex");
   const state = Buffer.from(JSON.stringify({ redirectUri, nonce })).toString(
-    "base64",
+    "base64url",
   );
   await query(
     "INSERT INTO oauth_nonces (nonce_hash,redirect_uri,expires_at) VALUES (?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 10 MINUTE))",
@@ -155,11 +204,14 @@ export async function startLogin(req, res) {
     ...cookieOptions(req),
     maxAge: 600000,
   });
-  const url = new URL("/app-auth", process.env.MANUS_OAUTH_PORTAL_URL);
-  url.searchParams.set("appId", process.env.MANUS_PROJECT_ID);
-  url.searchParams.set("redirectUri", redirectUri);
+  const url = new URL(GOOGLE_AUTH);
+  url.searchParams.set("client_id", client.id);
+  url.searchParams.set("redirect_uri", redirectUri);
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("scope", "openid email profile");
   url.searchParams.set("state", state);
-  url.searchParams.set("responseType", "code");
+  url.searchParams.set("nonce", nonce);
+  url.searchParams.set("prompt", "select_account");
   res.redirect(url.href);
 }
 export async function finishLogin(req, res) {
@@ -171,7 +223,7 @@ export async function finishLogin(req, res) {
     )
       throw new Error("Invalid callback");
     const state = JSON.parse(
-      Buffer.from(req.query.state, "base64").toString("utf8"),
+      Buffer.from(req.query.state, "base64url").toString("utf8"),
     );
     if (
       typeof state.nonce !== "string" ||
@@ -194,18 +246,8 @@ export async function finishLogin(req, res) {
     if (consumed.affectedRows !== 1)
       throw new Error("State expired or already used");
     res.clearCookie("tbiz_oauth_nonce", cookieOptions(req));
-    const token = await oauthRpc("ExchangeToken", {
-      clientId: process.env.MANUS_PROJECT_ID,
-      grantType: "authorization_code",
-      code: req.query.code,
-      redirectUri: state.redirectUri,
-    });
-    if (!token.accessToken) throw new Error("No token");
-    const info = await oauthRpc("GetUserInfo", {
-      accessToken: token.accessToken,
-    });
-    if (!info.openId || info.openId.startsWith("cron_"))
-      throw new Error("Invalid identity");
+    const idToken = await exchangeGoogleCode(req.query.code, state.redirectUri);
+    const info = await verifyGoogleIdToken(idToken, state.nonce);
     const hash = info.email ? emailHash(info.email) : null;
     await query(
       "INSERT INTO users (open_id,name,email_hash,last_login) VALUES (?,?,?,UTC_TIMESTAMP()) ON DUPLICATE KEY UPDATE name=VALUES(name),email_hash=VALUES(email_hash),last_login=UTC_TIMESTAMP()",
@@ -252,7 +294,7 @@ export async function finishLogin(req, res) {
     );
     const jwt = await new SignJWT({
       openId: info.openId,
-      appId: process.env.MANUS_PROJECT_ID,
+      appId: APP_ID,
       name: String(info.name || ""),
       jti,
     })
@@ -263,13 +305,11 @@ export async function finishLogin(req, res) {
     res.cookie(COOKIE, jwt, { ...cookieOptions(req), maxAge: 7 * 86400000 });
     res.redirect("/admin");
   } catch {
-    res
-      .status(401)
-      .render("login", {
-        title: "ログインできませんでした",
-        message: "認証を確認できませんでした。もう一度ログインしてください。",
-        csrf: csrfToken(req, res),
-      });
+    res.status(401).render("login", {
+      title: "ログインできませんでした",
+      message: "認証を確認できませんでした。もう一度ログインしてください。",
+      csrf: csrfToken(req, res),
+    });
   }
 }
 export async function logout(req, res) {
@@ -280,16 +320,10 @@ export async function logout(req, res) {
   res.clearCookie(COOKIE, cookieOptions(req));
   res.json({ ok: true });
 }
-export async function scheduledIdentity(req) {
-  const token = req.cookies?.app_session_id;
-  if (!token) throw new Error("Missing scheduled credential");
-  const p = await verifyProjectToken(token);
-  if (!p.openId.startsWith("cron_")) throw new Error("Not scheduled identity");
-  const info = await oauthRpc("GetUserInfoWithJwt", {
-    jwt_token: token,
-    project_id: process.env.MANUS_PROJECT_ID,
-  });
-  if (info.projectId !== process.env.MANUS_PROJECT_ID || !info.taskUid)
-    throw new Error("Invalid schedule");
-  return info.taskUid;
+export function scheduledAuthorized(req) {
+  const expected = process.env.TBIZ_CRON_SECRET;
+  if (!expected || expected.length < 32) return false;
+  const m = /^Bearer (.+)$/.exec(req.get("authorization") || "");
+  const sha = (v) => createHash("sha256").update(v).digest("hex");
+  return Boolean(m) && equal(sha(m[1]), sha(expected));
 }

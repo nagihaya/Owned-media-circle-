@@ -1,0 +1,24 @@
+# Render Blueprint。値の入る設定はすべて Render の画面で入力します（このファイルに秘密情報を書かない）。
+services:
+  - type: web
+    name: tbiz-media
+    runtime: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: TBIZ_SESSION_SECRET
+        generateValue: true
+      - key: TBIZ_CRON_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: TBIZ_ADMIN_EMAIL
+        sync: false
+      - key: TBIZ_PUBLIC_ORIGIN
+        sync: false

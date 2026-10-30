@@ -1,0 +1,38 @@
+# 公開サイトの定期処理を呼び出します。
+# 必要なリポジトリ設定（Settings → Secrets and variables → Actions）:
+#   TBIZ_SITE_URL    公開URL（例: https://xxxx.onrender.com）
+#   TBIZ_CRON_SECRET Renderに設定したものと同じ値
+name: scheduled
+on:
+  schedule:
+    - cron: "17 22,3,10 * * *" # RSS取得: 日本時間 7:17 / 12:17 / 19:17
+    - cron: "41 19 * * *" # 期限処理: 日本時間 4:41
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "rss または maintenance"
+        required: true
+        default: rss
+permissions: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Call site
+        env:
+          SITE: ${{ secrets.TBIZ_SITE_URL }}
+          TOKEN: ${{ secrets.TBIZ_CRON_SECRET }}
+          KIND: ${{ github.event.inputs.kind || (github.event.schedule == '41 19 * * *' && 'maintenance' || 'rss') }}
+        run: |
+          if [ -z "$SITE" ] || [ -z "$TOKEN" ]; then
+            echo "TBIZ_SITE_URL / TBIZ_CRON_SECRET が未設定のため何もしません。"
+            exit 0
+          fi
+          case "$KIND" in rss|maintenance) ;; *) echo "unknown kind"; exit 1;; esac
+          # 無料プランは休止から起動まで時間がかかるため、待ち時間を長めにして再試行します。
+          curl -fsS --retry 3 --retry-delay 20 --retry-all-errors --max-time 120 \
+            -X POST "${SITE%/}/api/scheduled/run" \
+            -H "authorization: Bearer $TOKEN" \
+            -H "content-type: application/json" \
+            -d "{\"kind\":\"$KIND\"}" -o /dev/null -w "HTTP %{http_code}\n"

@@ -3,6 +3,7 @@ import dns from "node:dns/promises";
 import { isIP } from "node:net";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
+import { query } from "./db.mjs";
 export function isPublicIp(ip) {
   if (isIP(ip) === 4) {
     const a = ip.split(".").map(Number);
@@ -98,28 +99,26 @@ export function imageType(b) {
     return { mime: "image/webp", ext: "webp" };
   throw new Error("JPEG/PNG/WebP画像のみ利用できます。");
 }
-export const serviceReady = () =>
-  Boolean(
-    (process.env.MANUS_API_URL || process.env.BUILT_IN_FORGE_API_URL) &&
-    (process.env.MANUS_API_KEY || process.env.BUILT_IN_FORGE_API_KEY),
-  );
-export async function serviceCall(path, body) {
-  const base = process.env.MANUS_API_URL || process.env.BUILT_IN_FORGE_API_URL;
-  const key = process.env.MANUS_API_KEY || process.env.BUILT_IN_FORGE_API_KEY;
-  if (!base || !key) throw new Error("Manus service credential unavailable");
+// AI tagging is optional. Any OpenAI-compatible API works; when unset,
+// new articles stay "未分類" and editors tag them by hand.
+export const aiReady = () =>
+  Boolean(process.env.TBIZ_AI_API_URL && process.env.TBIZ_AI_API_KEY);
+export async function aiCall(path, body) {
+  const base = process.env.TBIZ_AI_API_URL;
+  const key = process.env.TBIZ_AI_API_KEY;
+  if (!base || !key) throw new Error("AI service credential unavailable");
   const r = await fetch(base.replace(/\/$/, "") + path, {
     method: body === undefined ? "GET" : "POST",
     headers: {
       authorization: `Bearer ${key}`,
       "content-type": "application/json",
-      "connect-protocol-version": "1",
     },
     body: body === undefined ? undefined : JSON.stringify(body),
     signal: AbortSignal.timeout(30000),
   });
-  const j = await r.json();
+  const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
-    const error = new Error(`Manus service failed (${r.status})`);
+    const error = new Error(`AI service failed (${r.status})`);
     error.code =
       typeof j.error?.code === "string"
         ? j.error.code.slice(0, 80)
@@ -128,6 +127,8 @@ export async function serviceCall(path, body) {
   }
   return j;
 }
+export const MEDIA_PREFIX = "/media/";
+export const MEDIA_PATH = /^\/media\/([0-9a-f-]{36})\.webp$/;
 export async function storeImage(bytes) {
   if (bytes.length > 8 * 1024 * 1024)
     throw new Error("画像は8MB以下にしてください。");
@@ -142,22 +143,20 @@ export async function storeImage(bytes) {
     })
     .webp({ quality: 82 })
     .toBuffer();
-  const key = `tbiz/images/${randomUUID()}.webp`;
-  const signed = await serviceCall(
-    `/v1/storage/presign/put?path=${encodeURIComponent(key)}`,
-  );
-  if (!signed.url) throw new Error("Storage unavailable");
-  const r = await fetch(signed.url, {
-    method: "PUT",
-    headers: { "content-type": "image/webp" },
-    body: normalized,
-    signal: AbortSignal.timeout(30000),
-  });
-  if (!r.ok) throw new Error("Image transfer failed");
-  return "/manus-storage/" + key;
+  const id = randomUUID();
+  await query("INSERT INTO media (id,mime,bytes) VALUES (?,?,?)", [
+    id,
+    "image/webp",
+    normalized,
+  ]);
+  return `${MEDIA_PREFIX}${id}.webp`;
 }
 export async function storeImageUrl(url) {
-  if (url.startsWith("/manus-storage/")) return url;
+  if (MEDIA_PATH.test(url)) return url;
   const { bytes } = await fetchPublic(url);
   return storeImage(bytes);
+}
+export async function readImage(id) {
+  const [row] = await query("SELECT mime,bytes FROM media WHERE id=?", [id]);
+  return row || null;
 }

@@ -28,3 +28,15 @@ export async function migrateV2() {
   }
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (2)");
 }
+// v3: images are stored in the database instead of Manus storage.
+export async function migrateV3() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=3"))
+      .length
+  )
+    return;
+  await query(
+    "CREATE TABLE IF NOT EXISTS media (id CHAR(36) PRIMARY KEY,mime VARCHAR(40) NOT NULL,bytes MEDIUMBLOB NOT NULL,created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (3)");
+}

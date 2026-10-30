@@ -21,13 +21,14 @@ import {
   logout,
   csrfGuard,
   csrfToken,
-  scheduledIdentity,
+  scheduledAuthorized,
 } from "./auth.mjs";
 import { INDUSTRIES, SIZES, TYPES } from "./validation.mjs";
 import { maintenance } from "./maintenance.mjs";
 import { formView, FORM_SLOTS } from "./google-forms.mjs";
 import { syncRss, enrichPending } from "./rss.mjs";
 import { policies } from "./policies.mjs";
+import { readImage, MEDIA_PATH } from "./media.mjs";
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const app = express();
 app.disable("x-powered-by");
@@ -74,47 +75,48 @@ app.get("/api/articles", async (req, res) =>
 );
 app.use("/api/admin", admin);
 app.post("/api/contact", (req, res) =>
-  res
-    .status(410)
-    .json({
-      error:
-        "受付はGoogleフォームに移行しました。お問い合わせページからご回答ください。",
-      formProvider: "google",
-      contactPath: "/contact",
-    }),
+  res.status(410).json({
+    error:
+      "受付はGoogleフォームに移行しました。お問い合わせページからご回答ください。",
+    formProvider: "google",
+    contactPath: "/contact",
+  }),
 );
+// Called by GitHub Actions (.github/workflows/scheduled.yml) with
+// "Authorization: Bearer <TBIZ_CRON_SECRET>".
 app.post("/api/scheduled/run", async (req, res) => {
-  let uid;
-  try {
-    uid = await scheduledIdentity(req);
-  } catch {
+  if (!scheduledAuthorized(req))
     return res.status(401).json({ error: "Scheduled authentication required" });
-  }
-  const [job] = await query(
-    "SELECT * FROM app_jobs WHERE task_uid=? AND active=1",
-    [uid],
-  );
-  if (!job)
-    return res
-      .status(403)
-      .json({ error: "Schedule is not associated with this application" });
+  const kind = req.body?.kind;
+  if (!["rss", "maintenance"].includes(kind))
+    return res.status(400).json({ error: "Unknown scheduled kind" });
+  const uid = "github-actions:" + kind;
   try {
     const result =
-      job.kind === "rss"
+      kind === "rss"
         ? { rss: await syncRss(), enrichment: await enrichPending() }
         : await maintenance();
     await query(
-      "UPDATE app_jobs SET last_run=UTC_TIMESTAMP(),last_status=? WHERE task_uid=?",
-      ["success", uid],
+      "INSERT INTO app_jobs (task_uid,kind,last_run,last_status) VALUES (?,?,UTC_TIMESTAMP(),'success') ON DUPLICATE KEY UPDATE last_run=UTC_TIMESTAMP(),last_status='success'",
+      [uid, kind],
     );
     res.json(result);
   } catch {
     await query(
-      "UPDATE app_jobs SET last_run=UTC_TIMESTAMP(),last_status=? WHERE task_uid=?",
-      ["failed", uid],
-    );
+      "INSERT INTO app_jobs (task_uid,kind,last_run,last_status) VALUES (?,?,UTC_TIMESTAMP(),'failed') ON DUPLICATE KEY UPDATE last_run=UTC_TIMESTAMP(),last_status='failed'",
+      [uid, kind],
+    ).catch(() => {});
     res.status(500).json({ error: "Scheduled operation failed" });
   }
+});
+app.get("/media/:file", async (req, res) => {
+  const m = MEDIA_PATH.exec("/media/" + req.params.file);
+  if (!m) return res.status(404).end();
+  const img = await readImage(m[1]);
+  if (!img) return res.status(404).end();
+  res.set("Content-Type", img.mime);
+  res.set("Cache-Control", "public, max-age=31536000, immutable");
+  res.send(img.bytes);
 });
 const eventLimiter = rateLimit({
   windowMs: 60000,
@@ -142,7 +144,7 @@ app.get("/admin", async (req, res) => {
       title: "編集ログイン",
       message: user
         ? "このアカウントには編集権限がありません。管理者へ権限の追加を依頼してください。"
-        : "Manusアカウントでログインしてください。",
+        : "Googleアカウントでログインしてください。",
       csrf: csrfToken(req, res),
     });
   res.render("admin", {

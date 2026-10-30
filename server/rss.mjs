@@ -3,12 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { query, database, settings } from "./db.mjs";
 import { safeUrl, INDUSTRIES, SIZES, TYPES } from "./validation.mjs";
-import {
-  fetchPublic,
-  serviceCall,
-  serviceReady,
-  storeImageUrl,
-} from "./media.mjs";
+import { fetchPublic, aiCall, aiReady, storeImageUrl } from "./media.mjs";
 const parser = new Parser({
   customFields: { item: [["media:content", "media"]] },
 });
@@ -44,7 +39,7 @@ export const plain = (v) =>
 let chosen;
 async function model() {
   if (chosen) return chosen;
-  const c = await serviceCall("/v1/models");
+  const c = await aiCall("/v1/models");
   const all = (c.data || []).filter(
     (m) =>
       !/(unsupported|superseded|deprecated|shutdown)/i.test(
@@ -69,7 +64,7 @@ async function budget() {
   return r.affectedRows > 0;
 }
 export async function classify(title, lead) {
-  if (!serviceReady())
+  if (!aiReady())
     return { industry: null, size: null, type: null, status: "pending" };
   try {
     const m = await model();
@@ -96,13 +91,13 @@ export async function classify(title, lead) {
     }
     if (!(await budget()))
       return { industry: null, size: null, type: null, status: "pending" };
-    let j = await serviceCall("/v1/chat/completions", body);
+    let j = await aiCall("/v1/chat/completions", body);
     let text = j.choices?.[0]?.message?.content;
     if (!text) {
       if (!(await budget()))
         return { industry: null, size: null, type: null, status: "pending" };
       delete body.response_format;
-      j = await serviceCall("/v1/chat/completions", body);
+      j = await aiCall("/v1/chat/completions", body);
       text = j.choices?.[0]?.message?.content;
     }
     if (!text) throw new Error("No classification output");
@@ -222,7 +217,6 @@ export async function syncRss() {
   }
 }
 export async function enrichPending() {
-  if (!serviceReady()) return { configured: false, processed: 0 };
   const conn = await database().getConnection();
   try {
     const [lock] = await conn.query(
@@ -230,10 +224,16 @@ export async function enrichPending() {
     );
     if (!lock[0].locked) return { busy: true, processed: 0 };
     const rows = await query(
-      "SELECT id,title,intro_text,source_image_url,image_status,classification_status,manual_tags FROM articles WHERE (classification_status='pending' AND manual_tags=0) OR image_status='pending' ORDER BY created_at LIMIT 2",
+      aiReady()
+        ? "SELECT id,title,intro_text,source_image_url,image_status,classification_status,manual_tags FROM articles WHERE (classification_status='pending' AND manual_tags=0) OR image_status='pending' ORDER BY created_at LIMIT 2"
+        : "SELECT id,title,intro_text,source_image_url,image_status,classification_status,manual_tags FROM articles WHERE image_status='pending' ORDER BY created_at LIMIT 5",
     );
     for (const row of rows) {
-      if (row.classification_status === "pending" && !row.manual_tags) {
+      if (
+        aiReady() &&
+        row.classification_status === "pending" &&
+        !row.manual_tags
+      ) {
         const t = await classify(row.title, row.intro_text);
         if (t.status !== "pending")
           await query(
@@ -256,7 +256,7 @@ export async function enrichPending() {
         }
       }
     }
-    return { configured: true, processed: rows.length };
+    return { aiConfigured: aiReady(), processed: rows.length };
   } finally {
     await conn.query("SELECT RELEASE_LOCK('tbiz_enrichment')").catch(() => {});
     conn.release();

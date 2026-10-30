@@ -519,3 +519,8 @@ dialog pre {
     margin-top: 16px;
   }
 }
+/* スマホ幅でナビの右端はみ出しにより画面全体が横に揺れるのを防ぐ（見た目は維持） */
+html,
+body {
+  overflow-x: clip;
+}

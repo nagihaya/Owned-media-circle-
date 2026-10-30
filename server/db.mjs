@@ -5,13 +5,18 @@ export function database() {
   if (pool) return pool;
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is unavailable");
   const u = new URL(process.env.DATABASE_URL);
+  // TLS with certificate verification is always required, except for a
+  // database on this same machine (local development only).
+  const local = ["127.0.0.1", "localhost", "[::1]"].includes(u.hostname);
   pool = mysql.createPool({
     host: u.hostname,
     port: Number(u.port || 3306),
     user: decodeURIComponent(u.username),
     password: decodeURIComponent(u.password),
     database: u.pathname.slice(1),
-    ssl: { rejectUnauthorized: true },
+    ssl: local
+      ? undefined
+      : { rejectUnauthorized: true, minVersion: "TLSv1.2" },
     connectionLimit: 5,
     timezone: "Z",
     charset: "utf8mb4",

@@ -333,7 +333,7 @@ async function loadOperations() {
   if (!$("#operationStatus")) return;
   const r = await api("/api/admin/status");
   $("#operationStatus").textContent =
-    `フォーム受付：Googleフォーム（通知・回答管理はGoogle側）\n画像・AI API：${r.serviceConfigured ? "接続情報あり" : "未設定"}\n初期管理者設定：${r.bootstrapConfigured ? "あり" : "未設定"}\n` +
+    `フォーム受付：Googleフォーム（通知・回答管理はGoogle側）\nGoogleログイン：${r.loginConfigured ? "設定済み" : "未設定"}\nAIタグ付け：${r.aiConfigured ? "設定済み" : "未設定（手動でタグ付け）"}\n定期ジョブの鍵：${r.cronConfigured ? "設定済み" : "未設定"}\n初期管理者設定：${r.bootstrapConfigured ? "あり" : "未設定"}\n` +
     r.states.map((s) => `${s.name}：${JSON.stringify(s.data)}`).join("\n") +
     "\n定期ジョブ：" +
     (r.jobs.length
@@ -353,26 +353,6 @@ if ($("#rssForm"))
       await loadSettings();
       message("#globalStatus", "RSS URLを保存しました。");
     });
-  });
-if ($("#scheduleForm"))
-  $("#scheduleForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    action(
-      e.submitter,
-      async () => {
-        await api("/api/admin/schedules", {
-          method: "PUT",
-          body: Object.fromEntries(new FormData(e.target)),
-        });
-        e.target.reset();
-        await loadOperations();
-        message(
-          "#scheduleStatus",
-          "タスクを関連付けました。Manus側の実行結果も確認してください。",
-        );
-      },
-      "#scheduleStatus",
-    );
   });
 $("#runMaintenance")?.addEventListener("click", () =>
   action($("#runMaintenance"), async () => {
@@ -408,7 +388,7 @@ $("#inviteForm")?.addEventListener("submit", (e) => {
     await loadUsers();
     message(
       "#globalStatus",
-      "編集者を追加しました。同じメールのManusアカウントでログインしてください。",
+      "編集者を追加しました。同じメールのGoogleアカウントでログインしてください。",
     );
   });
 });

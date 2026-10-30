@@ -53,10 +53,28 @@ if (slider) {
     clearInterval(timer);
     timer = null;
   };
+  // 中央の写真からの距離（-1=左隣、0=中央、1=右隣）。端はぐるっと回る
+  const offsetOf = (i) => {
+    const n = slides.length;
+    let d = (((i - index) % n) + n) % n;
+    if (d > n / 2) d -= n;
+    if (n === 2 && d === -1) d = 1;
+    return d;
+  };
   const show = (n) => {
     index = (n + slides.length) % slides.length;
     slides.forEach((s, i) => {
+      const offset = offsetOf(i);
+      const prev = Number(s.style.getPropertyValue("--offset") || offset);
+      // 左端から右端へ回り込む写真は、中央を横切らないようアニメーションなしで移動
+      if (Math.abs(offset - prev) > 1) {
+        s.classList.add("no-anim");
+        s.style.setProperty("--offset", offset);
+        void s.offsetWidth;
+        s.classList.remove("no-anim");
+      } else s.style.setProperty("--offset", offset);
       s.classList.toggle("is-active", i === index);
+      s.classList.toggle("is-side", Math.abs(offset) === 1);
       s.setAttribute("aria-hidden", String(i !== index));
       s.querySelectorAll("a").forEach(
         (a) => (a.tabIndex = i === index ? 0 : -1),
@@ -97,6 +115,16 @@ if (slider) {
       update();
     }),
   );
+  // 左右に見えている写真を押すと、その写真へ移動（リンクは開かない）
+  slides.forEach((sl, i) =>
+    sl.addEventListener("click", (e) => {
+      if (i === index) return;
+      e.preventDefault();
+      show(i);
+      update();
+    }),
+  );
+  slider.classList.add("is-peek");
   pause?.addEventListener("click", () => {
     manualPaused = !manualPaused;
     update();

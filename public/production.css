@@ -1511,3 +1511,106 @@ form.filters.search-form,
     margin-top: 32px;
   }
 }
+
+/* ===== スライドショー：左右に前後の写真をのぞかせる ===== */
+.hero .hero-slider {
+  --slide-w: min(1000px, calc(100vw - 32px));
+  --slide-gap: 24px;
+  flex: none;
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+.hero-slider .slider-stage {
+  width: 100%;
+  aspect-ratio: auto;
+  height: min(calc(var(--slide-w) * 9 / 16), calc(100vh - 260px));
+  min-height: 0;
+  max-height: none;
+  background: transparent;
+}
+.hero-slider .slider-stage .slide-placeholder {
+  width: var(--slide-w);
+  margin: 0 auto;
+}
+.hero-slider .slide {
+  inset: auto;
+  top: 0;
+  left: 50%;
+  width: var(--slide-w);
+  height: 100%;
+  background: #000;
+  transform: translateX(-50%);
+}
+.hero-slider.is-peek .slide {
+  --offset: 0;
+  transform: translateX(
+    calc(-50% + var(--offset) * (var(--slide-w) + var(--slide-gap)))
+  );
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.6s ease;
+}
+.hero-slider.is-peek .slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+.hero-slider.is-peek .slide.is-side {
+  opacity: 0.45;
+  visibility: visible;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.hero-slider.is-peek .slide.is-side:hover {
+  opacity: 0.65;
+}
+.hero-slider.is-peek .slide.is-side span {
+  visibility: hidden;
+}
+.hero-slider.is-peek .slide.no-anim {
+  transition: none;
+}
+/* 操作ボタンと進行バーは中央の写真に合わせる */
+.hero-slider .slider-control,
+.hero-slider .slider-stage .slider-pause {
+  z-index: 3;
+}
+.hero-slider .slider-control.prev {
+  left: calc(50% - var(--slide-w) / 2 + 14px);
+}
+.hero-slider .slider-control.next {
+  right: calc(50% - var(--slide-w) / 2 + 14px);
+}
+.hero-slider .slider-stage .slider-pause {
+  right: calc(50% - var(--slide-w) / 2 + 22px);
+}
+.hero-slider .slider-dots {
+  width: var(--slide-w);
+  margin: 0 auto;
+}
+@media (max-width: 800px) {
+  .hero .hero-slider {
+    --slide-gap: 8px;
+  }
+  .hero-slider .slider-stage {
+    height: calc(var(--slide-w) * 2 / 3);
+  }
+  .hero-slider .slider-control.prev {
+    left: calc(50% - var(--slide-w) / 2 + 6px);
+  }
+  .hero-slider .slider-control.next {
+    right: calc(50% - var(--slide-w) / 2 + 6px);
+  }
+  .hero-slider .slider-stage .slider-pause {
+    right: calc(50% - var(--slide-w) / 2 + 12px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider.is-peek .slide {
+    transition: none;
+  }
+}

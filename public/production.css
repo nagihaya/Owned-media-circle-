@@ -688,3 +688,328 @@ body {
     aspect-ratio: 3 / 2;
   }
 }
+
+/* ===== ボタン・ナビのデザイン調整（2026-10-30） ===== */
+:root {
+  --tbiz-blue: #005bac;
+  --tbiz-blue-dark: #00468a;
+  --tbiz-line: #dde3e9;
+  --tbiz-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* 右上の2ボタン */
+.nav .utility-links {
+  gap: 8px;
+}
+.nav .utility-links a {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  transition:
+    background-color 0.2s var(--tbiz-ease),
+    color 0.2s var(--tbiz-ease),
+    box-shadow 0.2s var(--tbiz-ease),
+    transform 0.2s var(--tbiz-ease);
+}
+.nav .utility-links a.publish-link {
+  background: #000;
+  color: #fff;
+  gap: 8px;
+}
+.nav .utility-links a.publish-link::after {
+  content: "→";
+  font-size: 13px;
+  transition: transform 0.2s var(--tbiz-ease);
+}
+.nav .utility-links a.publish-link:hover,
+.nav .utility-links a.publish-link:focus-visible {
+  background: var(--tbiz-blue);
+}
+.nav .utility-links a.publish-link:hover::after {
+  transform: translateX(3px);
+}
+.nav .utility-links a.login-link {
+  background: var(--tbiz-blue);
+  color: #fff;
+}
+.nav .utility-links a.login-link:hover,
+.nav .utility-links a.login-link:focus-visible {
+  background: var(--tbiz-blue-dark);
+}
+.nav .utility-links a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 40, 90, 0.18);
+}
+.nav .utility-links a:active {
+  transform: none;
+  box-shadow: none;
+}
+
+/* 横並びメニュー（ホーム・インタビュー…） */
+.nav .navlinks {
+  border-top: 1px solid var(--tbiz-line);
+  border-bottom: 1px solid var(--tbiz-line);
+  padding-top: 0;
+  padding-bottom: 0;
+  gap: 4px;
+  font-size: 16px;
+}
+.nav .navlinks a {
+  position: relative;
+  min-height: 56px;
+  padding: 0 16px;
+  color: #1a1a1a;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: color 0.2s var(--tbiz-ease);
+}
+.nav .navlinks a::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--tbiz-blue);
+  transform: scaleX(0);
+  transition: transform 0.25s var(--tbiz-ease);
+}
+.nav .navlinks a:hover,
+.nav .navlinks a:focus-visible {
+  background: transparent;
+  color: var(--tbiz-blue);
+}
+.nav .navlinks a:hover::after {
+  transform: scaleX(1);
+}
+.nav .navlinks a[aria-current="page"] {
+  color: var(--tbiz-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+.nav .navlinks a[aria-current="page"]::after {
+  height: 3px;
+  transform: scaleX(1);
+}
+.nav .navlinks a.instagram-link {
+  padding: 0 8px;
+}
+.nav .navlinks a.instagram-link::after {
+  display: none;
+}
+
+/* 汎用ボタン（検索・もっと見る・編集画面など） */
+.btn {
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding-left: 22px;
+  padding-right: 22px;
+  transition:
+    background-color 0.2s var(--tbiz-ease),
+    color 0.2s var(--tbiz-ease),
+    border-color 0.2s var(--tbiz-ease),
+    box-shadow 0.2s var(--tbiz-ease);
+}
+.btn:hover {
+  background: var(--tbiz-blue-dark);
+  box-shadow: 0 6px 16px rgba(0, 40, 90, 0.18);
+}
+.btn.alt:hover {
+  background: var(--tbiz-blue);
+  color: #fff;
+}
+.btn.small {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.quick-search-row input {
+  border-radius: 999px;
+  padding-left: 20px;
+  border-color: #c3ccd5;
+  transition: border-color 0.2s var(--tbiz-ease);
+}
+.quick-search-row input:focus {
+  border-color: var(--tbiz-blue);
+  outline: 2px solid rgba(0, 91, 172, 0.25);
+  outline-offset: 1px;
+}
+
+/* タグ */
+.tag-cloud a {
+  gap: 2px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--tbiz-line);
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  transition:
+    background-color 0.2s var(--tbiz-ease),
+    color 0.2s var(--tbiz-ease),
+    border-color 0.2s var(--tbiz-ease);
+}
+.tag-cloud a::before {
+  content: "#";
+  color: var(--tbiz-blue);
+  font-weight: 700;
+  transition: color 0.2s var(--tbiz-ease);
+}
+.tag-cloud a:hover {
+  background: var(--tbiz-blue);
+  border-color: var(--tbiz-blue);
+  color: #fff;
+}
+.tag-cloud a:hover::before {
+  color: #fff;
+}
+
+/* スライドショーの操作ボタン */
+.slider-control {
+  background: rgba(255, 255, 255, 0.88);
+  color: #000;
+  font-size: 26px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition:
+    background-color 0.2s var(--tbiz-ease),
+    color 0.2s var(--tbiz-ease);
+}
+.slider-control:hover {
+  background: var(--tbiz-blue);
+  color: #fff;
+}
+.slider-stage .slider-pause {
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.slider-stage .slider-pause:hover {
+  background: var(--tbiz-blue);
+}
+
+/* キーボード操作時の枠 */
+.nav .utility-links a:focus-visible,
+.nav .navlinks a:focus-visible,
+.btn:focus-visible,
+.tag-cloud a:focus-visible,
+.slider-control:focus-visible,
+.slider-pause:focus-visible {
+  outline: 3px solid var(--tbiz-blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 800px) {
+  .nav .utility-links a {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
+  .nav .utility-links a.publish-link::after {
+    display: none;
+  }
+  .nav .navlinks {
+    font-size: 15px;
+  }
+  .nav .navlinks a {
+    min-height: 50px;
+    padding: 0 12px;
+  }
+  .nav .navlinks a::after {
+    left: 12px;
+    right: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav .utility-links a,
+  .nav .navlinks a::after,
+  .btn,
+  .tag-cloud a {
+    transition: none;
+  }
+}
+
+/* 記事検索（インタビュー・ビジネス知識・記事検索ページ） */
+form.filters.search-form {
+  border: 1px solid var(--tbiz-line);
+  border-radius: 14px;
+  padding: 24px;
+  gap: 14px 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+form.search-form label {
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+form.search-form input[type="search"],
+form.search-form select {
+  min-height: 46px;
+  border: 1px solid #c3ccd5;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 14px;
+  transition:
+    border-color 0.2s var(--tbiz-ease),
+    box-shadow 0.2s var(--tbiz-ease);
+}
+form.search-form select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23005bac' stroke-width='1.8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+form.search-form input[type="search"]:hover,
+form.search-form select:hover {
+  border-color: #8a98a3;
+}
+form.search-form input[type="search"]:focus,
+form.search-form select:focus {
+  border-color: var(--tbiz-blue);
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.18);
+  outline: none;
+}
+form.search-form .search-exact {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+form.search-form .search-exact input {
+  accent-color: var(--tbiz-blue);
+  width: 18px;
+  height: 18px;
+}
+form.search-form button.btn {
+  min-height: 46px;
+  padding: 0 32px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tbiz-blue);
+  color: #fff;
+}
+form.search-form button.btn:hover {
+  background: var(--tbiz-blue-dark);
+}
+.empty-state {
+  border-color: var(--tbiz-line) !important;
+  border-radius: 14px;
+  color: #555;
+}

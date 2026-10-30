@@ -263,6 +263,43 @@
       target.append(div);
     });
   }
+  // 写真を選んだらその場でアップロードし、URL欄とプレビューに反映する。
+  // （「写真を追加」で一覧を描き直しても選んだ写真が消えないようにするため）
+  $("#slideEditors").addEventListener("change", async (e) => {
+    if (e.target.name !== "file" || !e.target.files.length) return;
+    const index = Number(e.target.closest(".slide-editor").dataset.index);
+    const input = e.target;
+    input.disabled = true;
+    message("#slidesStatus", "写真をアップロードしています…");
+    try {
+      const url = await upload(input.files[0]);
+      // アップロード中に一覧が描き直されても、同じ番号の枠に反映する
+      if (slideValues[index])
+        Object.assign(slideValues[index], { imageUrl: url, visible: true });
+      const editor = $("#slideEditors").children[index];
+      if (editor) {
+        editor.querySelector("[name=imageUrl]").value = url;
+        editor.querySelector("[name=visible]").checked = true;
+        let img = editor.querySelector(".slide-preview");
+        if (!img) {
+          img = document.createElement("img");
+          img.className = "slide-preview";
+          img.alt = "写真プレビュー";
+          editor.querySelector("h3").after(img);
+        }
+        img.src = url;
+        editor.querySelector("[name=file]").value = "";
+      }
+      message(
+        "#slidesStatus",
+        "写真をアップロードしました。「写真設定を保存」で公開されます。",
+      );
+    } catch (err) {
+      message("#slidesStatus", err.message, true);
+    } finally {
+      input.disabled = false;
+    }
+  });
   async function loadSlides() {
     slideValues = await api("/api/admin/slides");
     renderSlides();
@@ -280,7 +317,7 @@
     if (slideValues.length >= 5)
       return message("#slidesStatus", "スライドは5枚までです。", true);
     slideValues = captureSlides();
-    slideValues.push({ imageUrl: "", label: "", linkUrl: "", visible: false });
+    slideValues.push({ imageUrl: "", label: "", linkUrl: "", visible: true });
     renderSlides();
   });
   $("#slidesForm").addEventListener("submit", (e) => {
@@ -304,7 +341,14 @@
         }));
         await api("/api/admin/slides", { method: "PUT", body });
         await loadSlides();
-        message("#slidesStatus", "写真設定を保存しました。");
+        const shown = body.filter((x) => x.visible).length;
+        message(
+          "#slidesStatus",
+          `写真設定を保存しました。公開中：${shown}枚` +
+            (shown < 2
+              ? "（スライドショーは公開中の写真が2枚以上で動きます）"
+              : ""),
+        );
       },
       "#slidesStatus",
     );

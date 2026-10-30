@@ -63,9 +63,12 @@ if (slider) {
       );
     });
     dots.forEach((d, i) => {
-      d.classList.toggle("is-active", i === index);
+      d.classList.remove("is-active");
       d.setAttribute("aria-pressed", String(i === index));
     });
+    // 進行バーのアニメーションを最初からやり直すため、付け直す
+    void dots[index]?.offsetWidth;
+    dots[index]?.classList.add("is-active");
   };
   const update = () => {
     stop();
@@ -78,6 +81,7 @@ if (slider) {
       !document.hidden
     )
       timer = setInterval(() => show(index + 1), 5000);
+    slider.classList.toggle("is-playing", Boolean(timer));
   };
   slider.querySelector(".prev")?.addEventListener("click", () => {
     show(index - 1);

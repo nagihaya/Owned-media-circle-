@@ -524,3 +524,130 @@ html,
 body {
   overflow-x: clip;
 }
+
+/* ===== スライドショー（2026-10-30 調整：大きく・上の余白を狭く・下に進行バー） ===== */
+.hero {
+  padding: 16px 0 32px;
+}
+.hero-art,
+.hero-slider {
+  width: 100%;
+  min-height: 0;
+  background: transparent;
+  overflow: visible;
+}
+.slider-stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 220px);
+  min-height: 260px;
+  width: 100%;
+  background: #000;
+}
+.slider-stage .slide-placeholder {
+  height: 100%;
+  background: #fff;
+}
+.slider-dots {
+  position: static;
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.slider-dot {
+  flex: 1;
+  width: auto;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  cursor: pointer;
+  position: relative;
+}
+.slider-dot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  width: auto;
+  height: 4px;
+  margin: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 0;
+  background: #d5dbe0;
+}
+.slider-dot::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 4px;
+  width: 0;
+  transform: translateY(-50%);
+  background: #005bac;
+}
+.slider-dot.is-active::before {
+  background: #d5dbe0;
+}
+.slider-dot.is-active::after {
+  width: 100%;
+}
+.hero-slider.is-playing .slider-dot.is-active::after {
+  animation: slider-progress 5s linear forwards;
+}
+.slider-dot:hover::before {
+  background: #8a98a3;
+}
+.slider-dot:focus-visible {
+  outline: 3px solid #005bac;
+  outline-offset: 2px;
+}
+@keyframes slider-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.hero-slider .slide span {
+  bottom: 24px;
+  right: 140px;
+}
+.slider-stage .slider-pause {
+  left: auto;
+  right: 22px;
+  bottom: 22px;
+  top: auto;
+}
+@media (max-width: 800px) {
+  .hero {
+    padding: 8px 0 24px;
+  }
+  .slider-stage {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    max-height: none;
+  }
+  .hero-slider .slide span {
+    bottom: 16px;
+    right: 110px;
+  }
+  .slider-stage .slider-pause {
+    right: 12px;
+    bottom: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider.is-playing .slider-dot.is-active::after {
+    animation: none;
+  }
+}
+.page.page-home {
+  padding-top: 0;
+}

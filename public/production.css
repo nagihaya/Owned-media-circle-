@@ -1030,3 +1030,274 @@ main .page:not(.page-home) {
     padding-top: 28px;
   }
 }
+
+/* ==========================================================================
+   ボタン：Apple Human Interface Guidelines（Buttons）に沿った設計
+   - 押せる範囲は最低 44×44pt
+   - 押した瞬間の状態（press state）を必ず表示
+   - 目立つ塗りボタン（filled）は1画面に1〜2個。優先度は大きさでなくスタイルで表す
+   - スタイルは filled（塗り）/ tinted（淡い色）/ gray / plain の4種
+   - 時間のかかる操作はボタン内に処理中表示
+   ========================================================================== */
+:root {
+  --hig-accent: #005bac;
+  --hig-accent-pressed: #004a8c;
+  --hig-tint-bg: rgba(0, 91, 172, 0.1);
+  --hig-tint-bg-hover: rgba(0, 91, 172, 0.16);
+  --hig-tint-bg-pressed: rgba(0, 91, 172, 0.24);
+  --hig-gray-bg: rgba(118, 118, 128, 0.12);
+  --hig-gray-bg-hover: rgba(118, 118, 128, 0.18);
+  --hig-font:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", sans-serif;
+  --hig-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* 共通の土台 */
+.btn,
+.nav .utility-links a,
+.tag-cloud a,
+.slider-control,
+.slider-stage .slider-pause,
+form.search-form button.btn,
+.quick-search-row .btn {
+  font-family: var(--hig-font);
+  min-height: 44px;
+  border-radius: 999px;
+  box-shadow: none;
+  transform: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    background-color 0.15s var(--hig-ease),
+    color 0.15s var(--hig-ease),
+    opacity 0.15s var(--hig-ease),
+    transform 0.12s var(--hig-ease);
+}
+.btn:hover,
+.nav .utility-links a:hover,
+.tag-cloud a:hover,
+.slider-control:hover {
+  box-shadow: none;
+  transform: none;
+}
+/* 押した瞬間：わずかに縮めて暗くする */
+.btn:active,
+.nav .utility-links a:active,
+.tag-cloud a:active,
+.slider-control:active,
+.slider-stage .slider-pause:active,
+.slider-dot:active {
+  transform: scale(0.97);
+}
+
+/* filled（主要操作）：アクセント色の塗り */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 20px;
+  border: 0;
+  background: var(--hig-accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.btn:hover {
+  background: var(--hig-accent-pressed);
+  color: #fff;
+}
+.btn:active {
+  background: var(--hig-accent-pressed);
+  opacity: 0.85;
+}
+/* tinted（補助操作）：淡い色の背景＋アクセント色の文字 */
+.btn.alt {
+  border: 0;
+  background: var(--hig-tint-bg);
+  color: var(--hig-accent);
+}
+.btn.alt:hover {
+  background: var(--hig-tint-bg-hover);
+  color: var(--hig-accent);
+}
+.btn.alt:active {
+  background: var(--hig-tint-bg-pressed);
+  opacity: 1;
+}
+.btn.small {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+/* 使えない状態 */
+.btn:disabled,
+.btn[aria-disabled="true"],
+.slider-control:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+/* 処理中：ボタン内に回転表示 */
+.btn.is-busy {
+  opacity: 0.85;
+  cursor: progress;
+}
+.btn.is-busy::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: hig-spin 0.7s linear infinite;
+}
+@keyframes hig-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ヘッダー：「掲載について」= filled（黒）、「編集ログイン」= tinted
+   目立つ塗りボタンを1つに絞る */
+.nav .utility-links {
+  gap: 8px;
+}
+.nav .utility-links a {
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.nav .utility-links a.publish-link {
+  background: #000;
+  color: #fff;
+}
+.nav .utility-links a.publish-link::after {
+  content: none;
+}
+.nav .utility-links a.publish-link:hover,
+.nav .utility-links a.publish-link:focus-visible {
+  background: var(--hig-accent);
+  color: #fff;
+}
+.nav .utility-links a.publish-link:active {
+  background: var(--hig-accent-pressed);
+}
+.nav .utility-links a.login-link {
+  background: var(--hig-tint-bg);
+  color: var(--hig-accent);
+}
+.nav .utility-links a.login-link:hover,
+.nav .utility-links a.login-link:focus-visible {
+  background: var(--hig-tint-bg-hover);
+  color: var(--hig-accent);
+}
+.nav .utility-links a.login-link:active {
+  background: var(--hig-tint-bg-pressed);
+}
+
+/* タグ：tinted（淡い色）。枠線は使わない */
+.tag-cloud a {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  background: var(--hig-tint-bg);
+  color: var(--hig-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.tag-cloud a::before {
+  content: "#";
+  color: inherit;
+  opacity: 0.6;
+}
+.tag-cloud a:hover {
+  background: var(--hig-tint-bg-hover);
+  color: var(--hig-accent);
+}
+.tag-cloud a:hover::before {
+  color: inherit;
+}
+.tag-cloud a:active {
+  background: var(--hig-tint-bg-pressed);
+}
+
+/* 検索ボタン：filled */
+.quick-search-row .btn,
+form.search-form button.btn {
+  min-height: 46px;
+  padding: 0 28px;
+}
+
+/* スライドショー：アイコンだけのボタンは円形 44pt */
+.slider-control {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #000;
+  font-size: 24px;
+}
+.slider-control:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--hig-accent);
+}
+.slider-control:active {
+  background: rgba(255, 255, 255, 0.7);
+}
+.slider-stage .slider-pause {
+  min-height: 44px;
+  padding: 0 18px;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.slider-stage .slider-pause:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+/* 進行バー：見た目は細いまま、押せる範囲は 44pt */
+.slider-dot {
+  height: 44px;
+  min-height: 44px;
+}
+.slider-dots {
+  margin-top: 0;
+}
+
+@media (max-width: 800px) {
+  .nav .utility-links a {
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .nav .utility-links a,
+  .tag-cloud a,
+  .slider-control,
+  .slider-stage .slider-pause {
+    transition: none;
+  }
+  .btn:active,
+  .nav .utility-links a:active,
+  .tag-cloud a:active,
+  .slider-control:active,
+  .slider-stage .slider-pause:active,
+  .slider-dot:active {
+    transform: none;
+  }
+  .btn.is-busy::before {
+    animation-duration: 2s;
+  }
+}

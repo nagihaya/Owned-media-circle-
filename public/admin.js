@@ -10,14 +10,19 @@
       el.className = "admin-status " + (error ? "status-error" : "status-ok");
     }
   }
+  // 時間のかかる操作中は、ボタン内に処理中表示を出す（HIG：activity indicator）
   async function action(button, fn, target = "#globalStatus") {
     button.disabled = true;
+    button.classList.add("is-busy");
+    button.setAttribute("aria-busy", "true");
     try {
       await fn();
     } catch (e) {
       message(target, e.message, true);
     } finally {
       button.disabled = false;
+      button.classList.remove("is-busy");
+      button.removeAttribute("aria-busy");
     }
   }
   async function upload(file) {

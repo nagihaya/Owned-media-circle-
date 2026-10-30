@@ -40,3 +40,34 @@ export async function migrateV3() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (3)");
 }
+// v4: slideshow card text (number, date, category, author, tags) and longer titles.
+export async function migrateV4() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=4"))
+      .length
+  )
+    return;
+  for (const [name, ddl] of [
+    ["number_label", "VARCHAR(10) NOT NULL DEFAULT ''"],
+    ["date_label", "VARCHAR(20) NOT NULL DEFAULT ''"],
+    ["category", "VARCHAR(30) NOT NULL DEFAULT ''"],
+    ["author", "VARCHAR(60) NOT NULL DEFAULT ''"],
+    ["tags", "VARCHAR(200) NOT NULL DEFAULT ''"],
+  ]) {
+    const cols = await query(
+      "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=? AND COLUMN_NAME=?",
+      ["slides", name],
+    );
+    if (!cols.length)
+      try {
+        await query(`ALTER TABLE slides ADD COLUMN ${name} ${ddl}`);
+      } catch (e) {
+        if (e.code !== "ER_DUP_FIELDNAME") throw e;
+      }
+  }
+  // Widen the title (label) from 80 to 160 characters; existing text is kept.
+  await query(
+    "ALTER TABLE slides MODIFY COLUMN label VARCHAR(160) NOT NULL DEFAULT ''",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (4)");
+}

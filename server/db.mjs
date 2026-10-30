@@ -207,7 +207,7 @@ export async function articleList(filters = {}, admin = false) {
 }
 export async function slides(publicOnly = true) {
   return query(
-    `SELECT id,image_url AS imageUrl,label,link_url AS linkUrl,position,visible,revision FROM slides ${publicOnly ? "WHERE visible=1" : ""} ORDER BY position,id`,
+    `SELECT id,image_url AS imageUrl,label,link_url AS linkUrl,number_label AS numberLabel,date_label AS dateLabel,category,author,tags,position,visible,revision FROM slides ${publicOnly ? "WHERE visible=1" : ""} ORDER BY position,id`,
   );
 }
 export async function homeData() {

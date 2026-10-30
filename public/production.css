@@ -2080,3 +2080,268 @@ header.nav {
 .feature .btn:focus-visible {
   outline-color: #fff;
 }
+
+/* ==========================================================================
+   スライドショー：カード型（左に文章、右に写真）
+   ========================================================================== */
+.hero {
+  padding-top: 0;
+}
+.hero .hero-slider {
+  --slide-w: min(1120px, calc(100vw - 32px - 2 * (16px + 45px)));
+  --slide-img-w: calc(var(--slide-w) * 0.62);
+  background: #f4f5f7;
+  padding: 28px 0 8px;
+}
+.hero-slider .slider-stage {
+  height: min(
+    calc(var(--slide-img-w) * 9 / 16),
+    calc(100vh - 240px)
+  );
+}
+.hero-slider .slide {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.hero-slider .slide .slide-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  text-decoration: none;
+}
+.hero-slider .slide-img {
+  position: relative;
+  flex: 1 1 auto;
+  height: 100%;
+  min-width: 0;
+  background: #000;
+}
+.hero-slider .slide.is-card .slide-img {
+  flex: 0 0 62%;
+}
+.hero-slider .slide.is-card::after {
+  display: none;
+}
+.hero-slider .slide .slide-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 写真だけのスライドは従来どおり下部にグラデーション＋タイトル */
+.hero-slider .slide:not(.is-card) .slide-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+.hero-slider .slide:not(.is-card)::after {
+  display: none;
+}
+.hero-slider .slide:not(.is-card) .slide-img span {
+  z-index: 1;
+}
+
+/* 左側の文章 */
+.slide-text {
+  flex: 1 1 38%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 2.6vw, 36px) clamp(20px, 2.8vw, 40px);
+  background: #fff;
+}
+.hero-slider .slide .slide-text span {
+  position: static;
+  inset: auto;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  visibility: visible;
+  pointer-events: auto;
+}
+.slide-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.slide-no-date {
+  display: flex;
+  flex-direction: column;
+}
+.hero-slider .slide .slide-text .slide-no {
+  font-size: clamp(36px, 3.6vw, 52px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.hero-slider .slide .slide-text .slide-date {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.hero-slider .slide .slide-text .slide-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 6px 14px;
+  border: 1.5px solid #000;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.slide-cat::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.slide-title {
+  margin: auto 0 0;
+  padding-top: 20px;
+  font-size: clamp(17px, 1.7vw, 23px);
+  font-weight: 700;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.slide-author {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #5a6570;
+}
+.slide-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: auto 0 0;
+  padding: 16px 0 0;
+  max-height: 46px;
+  overflow: hidden;
+}
+.slide-tags li {
+  padding: 4px 10px;
+  border: 1px solid #cfd5db;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.hero-slider .slide-inner:hover .slide-title {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.hero-slider .slide a.slide-inner:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: -3px;
+}
+
+/* 左右の矢印：カードの縁に黒い丸 */
+.hero-slider .slider-control {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.hero-slider .slider-control:hover {
+  background: #333;
+  color: #fff;
+}
+.hero-slider .slider-control.prev {
+  left: calc(50% - var(--slide-w) / 2 - 22px);
+}
+.hero-slider .slider-control.next {
+  right: calc(50% - var(--slide-w) / 2 - 22px);
+}
+/* 一時停止は写真の右下 */
+.hero-slider .slider-stage .slider-pause {
+  right: calc(50% - var(--slide-w) / 2 + 16px);
+  bottom: 16px;
+}
+.hero-slider .slider-dots {
+  margin-top: 8px;
+}
+
+/* スマホ：写真を上、文章を下に */
+@media (max-width: 800px) {
+  .hero .hero-slider {
+    --slide-w: calc(100vw - 32px);
+    padding: 16px 0 4px;
+  }
+  .hero-slider .slider-stage {
+    height: calc(var(--slide-w) * 9 / 16 + 150px);
+  }
+  .hero-slider .slide.is-card .slide-inner {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+  .hero-slider .slide.is-card .slide-img {
+    flex: 0 0 calc(var(--slide-w) * 9 / 16);
+    height: calc(var(--slide-w) * 9 / 16);
+  }
+  .slide-text {
+    flex: 1 1 auto;
+    padding: 14px 16px;
+  }
+  .hero-slider .slide .slide-text .slide-no {
+    font-size: 26px;
+  }
+  .slide-no-date {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .hero-slider .slide .slide-text .slide-date {
+    margin-top: 0;
+  }
+  .hero-slider .slide .slide-text .slide-cat {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  .slide-title {
+    margin-top: 0;
+    padding-top: 10px;
+    font-size: 16px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  .slide-author {
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .slide-tags {
+    display: none;
+  }
+  .hero-slider .slider-control {
+    top: calc(var(--slide-w) * 9 / 32);
+  }
+  .hero-slider .slider-control.prev {
+    left: calc(50% - var(--slide-w) / 2 + 6px);
+  }
+  .hero-slider .slider-control.next {
+    right: calc(50% - var(--slide-w) / 2 + 6px);
+  }
+  .hero-slider .slider-stage .slider-pause {
+    top: 12px;
+    bottom: auto;
+    right: calc(50% - var(--slide-w) / 2 + 12px);
+  }
+}

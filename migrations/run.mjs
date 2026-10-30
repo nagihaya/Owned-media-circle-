@@ -1,6 +1,6 @@
 import { query, close, safeDbMessage } from "../server/db.mjs";
 import { pathToFileURL } from "node:url";
-import { migrateV2, migrateV3 } from "./v2.mjs";
+import { migrateV2, migrateV3, migrateV4 } from "./v2.mjs";
 export async function migrate() {
   await query(
     "CREATE TABLE IF NOT EXISTS schema_migrations (version INT PRIMARY KEY, completed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)",
@@ -11,6 +11,7 @@ export async function migrate() {
   ) {
     await migrateV2();
     await migrateV3();
+    await migrateV4();
     return;
   }
   const statements = [
@@ -47,6 +48,7 @@ export async function migrate() {
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (1)");
   await migrateV2();
   await migrateV3();
+  await migrateV4();
 }
 if (
   process.argv[1] &&

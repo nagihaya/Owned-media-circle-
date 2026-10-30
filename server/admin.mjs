@@ -115,8 +115,24 @@ admin.put("/slides", async (req, res) => {
         .object({
           id: z.number().int().positive().optional(),
           imageUrl: z.string().max(768),
-          label: z.string().trim().max(80),
+          label: z.string().trim().max(160),
           linkUrl: z.string().max(512),
+          numberLabel: z.string().trim().max(10).default(""),
+          dateLabel: z.string().trim().max(20).default(""),
+          category: z.string().trim().max(30).default(""),
+          author: z.string().trim().max(60).default(""),
+          tags: z
+            .string()
+            .max(400)
+            .default("")
+            .transform((v) =>
+              v
+                .split(/[,、，]/)
+                .map((t) => t.trim().slice(0, 20))
+                .filter(Boolean)
+                .slice(0, 5)
+                .join(","),
+            ),
           visible: z.boolean(),
           revision: z.number().int().nonnegative().optional(),
         })
@@ -156,8 +172,21 @@ admin.put("/slides", async (req, res) => {
       const v = processed[i];
       if (v.id) {
         const [r] = await conn.execute(
-          "UPDATE slides SET image_url=?,label=?,link_url=?,visible=?,position=?,revision=revision+1 WHERE id=? AND revision=?",
-          [v.imageUrl, v.label, v.linkUrl, v.visible, i, v.id, v.revision],
+          "UPDATE slides SET image_url=?,label=?,link_url=?,number_label=?,date_label=?,category=?,author=?,tags=?,visible=?,position=?,revision=revision+1 WHERE id=? AND revision=?",
+          [
+            v.imageUrl,
+            v.label,
+            v.linkUrl,
+            v.numberLabel,
+            v.dateLabel,
+            v.category,
+            v.author,
+            v.tags,
+            v.visible,
+            i,
+            v.id,
+            v.revision,
+          ],
         );
         if (!r.affectedRows) {
           const e = new Error("Conflict");
@@ -166,8 +195,19 @@ admin.put("/slides", async (req, res) => {
         }
       } else {
         await conn.execute(
-          "INSERT INTO slides (image_url,label,link_url,visible,position) VALUES (?,?,?,?,?)",
-          [v.imageUrl, v.label, v.linkUrl, v.visible, i],
+          "INSERT INTO slides (image_url,label,link_url,number_label,date_label,category,author,tags,visible,position) VALUES (?,?,?,?,?,?,?,?,?,?)",
+          [
+            v.imageUrl,
+            v.label,
+            v.linkUrl,
+            v.numberLabel,
+            v.dateLabel,
+            v.category,
+            v.author,
+            v.tags,
+            v.visible,
+            i,
+          ],
         );
       }
     }

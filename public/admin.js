@@ -265,7 +265,7 @@
       const div = document.createElement("div");
       div.className = "slide-editor admin-form-grid";
       div.dataset.index = i;
-      div.innerHTML = `<h3 class="wide">${i + 1}枚目</h3>${s.imageUrl ? `<img class="slide-preview" src="${h(s.imageUrl)}" alt="写真プレビュー">` : ""}<label class="wide">写真URL<input name="imageUrl" value="${h(s.imageUrl || "")}" placeholder="HTTPS画像URLまたはアップロード済みパス"></label><label>写真をアップロード<input name="file" type="file" accept="image/jpeg,image/png,image/webp"></label><label>表示名<input name="label" maxlength="80" value="${h(s.label || "")}"></label><label class="wide">リンク先（写真を押したときに開くページ。空欄ならリンクなし）<input name="linkUrl" value="${h(s.linkUrl || "")}" placeholder="例：https://note.com/... または /interviews"></label><p class="wide admin-hint">note記事などサイト外のURLは新しいタブで開きます。サイト内のページは「/about」のように / から入力します。</p><label class="check-label"><input name="visible" type="checkbox" ${s.visible ? "checked" : ""}>公開する</label>`;
+      div.innerHTML = `<h3 class="wide">${i + 1}枚目</h3>${s.imageUrl ? `<img class="slide-preview" src="${h(s.imageUrl)}" alt="写真プレビュー">` : ""}<label class="wide">写真URL<input name="imageUrl" value="${h(s.imageUrl || "")}" placeholder="HTTPS画像URLまたはアップロード済みパス"></label><label>写真をアップロード<input name="file" type="file" accept="image/jpeg,image/png,image/webp"></label><label class="wide">タイトル（3行を超えると「…」で省略）<input name="label" maxlength="160" value="${h(s.label || "")}"></label><fieldset class="wide slide-text-fields"><legend>左側の文章（すべて空欄なら写真だけを表示）</legend><label>番号（空欄で自動：01, 02…）<input name="numberLabel" maxlength="10" value="${h(s.numberLabel || "")}" placeholder="例：09"></label><label>日付<input name="dateLabel" maxlength="20" value="${h(s.dateLabel || "")}" placeholder="例：2026.10"></label><label>カテゴリ<input name="category" maxlength="30" value="${h(s.category || "")}" placeholder="例：経営者インタビュー"></label><label>書き手・話し手<input name="author" maxlength="60" value="${h(s.author || "")}" placeholder="例：山田 太郎"></label><label class="wide">タグ（カンマ区切り・5つまで）<input name="tags" maxlength="400" value="${h((s.tags || "").split(",").filter(Boolean).join(", "))}" placeholder="例：IT・SaaS, インターン, 就活"></label></fieldset><label class="wide">リンク先（写真を押したときに開くページ。空欄ならリンクなし）<input name="linkUrl" value="${h(s.linkUrl || "")}" placeholder="例：https://note.com/... または /interviews"></label><p class="wide admin-hint">note記事などサイト外のURLは新しいタブで開きます。サイト内のページは「/about」のように / から入力します。</p><label class="check-label"><input name="visible" type="checkbox" ${s.visible ? "checked" : ""}>公開する</label>`;
       target.append(div);
     });
   }
@@ -315,6 +315,11 @@
       ...slideValues[i],
       imageUrl: el.querySelector("[name=imageUrl]").value,
       label: el.querySelector("[name=label]").value,
+      numberLabel: el.querySelector("[name=numberLabel]").value,
+      dateLabel: el.querySelector("[name=dateLabel]").value,
+      category: el.querySelector("[name=category]").value,
+      author: el.querySelector("[name=author]").value,
+      tags: el.querySelector("[name=tags]").value,
       linkUrl: el.querySelector("[name=linkUrl]").value,
       visible: el.querySelector("[name=visible]").checked,
     }));
@@ -323,7 +328,17 @@
     if (slideValues.length >= 5)
       return message("#slidesStatus", "スライドは5枚までです。", true);
     slideValues = captureSlides();
-    slideValues.push({ imageUrl: "", label: "", linkUrl: "", visible: true });
+    slideValues.push({
+      imageUrl: "",
+      label: "",
+      linkUrl: "",
+      numberLabel: "",
+      dateLabel: "",
+      category: "",
+      author: "",
+      tags: "",
+      visible: true,
+    });
     renderSlides();
   });
   $("#slidesForm").addEventListener("submit", (e) => {
@@ -343,6 +358,11 @@
           imageUrl: s.imageUrl,
           label: s.label,
           linkUrl: s.linkUrl,
+          numberLabel: s.numberLabel || "",
+          dateLabel: s.dateLabel || "",
+          category: s.category || "",
+          author: s.author || "",
+          tags: s.tags || "",
           visible: Boolean(s.visible),
         }));
         await api("/api/admin/slides", { method: "PUT", body });

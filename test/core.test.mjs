@@ -190,3 +190,21 @@ test("DB error messages are logged with quoted account details masked", async ()
   );
   assert.equal(safeDbMessage(new Error("x")), "");
 });
+test("app.js and admin.js can load on the same page without name collisions", async () => {
+  const vm = await import("node:vm");
+  const fs = await import("node:fs");
+  const ctx = vm.createContext({});
+  // Declarations are registered before the code runs, so a collision is a
+  // SyntaxError even though these scripts fail later without a browser DOM.
+  const run = (f) => {
+    try {
+      new vm.Script(fs.readFileSync(f, "utf8"), { filename: f }).runInContext(
+        ctx,
+      );
+    } catch (e) {
+      if (e?.name === "SyntaxError") throw e;
+    }
+  };
+  run("public/app.js");
+  assert.doesNotThrow(() => run("public/admin.js"));
+});

@@ -255,3 +255,7 @@ test("X URL accepts x.com/twitter.com or blank, and rejects other hosts", async 
       xUrl,
     );
 });
+test("company size choices are 大企業 and スタートアップ・ベンチャー only", async () => {
+  const { SIZES } = await import("../server/validation.mjs");
+  assert.deepEqual(SIZES, ["大企業", "スタートアップ・ベンチャー"]);
+});

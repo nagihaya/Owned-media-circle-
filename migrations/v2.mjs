@@ -94,3 +94,20 @@ export async function migrateV5() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (5)");
 }
+// v6: company size choices renamed (エンタープライズ→大企業, スタートアップ→
+// スタートアップ・ベンチャー) and SMB removed (those articles become 未分類).
+export async function migrateV6() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=6"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE articles SET company_size='大企業' WHERE company_size='エンタープライズ'",
+  );
+  await query(
+    "UPDATE articles SET company_size='スタートアップ・ベンチャー' WHERE company_size='スタートアップ'",
+  );
+  await query("UPDATE articles SET company_size=NULL WHERE company_size='SMB'");
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (6)");
+}

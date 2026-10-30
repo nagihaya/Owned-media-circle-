@@ -2393,3 +2393,9 @@ header.nav {
     font-size: 12px;
   }
 }
+/* スマホ専用タグ（インタビュー）はPCでは出さない */
+@media (min-width: 801px) {
+  .tag-cloud a.tag-sp-only {
+    display: none;
+  }
+}

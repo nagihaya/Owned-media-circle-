@@ -13,7 +13,7 @@ export const INDUSTRIES = [
   "人材",
   "その他",
 ];
-export const SIZES = ["エンタープライズ", "SMB", "スタートアップ"];
+export const SIZES = ["大企業", "スタートアップ・ベンチャー"];
 export const INTERVIEW_TYPES = TYPES.slice(0, 3);
 const enumNullable = (values) => z.enum(values).nullable();
 export function safeUrl(value, { note = false, relative = false } = {}) {

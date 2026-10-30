@@ -13,10 +13,13 @@
 
 ## 運営の作業（SETUP.md の順）
 
-- [ ] TiDB Cloud でデータベース作成
-- [ ] Google Cloud でOAuthクライアント作成
-- [ ] Render で公開、環境変数の入力
-- [ ] 最初の管理者でログイン確認
+公開URL: https://tbiz-media.onrender.com （2026-10-30 管理者ログイン確認済み）
+
+
+- [x] TiDB Cloud でデータベース作成
+- [x] Google Cloud でOAuthクライアント作成
+- [x] Render で公開、環境変数の入力
+- [x] 最初の管理者でログイン確認
 - [ ] GitHub Secrets 登録と定期実行の確認（作業ブランチを main にマージ後）
 
 ## 公開後に確認すること

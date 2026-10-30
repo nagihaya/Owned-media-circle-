@@ -55,7 +55,11 @@ if (
     await migrate();
     console.log("Migrations completed. No sample articles were published.");
   } catch (e) {
-    console.error("Migration failed:", e.code || e.name);
+    console.error(
+      "Migration failed:",
+      e.code || e.name,
+      e.code === "DATABASE_URL_FORMAT" ? e.message : "",
+    );
     process.exitCode = 1;
   } finally {
     await close();

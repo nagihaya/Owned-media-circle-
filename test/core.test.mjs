@@ -151,3 +151,31 @@ test("bad note article URL is a validation failure rather than an uncaught excep
   };
   assert.equal(articleSchema.safeParse(v).success, false);
 });
+test("DATABASE_URL accepts symbols in passwords, quotes and spaces", async () => {
+  const { parseDatabaseUrl } = await import("../server/db.mjs");
+  const u = parseDatabaseUrl(
+    ' "mysql://abc.root:p/a?s#s@w:rd@gateway01.ap-northeast-1.prod.aws.tidbcloud.com:4000/test" ',
+  );
+  assert.equal(u.user, "abc.root");
+  assert.equal(u.password, "p/a?s#s@w:rd");
+  assert.equal(u.host, "gateway01.ap-northeast-1.prod.aws.tidbcloud.com");
+  assert.equal(u.port, 4000);
+  assert.equal(u.database, "test");
+  assert.equal(
+    parseDatabaseUrl("mysql://u:p%40x@127.0.0.1/db?ssl=true").password,
+    "p@x",
+  );
+  for (const bad of [
+    "",
+    "gateway01.example.com:4000",
+    "mysql -u x -h y",
+    "mysql://nopass@host:4000/test",
+    "mysql://u:p@host:4000",
+    "mysql://u:p@bad host:4000/test",
+  ])
+    assert.throws(
+      () => parseDatabaseUrl(bad),
+      (e) => e.code === "DATABASE_URL_FORMAT" && !e.message.includes("p@"),
+      bad,
+    );
+});

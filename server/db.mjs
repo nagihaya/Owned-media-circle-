@@ -1,19 +1,66 @@
 import mysql from "mysql2/promise";
 import { cleanForms } from "./google-forms.mjs";
 let pool;
+function configError(hint) {
+  const e = new Error("DATABASE_URL: " + hint);
+  e.code = "DATABASE_URL_FORMAT";
+  return e;
+}
+const decode = (v) => {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return v;
+  }
+};
+// Reads mysql://user:password@host:port/database without a strict URL parser,
+// so passwords containing symbols such as / ? # @ work without escaping.
+// Error messages never include the value itself.
+export function parseDatabaseUrl(raw) {
+  const v = String(raw || "")
+    .trim()
+    .replace(/^(['"])(.*)\1$/, "$2")
+    .trim();
+  if (!v) throw configError("未設定です");
+  const m = /^mysql:\/\/(.*)$/i.exec(v);
+  if (!m) throw configError("mysql:// で始まっていません");
+  const rest = m[1];
+  const at = rest.lastIndexOf("@");
+  if (at < 0) throw configError("ユーザー名とパスワードの後の @ がありません");
+  const cred = rest.slice(0, at),
+    target = rest.slice(at + 1);
+  const colon = cred.indexOf(":");
+  if (colon < 1)
+    throw configError("ユーザー名:パスワード の形になっていません");
+  const slash = target.indexOf("/");
+  if (slash < 0) throw configError("末尾に /データベース名 がありません");
+  const hostPort = target.slice(0, slash);
+  const dbName = target.slice(slash + 1).split("?")[0];
+  const hp = /^([A-Za-z0-9.-]+|\[[0-9a-fA-F:]+\])(?::(\d{1,5}))?$/.exec(
+    hostPort,
+  );
+  if (!hp) throw configError("ホスト名またはポートの形式が正しくありません");
+  if (!dbName) throw configError("データベース名が空です");
+  return {
+    host: hp[1],
+    port: Number(hp[2] || 3306),
+    user: decode(cred.slice(0, colon)),
+    password: decode(cred.slice(colon + 1)),
+    database: decode(dbName),
+  };
+}
 export function database() {
   if (pool) return pool;
-  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is unavailable");
-  const u = new URL(process.env.DATABASE_URL);
+  const u = parseDatabaseUrl(process.env.DATABASE_URL);
   // TLS with certificate verification is always required, except for a
   // database on this same machine (local development only).
-  const local = ["127.0.0.1", "localhost", "[::1]"].includes(u.hostname);
+  const local = ["127.0.0.1", "localhost", "[::1]"].includes(u.host);
   pool = mysql.createPool({
-    host: u.hostname,
-    port: Number(u.port || 3306),
-    user: decodeURIComponent(u.username),
-    password: decodeURIComponent(u.password),
-    database: u.pathname.slice(1),
+    host: u.host,
+    port: u.port,
+    user: u.user,
+    password: u.password,
+    database: u.database,
     ssl: local
       ? undefined
       : { rejectUnauthorized: true, minVersion: "TLSv1.2" },

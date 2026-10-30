@@ -261,6 +261,10 @@ try {
     console.log(`T-Biz server ready on port ${port}`),
   );
 } catch (e) {
-  console.error("Startup failed:", e.code || e.name);
+  console.error(
+    "Startup failed:",
+    e.code || e.name,
+    e.code === "DATABASE_URL_FORMAT" ? e.message : "",
+  );
   process.exitCode = 1;
 }

@@ -1645,3 +1645,27 @@ form.filters.search-form,
 .site-footer-copy {
   color: #5f6b77;
 }
+
+/* 編集者一覧：削除など取り消せない操作は赤（HIG：destructive） */
+.btn.danger {
+  border: 1px solid #c62828;
+  background: #fff;
+  color: #c62828;
+}
+.btn.danger:hover {
+  background: #c62828;
+  color: #fff;
+}
+.btn.danger:active {
+  background: #a51f1f;
+  color: #fff;
+}
+.user-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.user-row span {
+  flex: 1 1 200px;
+}

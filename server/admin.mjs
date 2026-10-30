@@ -286,7 +286,9 @@ admin.post("/import", async (req, res) => {
 admin.get("/metrics", async (req, res) => res.json(await metrics()));
 admin.get("/users", requireAdmin, async (req, res) =>
   res.json({
-    users: await query("SELECT open_id AS openId,name,role,active FROM users"),
+    users: await query(
+      "SELECT open_id AS openId,name,role,active FROM users ORDER BY FIELD(role,'admin','editor','viewer'),active DESC,name",
+    ),
     invites: await query(
       "SELECT email_hash AS id,created_at AS createdAt FROM role_invites",
     ),
@@ -323,6 +325,20 @@ admin.delete("/users/:id", requireAdmin, async (req, res) => {
       rows[0].email_hash,
     ]);
   await query("DELETE FROM sessions WHERE open_id=?", [req.params.id]);
+  res.json({ ok: true });
+});
+// 権限を解除した人（または権限のないまま一度ログインした人）を一覧から消す。
+// 編集中の人や管理者は消せない。再びログインすると「権限なし」として再表示される。
+admin.delete("/users/:id/record", requireAdmin, async (req, res) => {
+  const r = await query(
+    "DELETE FROM users WHERE open_id=? AND role<>'admin' AND (active=0 OR role='viewer')",
+    [req.params.id],
+  );
+  if (!r.affectedRows)
+    return res.status(409).json({
+      error:
+        "編集権限のある人は削除できません。先に「権限を解除」してください。",
+    });
   res.json({ ok: true });
 });
 admin.delete("/invites/:id", requireAdmin, async (req, res) => {

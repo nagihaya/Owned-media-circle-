@@ -426,11 +426,20 @@
   async function loadUsers() {
     if (!$("#userList")) return;
     const r = await api("/api/admin/users");
+    const roleLabel = (u) =>
+      u.role === "admin"
+        ? "管理者"
+        : u.role === "editor" && u.active
+          ? "編集者"
+          : u.active
+            ? "権限なし"
+            : "解除済み";
     $("#userList").innerHTML = r.users
-      .map(
-        (u) =>
-          `<p>${h(u.name || "名称未設定")} / ${h(u.role)} / ${u.active ? "有効" : "無効"} ${u.role !== "admin" && u.active ? `<button class="btn small alt" data-remove-user="${h(u.openId)}">権限を解除</button>` : ""}</p>`,
-      )
+      .map((u) => {
+        const editing = u.role === "editor" && u.active;
+        const removable = u.role !== "admin" && !editing;
+        return `<p class="user-row"><span>${h(u.name || "名称未設定")} / ${roleLabel(u)}</span>${editing ? `<button class="btn small alt" data-remove-user="${h(u.openId)}">権限を解除</button>` : ""}${removable ? `<button class="btn small danger" data-delete-user="${h(u.openId)}" data-name="${h(u.name || "名称未設定")}">リストから削除</button>` : ""}</p>`;
+      })
       .join("");
     $("#inviteList").innerHTML = r.invites
       .map(
@@ -463,6 +472,23 @@
           { method: "DELETE" },
         );
         await loadUsers();
+      });
+    const d = e.target.closest("[data-delete-user]");
+    if (
+      d &&
+      confirm(
+        `${d.dataset.name} さんをリストから削除しますか？\n（もう一度ログインすると「権限なし」として再び表示されます）`,
+      )
+    )
+      action(d, async () => {
+        await api(
+          "/api/admin/users/" +
+            encodeURIComponent(d.dataset.deleteUser) +
+            "/record",
+          { method: "DELETE" },
+        );
+        await loadUsers();
+        message("#globalStatus", "リストから削除しました。");
       });
   });
   $("#inviteList")?.addEventListener("click", (e) => {

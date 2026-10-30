@@ -1,4 +1,4 @@
-<% if(!items.length){ %><div class="panel empty-state">記事を準備中です。</div><% } %>
+<% if(!items.length){ if(typeof filtered!=='undefined' && filtered){ %><div class="panel empty-state">条件に一致する記事がありません。</div><% } else { %><%- include('card-placeholders') %><% } } %>
 <% for(const a of items){ %>
 <article class="card post-card"><a class="post-card-link" href="/go/<%= a.id %>" target="_blank" rel="noopener noreferrer"><div class="thumb"><% if(a.imageUrl){ %><img src="<%= a.imageUrl %>" alt="" loading="lazy" width="640" height="360"><% } %></div><div class="card-body"><% if(a.industry||a.size){ %><div class="card-chips"><% if(a.industry){ %><span class="chip chip-industry"><%= a.industry %></span><% } %><% if(a.size){ %><span class="chip chip-size"><%= a.size %></span><% } %></div><% } %><h3><%= a.title %></h3><% if(a.lead){ %><p class="card-lead"><%= a.lead %></p><% } %><div class="card-foot"><span class="card-meta"><% if(a.type){ %><%= a.type %>・<% } %><time datetime="<%= a.publishedAt %>"><%= formatDate(a.publishedAt) %></time></span><span class="card-arrow" aria-hidden="true">→</span></div></div><span class="sr-only">（noteで読む・新しいタブで開く）</span></a></article>
 <% } %>

@@ -2677,3 +2677,60 @@ html {
     overflow-y: auto;
   }
 }
+
+/* ===== 記事準備中の枠（中身のないカード） ===== */
+.post-card-placeholder {
+  pointer-events: none;
+}
+.post-card-placeholder .thumb {
+  display: grid;
+  place-items: center;
+  background: #eef0f3;
+}
+.post-card-placeholder .thumb span {
+  color: #8a96a2;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.post-card-placeholder .card-body {
+  gap: 10px;
+}
+.ph {
+  display: block;
+  height: 12px;
+  border-radius: 4px;
+  background: #eef0f3;
+}
+.ph-chip {
+  width: 72px;
+  height: 26px;
+  border-radius: 6px;
+}
+.ph-chip.short {
+  width: 56px;
+}
+.ph-title {
+  height: 16px;
+  width: 85%;
+}
+.ph-title.short {
+  width: 55%;
+}
+.ph-line {
+  width: 100%;
+  height: 10px;
+}
+.ph-line.short {
+  width: 70%;
+}
+.ph-meta {
+  width: 120px;
+  height: 10px;
+}
+.post-card-placeholder .card-arrow {
+  color: #b5bec7;
+}
+.post-card .thumb {
+  border: 0;
+}

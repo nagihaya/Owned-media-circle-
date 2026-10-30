@@ -26,7 +26,7 @@ const columns = [
   { title: "各種ポリシー", links: policies.map((p, i) => [p.title, "/policy#policy-" + i]) },
 ];
 %>
-<footer class="shell site-footer">
+<div class="site-footer-wrap"><footer class="shell site-footer">
   <div class="site-footer-grid">
     <div class="site-footer-brand">
       <a class="site-footer-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="40" height="40" loading="lazy"><span><%= settings.siteName %></span></a>
@@ -48,4 +48,4 @@ const columns = [
     <% } %>
   </div>
   <p class="site-footer-copy">© <%= year %> <%= settings.siteName %>　運営：T-Biz</p>
-</footer>
+</footer></div>

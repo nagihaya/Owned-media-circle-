@@ -1381,3 +1381,133 @@ form.filters.search-form,
 .empty-state {
   border-radius: 6px;
 }
+
+/* ===== フッター（多列） ===== */
+.site-footer {
+  border-top: 1px solid var(--tbiz-line, #dde3e9);
+  padding: 56px 0 40px;
+  margin-top: 40px;
+  color: #1a1a1a;
+}
+.site-footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(4, 1fr) 1.5fr;
+  gap: 32px 24px;
+}
+.site-footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: #000;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+}
+.site-footer-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #000;
+}
+.site-footer-brand p {
+  margin: 8px 0 12px;
+  color: #5a6570;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.site-footer-social {
+  display: flex;
+  gap: 4px;
+}
+.site-footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.site-footer-social a:hover {
+  color: #005bac;
+}
+.site-footer-social svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+.site-footer-note {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.site-footer-col h2 {
+  margin: 10px 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #000;
+}
+.site-footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-footer-col a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  color: #5a6570;
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.site-footer-col a:hover {
+  color: #005bac;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.site-footer a:focus-visible {
+  outline: 3px solid #005bac;
+  outline-offset: 2px;
+}
+.site-footer-copy {
+  margin: 48px 0 0;
+  text-align: center;
+  color: #8a98a3;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 1100px) {
+  .site-footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .site-footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 800px) {
+  .site-footer {
+    padding: 40px 16px 32px;
+  }
+  .site-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+  .site-footer-col a {
+    min-height: 44px;
+  }
+  .site-footer-col:last-child {
+    grid-column: 1 / -1;
+  }
+  .site-footer-copy {
+    margin-top: 32px;
+  }
+}

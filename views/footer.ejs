@@ -1,0 +1,51 @@
+<%
+const ext = (u) => /^https:/.test(u || "");
+const extAttr = (u) => ext(u) ? 'target="_blank" rel="noopener noreferrer"' : "";
+const year = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric" }).replace(/\D/g, "");
+const columns = [
+  { title: "記事を探す", links: [
+    ["インタビュー", "/interviews"],
+    ["ビジネス知識", "/knowledge"],
+    ["イベント", "/interviews?type=" + encodeURIComponent("座談会")],
+    ["記事検索", "/articles"],
+  ]},
+  { title: "メディアについて", links: [
+    ["メディアについて", "/about"],
+    ["T-Bizについて", settings.tbizUrl],
+    ["note", settings.noteUrl],
+  ]},
+  { title: "取材・協賛", links: [
+    ["取材のご依頼", "/contact?form=interview"],
+    ["協賛のご相談", "/contact?form=sponsor"],
+    ["お問い合わせ", "/contact?form=inquiry"],
+  ]},
+  { title: "参加する", links: [
+    ["メンバー募集", "/recruit"],
+    ["Instagram", settings.instagramUrl],
+  ]},
+  { title: "各種ポリシー", links: policies.map((p, i) => [p.title, "/policy#policy-" + i]) },
+];
+%>
+<footer class="shell site-footer">
+  <div class="site-footer-grid">
+    <div class="site-footer-brand">
+      <a class="site-footer-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="40" height="40" loading="lazy"><span><%= settings.siteName %></span></a>
+      <p><%= settings.org %></p>
+      <div class="site-footer-social">
+        <a href="<%= settings.instagramUrl %>" <%- extAttr(settings.instagramUrl) %> aria-label="Instagram（新しいタブで開く）"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a>
+        <a href="<%= settings.noteUrl %>" <%- extAttr(settings.noteUrl) %> aria-label="note（新しいタブで開く）" class="site-footer-note">note</a>
+      </div>
+    </div>
+    <% for (const col of columns) { %>
+    <nav class="site-footer-col" aria-label="<%= col.title %>">
+      <h2><%= col.title %></h2>
+      <ul>
+        <% for (const [label, href] of col.links) { %>
+        <li><a href="<%= href %>" <%- extAttr(href) %>><%= label %><% if (ext(href)) { %><span class="sr-only">（新しいタブで開く）</span><% } %></a></li>
+        <% } %>
+      </ul>
+    </nav>
+    <% } %>
+  </div>
+  <p class="site-footer-copy">© <%= year %> <%= settings.siteName %>　運営：T-Biz</p>
+</footer>

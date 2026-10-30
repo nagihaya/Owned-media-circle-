@@ -2485,3 +2485,160 @@ main .feature-card-body h3 {
     line-clamp: 2;
   }
 }
+
+/* ===== 記事カード（白いカード・ラベル・抜粋・矢印。選択でふちが黒く） ===== */
+.cards,
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.card.post-card {
+  border: 1px solid #e3e6ea;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: none;
+  transform: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.card.post-card:hover,
+.card.post-card:focus-within {
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+  transform: none;
+}
+.card.post-card:active {
+  box-shadow: 0 0 0 2px #000;
+}
+.post-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #000;
+  text-decoration: none;
+}
+.post-card-link:focus-visible {
+  outline: none;
+}
+.post-card .thumb {
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+  background: #eef0f3;
+  margin: 0;
+}
+.post-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.post-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
+  padding: 20px 22px 18px;
+}
+.card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.chip-industry {
+  background: #e9ecf0;
+  color: #000;
+}
+.chip-size {
+  background: #f4f5f7;
+  color: #333;
+}
+main .post-card h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  color: #000;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.card-lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.card-meta {
+  font-size: 12px;
+  color: #5a6570;
+}
+.card-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f0f1f3;
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.card.post-card:hover .card-arrow,
+.card.post-card:focus-within .card-arrow {
+  background: #000;
+  color: #fff;
+}
+@media (max-width: 1000px) {
+  .cards,
+  .article-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .cards,
+  .article-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  main .post-card h3 {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card.post-card,
+  .card-arrow {
+    transition: none;
+  }
+}

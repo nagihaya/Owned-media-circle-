@@ -225,8 +225,8 @@ export async function homeData() {
   return {
     settings: publicSettings(s),
     slides: sl,
-    interviews: interview.items.slice(0, 4),
-    knowledge: knowledge.items.slice(0, 4),
+    interviews: interview.items.slice(0, 3),
+    knowledge: knowledge.items.slice(0, 3),
     featured: featured.length ? featured : latest.items.slice(0, 3),
   };
 }

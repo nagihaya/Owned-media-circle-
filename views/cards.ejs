@@ -1,0 +1,4 @@
+<% if(!items.length){ %><div class="panel empty-state">記事を準備中です。</div><% } %>
+<% for(const a of items){ %>
+<article class="card"><a href="/go/<%= a.id %>" target="_blank" rel="noopener noreferrer" aria-label="<%= a.title %>（note・新しいタブ）"><div class="thumb"><% if(a.imageUrl){ %><img src="<%= a.imageUrl %>" alt="" loading="lazy" width="640" height="360"><% } %></div><div class="card-body"><div class="card-tags"><% if(a.industry){ %><span class="pill"><%= a.industry %></span><% } %><% if(a.type){ %><span class="pill"><%= a.type %></span><% } %></div><h3><%= a.title %></h3><time class="date" datetime="<%= a.publishedAt %>"><%= formatDate(a.publishedAt) %></time></div></a></article>
+<% } %>

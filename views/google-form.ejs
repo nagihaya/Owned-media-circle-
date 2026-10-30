@@ -1,0 +1,8 @@
+<section class="google-form-block" aria-label="<%= googleForm.label %>">
+<% if(googleForm.options.length>1){ %><nav class="google-form-tabs" aria-label="お問い合わせ区分"><% for(const option of googleForm.options){ %><a class="text-link" href="/contact?form=<%= option.key %>" <%- option.key===googleForm.selected?'aria-current="page"':'' %>><%= option.label %></a><% } %></nav><% } %>
+<% if(!googleForm.url){ %><div class="panel empty-state"><p>フォームを準備中です。</p></div><% }else{ %>
+<div class="google-form-heading"><h2><%= googleForm.label %></h2><a class="text-link" href="<%= googleForm.url %>" target="_blank" rel="noopener noreferrer">別のタブで開く ↗</a></div>
+<p class="date">Googleフォームで受け付けます。回答内容はGoogle側で管理し、本サイトには保存しません。<a class="text-link" href="/policy">プライバシーポリシー</a></p>
+<% if(googleForm.embedUrl){ %><iframe class="google-form-frame" src="<%= googleForm.embedUrl %>" title="<%= googleForm.label %> — Googleフォーム" width="100%" height="<%= googleForm.height %>" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">Googleフォームを読み込んでいます。</iframe><p class="date">表示されない場合やGoogleのログイン画面が出る場合は、「別のタブで開く」をご利用ください。</p><% }else{ %><div class="panel"><p>以下のリンクからGoogleフォームを開いてご回答ください。</p><a class="btn" href="<%= googleForm.url %>" target="_blank" rel="noopener noreferrer">フォームを開く ↗</a></div><% } %>
+<% } %>
+</section>

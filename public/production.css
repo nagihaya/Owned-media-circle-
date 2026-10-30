@@ -1669,3 +1669,225 @@ form.filters.search-form,
 .user-row span {
   flex: 1 1 200px;
 }
+
+/* ===== スマホ版の工夫（三本線メニュー・タグ3つ・細めの見出し） ===== */
+.menu-toggle,
+.nav-sp-only,
+.tag-sp-only,
+.nav .navlinks .menu-label {
+  display: none;
+}
+@media (max-width: 800px) {
+  /* 三本線ボタン */
+  .js .menu-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+    cursor: pointer;
+    flex: none;
+  }
+  .menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    transition:
+      transform 0.25s ease,
+      opacity 0.2s ease;
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  .menu-toggle:active {
+    transform: scale(0.94);
+  }
+  .menu-toggle:focus-visible {
+    outline: 3px solid #005bac;
+    outline-offset: 2px;
+  }
+  /* ヘッダー：ロゴ・掲載について・三本線を1行に。編集ログインはメニューの中へ */
+  .nav .brand-row {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .nav .brand {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  .nav .brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .js .nav .utility-links {
+    flex-wrap: nowrap;
+    flex: none;
+  }
+  .js .nav .utility-links .login-link {
+    display: none;
+  }
+  /* メニュー本体：閉じているときは非表示、開くと縦並び */
+  .js .nav .navlinks {
+    display: none;
+  }
+  .js .nav .navlinks.is-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 12px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--tbiz-line, #dde3e9);
+    border-bottom: 0;
+    overflow: visible;
+    white-space: normal;
+    font-size: 16px;
+    animation: menu-in 0.2s ease;
+  }
+  .js .nav .navlinks.is-open a {
+    min-height: 52px;
+    padding: 0 4px;
+    border-bottom: 1px solid var(--tbiz-line, #dde3e9);
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  .js .nav .navlinks.is-open a::after {
+    display: none;
+  }
+  .js .nav .navlinks.is-open a[aria-current="page"] {
+    box-shadow: inset 3px 0 0 #005bac;
+    padding-left: 14px;
+  }
+  .js .nav .navlinks.is-open .instagram-link {
+    margin-left: 0;
+  }
+  .js .nav .navlinks.is-open .menu-label,
+  .js .nav .navlinks.is-open .nav-sp-only {
+    display: inline-flex;
+  }
+  .js .nav .navlinks.is-open .nav-login {
+    margin-top: 16px;
+    justify-content: center;
+    border: 0;
+    border-radius: 4px;
+    background: #005bac;
+    color: #fff;
+    font-weight: 600;
+  }
+  .js .nav .navlinks.is-open .nav-login:hover {
+    background: #000;
+    color: #fff;
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* タグは「インタビュー・インターン・ビジネス知識」の3つだけ */
+  .tag-cloud .tag-pc-only {
+    display: none;
+  }
+  .tag-cloud .tag-sp-only {
+    display: inline-flex;
+  }
+
+  /* 見出し：少し小さく、細めに */
+  main h1:not(.sr-only),
+  main h2,
+  main h3,
+  .site-footer h2 {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  main .section-title {
+    font-size: 22px;
+  }
+  main .feature-copy h3 {
+    font-size: 20px;
+  }
+  main .cta h2 {
+    font-size: 20px;
+  }
+  main .panel h2 {
+    font-size: 19px;
+  }
+  main .page-intro h1 {
+    font-size: 20px;
+  }
+  main .card h3,
+  main .card-body h3 {
+    font-size: 15px;
+  }
+  main .panel h3 {
+    font-size: 16px;
+  }
+  .site-footer-col h2 {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-toggle span,
+  .js .nav .navlinks.is-open {
+    transition: none;
+    animation: none;
+  }
+}
+@media (max-width: 800px) {
+  .nav {
+    position: relative;
+  }
+  .js .nav .navlinks.is-open {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0 16px 20px;
+    background: #fff;
+    border: 0;
+    border-top: 1px solid var(--tbiz-line, #dde3e9);
+    border-radius: 0;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  }
+  .js .nav .navlinks.is-open a {
+    border-radius: 0;
+    padding: 0 4px;
+    background: transparent;
+  }
+  .js .nav .navlinks.is-open a:hover {
+    background: transparent;
+    color: #005bac;
+  }
+  .js .nav .navlinks.is-open a[aria-current="page"] {
+    padding-left: 14px;
+  }
+  .js .nav .navlinks.is-open .nav-login {
+    border-radius: 4px;
+    background: #005bac;
+    color: #fff;
+  }
+}

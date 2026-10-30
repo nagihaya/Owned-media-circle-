@@ -39,6 +39,35 @@ document.querySelectorAll("[data-login]").forEach((a) =>
     );
   }),
 );
+// スマホ：三本線ボタンでメニューを開閉
+const menuToggle = document.querySelector(".menu-toggle");
+const mainNav = document.getElementById("mainNav");
+if (menuToggle && mainNav) {
+  const setMenu = (open) => {
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute(
+      "aria-label",
+      open ? "メニューを閉じる" : "メニューを開く",
+    );
+    mainNav.classList.toggle("is-open", open);
+    document.documentElement.classList.toggle("menu-open", open);
+  };
+  menuToggle.addEventListener("click", () =>
+    setMenu(menuToggle.getAttribute("aria-expanded") !== "true"),
+  );
+  mainNav.addEventListener("click", (e) => {
+    if (e.target.closest("a")) setMenu(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mainNav.classList.contains("is-open")) {
+      setMenu(false);
+      menuToggle.focus();
+    }
+  });
+  matchMedia("(min-width: 801px)").addEventListener("change", (m) => {
+    if (m.matches) setMenu(false);
+  });
+}
 const slider = document.querySelector(".hero-slider");
 if (slider) {
   const slides = [...slider.querySelectorAll(".slide")],

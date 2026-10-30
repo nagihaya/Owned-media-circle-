@@ -50,6 +50,7 @@
       "noteUrl",
       "tbizUrl",
       "instagramUrl",
+      "xUrl",
       "response",
       "contact",
       "policyDate",

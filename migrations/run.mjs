@@ -35,6 +35,7 @@ export async function migrate() {
     noteUrl: "https://note.com/",
     tbizUrl: "/about",
     instagramUrl: "https://www.instagram.com/",
+    xUrl: "",
     response: "1〜4日ほど",
     contact: "東京理科大学",
     policyDate: "",

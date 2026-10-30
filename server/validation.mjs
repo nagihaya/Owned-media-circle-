@@ -65,7 +65,25 @@ export const settingSchema = z
         } catch {
           return false;
         }
-      }),
+      }, "InstagramのURLは https://www.instagram.com/アカウント名 の形で入力してください。"),
+    xUrl: z
+      .string()
+      .trim()
+      .max(512)
+      .refine((v) => {
+        if (v === "") return true;
+        try {
+          safeUrl(v);
+          return [
+            "x.com",
+            "www.x.com",
+            "twitter.com",
+            "www.twitter.com",
+          ].includes(new URL(v).hostname);
+        } catch {
+          return false;
+        }
+      }, "XのURLは https://x.com/アカウント名 の形で入力してください（空欄なら非表示）。"),
     response: z.string().trim().min(1).max(40),
     contact: z.string().trim().max(240),
     policyDate: z

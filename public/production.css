@@ -1950,3 +1950,55 @@ form.filters.search-form,
     flex-direction: column;
   }
 }
+
+/* ===== ヘッダーのSNSアイコン（Instagram・X・note） ===== */
+.nav .navlinks a.sns-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 0 8px;
+  color: #1a1a1a;
+}
+.nav .navlinks a.sns-link::after {
+  display: none;
+}
+.nav .navlinks a.sns-link:hover {
+  color: #005bac;
+}
+.x-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: none;
+}
+.site-footer-social .x-icon {
+  width: 19px;
+  height: 19px;
+  stroke: none;
+  fill: currentColor;
+}
+.note-mark {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.nav .navlinks a.instagram-link {
+  padding: 0 8px;
+  min-width: 44px;
+  justify-content: center;
+}
+@media (max-width: 800px) {
+  .js .nav .navlinks.is-open a.sns-link,
+  .js .nav .navlinks.is-open a.instagram-link {
+    justify-content: flex-start;
+    padding: 0 4px;
+  }
+  .js .nav .navlinks.is-open a.note-link::before {
+    content: none;
+  }
+  .js .nav .navlinks.is-open .note-mark {
+    font-size: 16px;
+  }
+}

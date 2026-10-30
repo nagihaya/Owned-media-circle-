@@ -224,3 +224,34 @@ test("slide links accept site paths with search conditions and HTTPS URLs only",
   ])
     assert.throws(() => safeUrl(bad, { relative: true }), bad);
 });
+test("X URL accepts x.com/twitter.com or blank, and rejects other hosts", async () => {
+  const { settingSchema } = await import("../server/validation.mjs");
+  const base = {
+    siteName: "未定",
+    subtitle: "",
+    org: "東京理科大学発のビジネスサークル",
+    noteUrl: "https://note.com/",
+    tbizUrl: "/about",
+    instagramUrl: "https://www.instagram.com/",
+    response: "1〜4日ほど",
+    contact: "",
+    policyDate: "",
+    revision: 1,
+  };
+  for (const xUrl of ["", "https://x.com/tbiz", "https://twitter.com/tbiz"])
+    assert.equal(
+      settingSchema.safeParse({ ...base, xUrl }).success,
+      true,
+      xUrl,
+    );
+  for (const xUrl of [
+    "https://evil.example/x",
+    "http://x.com/tbiz",
+    "javascript:alert(1)",
+  ])
+    assert.equal(
+      settingSchema.safeParse({ ...base, xUrl }).success,
+      false,
+      xUrl,
+    );
+});

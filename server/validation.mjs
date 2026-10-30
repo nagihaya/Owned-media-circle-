@@ -17,7 +17,11 @@ export const SIZES = ["エンタープライズ", "SMB", "スタートアップ"
 export const INTERVIEW_TYPES = TYPES.slice(0, 3);
 const enumNullable = (values) => z.enum(values).nullable();
 export function safeUrl(value, { note = false, relative = false } = {}) {
-  if (relative && /^\/(?!\/)[a-zA-Z0-9/_.,%-]*$/.test(value)) return value;
+  if (
+    relative &&
+    /^\/(?!\/)[a-zA-Z0-9/_.,%-]*(\?[a-zA-Z0-9_.,%=&+-]*)?$/.test(value)
+  )
+    return value;
   const u = new URL(value);
   if (u.protocol !== "https:" || u.username || u.password || u.port)
     throw new Error("HTTPSのURLを入力してください。");

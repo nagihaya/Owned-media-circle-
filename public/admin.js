@@ -259,7 +259,7 @@
       const div = document.createElement("div");
       div.className = "slide-editor admin-form-grid";
       div.dataset.index = i;
-      div.innerHTML = `<h3 class="wide">${i + 1}枚目</h3>${s.imageUrl ? `<img class="slide-preview" src="${h(s.imageUrl)}" alt="写真プレビュー">` : ""}<label class="wide">写真URL<input name="imageUrl" value="${h(s.imageUrl || "")}" placeholder="HTTPS画像URLまたはアップロード済みパス"></label><label>写真をアップロード<input name="file" type="file" accept="image/jpeg,image/png,image/webp"></label><label>表示名<input name="label" maxlength="80" value="${h(s.label || "")}"></label><label class="wide">リンク先<input name="linkUrl" value="${h(s.linkUrl || "")}" placeholder="/articles またはHTTPS URL"></label><label class="check-label"><input name="visible" type="checkbox" ${s.visible ? "checked" : ""}>公開する</label>`;
+      div.innerHTML = `<h3 class="wide">${i + 1}枚目</h3>${s.imageUrl ? `<img class="slide-preview" src="${h(s.imageUrl)}" alt="写真プレビュー">` : ""}<label class="wide">写真URL<input name="imageUrl" value="${h(s.imageUrl || "")}" placeholder="HTTPS画像URLまたはアップロード済みパス"></label><label>写真をアップロード<input name="file" type="file" accept="image/jpeg,image/png,image/webp"></label><label>表示名<input name="label" maxlength="80" value="${h(s.label || "")}"></label><label class="wide">リンク先（写真を押したときに開くページ。空欄ならリンクなし）<input name="linkUrl" value="${h(s.linkUrl || "")}" placeholder="例：https://note.com/... または /interviews"></label><p class="wide admin-hint">note記事などサイト外のURLは新しいタブで開きます。サイト内のページは「/about」のように / から入力します。</p><label class="check-label"><input name="visible" type="checkbox" ${s.visible ? "checked" : ""}>公開する</label>`;
       target.append(div);
     });
   }

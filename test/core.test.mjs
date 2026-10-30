@@ -208,3 +208,19 @@ test("app.js and admin.js can load on the same page without name collisions", as
   run("public/app.js");
   assert.doesNotThrow(() => run("public/admin.js"));
 });
+test("slide links accept site paths with search conditions and HTTPS URLs only", () => {
+  assert.equal(safeUrl("/about", { relative: true }), "/about");
+  assert.equal(
+    safeUrl("/articles?industry=%E9%87%91%E8%9E%8D&sort=old", {
+      relative: true,
+    }),
+    "/articles?industry=%E9%87%91%E8%9E%8D&sort=old",
+  );
+  for (const bad of [
+    "//evil.example",
+    "javascript:alert(1)",
+    "http://note.com/",
+    "/a?<x>",
+  ])
+    assert.throws(() => safeUrl(bad, { relative: true }), bad);
+});

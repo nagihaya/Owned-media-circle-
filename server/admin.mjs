@@ -137,9 +137,15 @@ admin.put("/slides", async (req, res) => {
       return res
         .status(400)
         .json({ error: "公開するスライドには写真が必要です。" });
-    const linkUrl = value.linkUrl
-      ? safeUrl(value.linkUrl, { relative: true })
-      : "";
+    let linkUrl = "";
+    if (value.linkUrl.trim())
+      try {
+        linkUrl = safeUrl(value.linkUrl.trim(), { relative: true });
+      } catch {
+        return res.status(400).json({
+          error: `${processed.length + 1}枚目のリンク先は「https://」で始まるURLか、「/」で始まるサイト内のページ（例：/about）を入力してください。`,
+        });
+      }
     processed.push({ ...value, imageUrl, linkUrl });
   }
   const { database } = await import("./db.mjs");

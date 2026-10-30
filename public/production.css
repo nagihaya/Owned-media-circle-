@@ -651,3 +651,40 @@ body {
 .page.page-home {
   padding-top: 0;
 }
+/* 写真リンク：見えていない写真がクリックを奪わないようにする */
+.hero-slider .slide {
+  pointer-events: none;
+}
+.hero-slider .slide.is-active {
+  pointer-events: auto;
+}
+.hero-slider .slide::after {
+  pointer-events: none;
+}
+.hero-slider .slide a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hero-slider .slide a:focus-visible {
+  outline: 3px solid #005bac;
+  outline-offset: -3px;
+}
+.admin-hint {
+  margin: -4px 0 0;
+  font-size: 13px;
+  color: #444;
+}
+/* スライドショーの大きさ（少し小さめに調整） */
+.hero-slider {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.slider-stage {
+  max-height: calc(100vh - 260px);
+}
+@media (max-width: 800px) {
+  .slider-stage {
+    aspect-ratio: 3 / 2;
+  }
+}

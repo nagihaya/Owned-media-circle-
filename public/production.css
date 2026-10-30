@@ -2642,3 +2642,38 @@ main .post-card h3 {
     transition: none;
   }
 }
+
+/* ===== ヘッダーを画面上部に固定 ===== */
+header.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+}
+/* 白い背景を画面の端から端まで広げる（本文が透けないように） */
+header.nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: #fff;
+  z-index: -1;
+  pointer-events: none;
+}
+/* 固定ヘッダーの下にページ内リンクの移動先が隠れないようにする */
+html {
+  scroll-padding-top: 96px;
+}
+@media (max-width: 800px) {
+  html {
+    scroll-padding-top: 88px;
+  }
+  /* 開いたメニューが長い場合は中でスクロール */
+  .js .nav .navlinks.is-open {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+}

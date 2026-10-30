@@ -1301,3 +1301,83 @@ form.search-form button.btn {
     animation-duration: 2s;
   }
 }
+
+/* ==========================================================================
+   ボタン：元の色の組み合わせ＋四角形（角4px）
+   44pt以上の押せる範囲・押した瞬間の表示・処理中表示は維持
+   ========================================================================== */
+.btn,
+.nav .utility-links a,
+.tag-cloud a,
+.slider-control,
+.slider-stage .slider-pause,
+form.search-form button.btn,
+.quick-search-row .btn {
+  border-radius: 4px;
+}
+
+/* 右上：掲載について＝黒、編集ログイン＝青（どちらも塗り） */
+.nav .utility-links a.login-link {
+  background: var(--hig-accent);
+  color: #fff;
+}
+.nav .utility-links a.login-link:hover,
+.nav .utility-links a.login-link:focus-visible {
+  background: #000;
+  color: #fff;
+}
+.nav .utility-links a.login-link:active {
+  background: #000;
+  opacity: 0.85;
+}
+
+/* 補助ボタン：白地＋青枠＋青文字 */
+.btn.alt {
+  border: 1px solid var(--hig-accent);
+  background: #fff;
+  color: var(--hig-accent);
+}
+.btn.alt:hover {
+  background: var(--hig-accent);
+  color: #fff;
+}
+.btn.alt:active {
+  background: var(--hig-accent-pressed);
+  color: #fff;
+}
+
+/* タグ：白地＋青枠＋青文字、ホバーで青塗り */
+.tag-cloud a {
+  border: 1px solid var(--hig-accent);
+  background: #fff;
+  color: var(--hig-accent);
+}
+.tag-cloud a::before {
+  content: none;
+}
+.tag-cloud a:hover {
+  background: var(--hig-accent);
+  color: #fff;
+}
+.tag-cloud a:active {
+  background: var(--hig-accent-pressed);
+  color: #fff;
+}
+
+/* 検索欄もボタンに合わせて四角く */
+.quick-search-row input {
+  border-radius: 4px;
+}
+
+/* スライドショーの前後ボタンも四角形に */
+.slider-control {
+  border-radius: 4px;
+}
+form.search-form input[type="search"],
+form.search-form select {
+  border-radius: 4px;
+}
+form.filters.search-form,
+.empty-state {
+  border-radius: 6px;
+}

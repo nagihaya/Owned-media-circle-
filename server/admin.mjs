@@ -120,7 +120,8 @@ admin.put("/slides", async (req, res) => {
           numberLabel: z.string().trim().max(10).default(""),
           dateLabel: z.string().trim().max(20).default(""),
           category: z.string().trim().max(30).default(""),
-          author: z.string().trim().max(60).default(""),
+          author: z.string().trim().max(100).default(""),
+          detail: z.string().trim().max(300).default(""),
           tags: z
             .string()
             .max(400)
@@ -172,7 +173,7 @@ admin.put("/slides", async (req, res) => {
       const v = processed[i];
       if (v.id) {
         const [r] = await conn.execute(
-          "UPDATE slides SET image_url=?,label=?,link_url=?,number_label=?,date_label=?,category=?,author=?,tags=?,visible=?,position=?,revision=revision+1 WHERE id=? AND revision=?",
+          "UPDATE slides SET image_url=?,label=?,link_url=?,number_label=?,date_label=?,category=?,author=?,detail=?,tags=?,visible=?,position=?,revision=revision+1 WHERE id=? AND revision=?",
           [
             v.imageUrl,
             v.label,
@@ -181,6 +182,7 @@ admin.put("/slides", async (req, res) => {
             v.dateLabel,
             v.category,
             v.author,
+            v.detail,
             v.tags,
             v.visible,
             i,
@@ -195,7 +197,7 @@ admin.put("/slides", async (req, res) => {
         }
       } else {
         await conn.execute(
-          "INSERT INTO slides (image_url,label,link_url,number_label,date_label,category,author,tags,visible,position) VALUES (?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO slides (image_url,label,link_url,number_label,date_label,category,author,detail,tags,visible,position) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
           [
             v.imageUrl,
             v.label,
@@ -204,6 +206,7 @@ admin.put("/slides", async (req, res) => {
             v.dateLabel,
             v.category,
             v.author,
+            v.detail,
             v.tags,
             v.visible,
             i,

@@ -71,3 +71,26 @@ export async function migrateV4() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (4)");
 }
+// v5: slide "所属・名前" up to 100 chars and a "詳細" line under it.
+export async function migrateV5() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=5"))
+      .length
+  )
+    return;
+  const cols = await query(
+    "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='slides' AND COLUMN_NAME='detail'",
+  );
+  if (!cols.length)
+    try {
+      await query(
+        "ALTER TABLE slides ADD COLUMN detail VARCHAR(300) NOT NULL DEFAULT ''",
+      );
+    } catch (e) {
+      if (e.code !== "ER_DUP_FIELDNAME") throw e;
+    }
+  await query(
+    "ALTER TABLE slides MODIFY COLUMN author VARCHAR(100) NOT NULL DEFAULT ''",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (5)");
+}

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { migrate } from "../migrations/run.mjs";
 import {
   query,
+  safeDbMessage,
   settings,
   publicSettings,
   homeData,
@@ -264,7 +265,7 @@ try {
   console.error(
     "Startup failed:",
     e.code || e.name,
-    e.code === "DATABASE_URL_FORMAT" ? e.message : "",
+    e.code === "DATABASE_URL_FORMAT" ? e.message : safeDbMessage(e),
   );
   process.exitCode = 1;
 }

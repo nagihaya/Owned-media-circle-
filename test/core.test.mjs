@@ -179,3 +179,14 @@ test("DATABASE_URL accepts symbols in passwords, quotes and spaces", async () =>
       bad,
     );
 });
+test("DB error messages are logged with quoted account details masked", async () => {
+  const { safeDbMessage } = await import("../server/db.mjs");
+  assert.equal(
+    safeDbMessage({
+      sqlMessage:
+        "Access denied for user 'abc.root'@'1.2.3.4' (using password: YES)",
+    }),
+    "Access denied for user '***'@'***' (using password: YES)",
+  );
+  assert.equal(safeDbMessage(new Error("x")), "");
+});

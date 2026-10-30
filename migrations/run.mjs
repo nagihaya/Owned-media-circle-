@@ -1,4 +1,4 @@
-import { query, close } from "../server/db.mjs";
+import { query, close, safeDbMessage } from "../server/db.mjs";
 import { pathToFileURL } from "node:url";
 import { migrateV2, migrateV3 } from "./v2.mjs";
 export async function migrate() {
@@ -58,7 +58,7 @@ if (
     console.error(
       "Migration failed:",
       e.code || e.name,
-      e.code === "DATABASE_URL_FORMAT" ? e.message : "",
+      e.code === "DATABASE_URL_FORMAT" ? e.message : safeDbMessage(e),
     );
     process.exitCode = 1;
   } finally {

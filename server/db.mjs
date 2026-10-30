@@ -49,6 +49,12 @@ export function parseDatabaseUrl(raw) {
     database: decode(dbName),
   };
 }
+// DB server messages help diagnose setup problems. Quoted parts (user names,
+// hosts) are masked so the log never shows account details.
+export function safeDbMessage(e) {
+  if (typeof e?.sqlMessage !== "string") return "";
+  return e.sqlMessage.replace(/(['"`])[^'"`]*\1/g, "'***'").slice(0, 300);
+}
 export function database() {
   if (pool) return pool;
   const u = parseDatabaseUrl(process.env.DATABASE_URL);

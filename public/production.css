@@ -1891,3 +1891,62 @@ form.filters.search-form,
     color: #fff;
   }
 }
+
+/* ===== サイト名：大きく、細身のフォント ===== */
+.nav .brand span,
+.site-footer-logo span {
+  font-family:
+    "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont,
+    "Hiragino Sans", "Noto Sans JP", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.nav .brand span {
+  font-size: 24px;
+  line-height: 1.2;
+}
+.nav .brand {
+  min-height: 48px;
+}
+.site-footer-logo span {
+  font-size: 18px;
+}
+@media (max-width: 800px) {
+  .nav .brand span {
+    font-size: 20px;
+  }
+}
+
+/* ===== フッター最下部：コピーライト＋編集ログイン（さりげなく） ===== */
+.site-footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 20px;
+  margin-top: 48px;
+}
+.site-footer-bottom .site-footer-copy {
+  margin: 0;
+}
+.site-footer-admin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #5f6b77;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+.site-footer-admin:hover {
+  color: #005bac;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 800px) {
+  .site-footer-bottom {
+    margin-top: 32px;
+    flex-direction: column;
+  }
+}

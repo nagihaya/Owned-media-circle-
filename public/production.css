@@ -3082,3 +3082,116 @@ html {
     color: #fff;
   }
 }
+
+/* ===== タイトル（アイコン＋サイト名）＋ちょんちょん＋下の一文 ===== */
+.nav .brand {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #000;
+}
+.nav .brand .brand-title {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  overflow: visible;
+  white-space: nowrap;
+}
+.nav .brand .brand-tick {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  font-size: 0;
+  line-height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.brand-tick svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: #000;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.nav .brand .brand-tick-tr {
+  top: -9px;
+  right: -17px;
+}
+.nav .brand .brand-tick-bl {
+  bottom: -9px;
+  left: -13px;
+  transform: rotate(180deg);
+}
+.nav .brand .brand-tagline {
+  display: block;
+  padding-left: 2px;
+  font-family:
+    "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans",
+    "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: #000;
+  overflow: visible;
+}
+.nav .brand .brand-name {
+  overflow: visible;
+}
+@media (min-width: 1100px) {
+  header.nav .brand-row,
+  header.nav .navlinks a {
+    min-height: 92px;
+  }
+}
+@media (max-width: 800px) {
+  .nav .brand .brand-title {
+    gap: 10px;
+  }
+  .nav .brand .brand-logo {
+    width: 40px;
+    height: 40px;
+  }
+  .nav .brand .brand-tagline {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+  .nav .brand .brand-tick-bl {
+    left: -10px;
+  }
+  .nav .brand .brand-tick,
+  .brand-tick svg {
+    width: 15px;
+    height: 15px;
+  }
+  .nav .brand .brand-tick-tr {
+    top: -7px;
+    right: -14px;
+  }
+  html {
+    scroll-padding-top: 104px;
+  }
+}
+html {
+  scroll-padding-top: 112px;
+}
+@media (max-width: 800px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+}
+.nav .brand .brand-tick-bl {
+  bottom: -3px;
+  left: -17px;
+}
+@media (max-width: 800px) {
+  .nav .brand .brand-tick-bl {
+    bottom: -2px;
+    left: -14px;
+  }
+}

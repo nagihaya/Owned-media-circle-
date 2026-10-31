@@ -131,3 +131,17 @@ export async function migrateV7() {
     }
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (7)");
 }
+// v8: the subtitle now shows under the site title; start with the agreed
+// wording only if it is still empty (never overwrites edits).
+export async function migrateV8() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=8"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.subtitle',?),revision=revision+1 WHERE id=1 AND COALESCE(JSON_UNQUOTE(JSON_EXTRACT(data,'$.subtitle')),'')=''",
+    ["学生向けのビジネスメディア"],
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (8)");
+}

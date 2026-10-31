@@ -3212,3 +3212,76 @@ html {
     left: -10px;
   }
 }
+
+/* タイトルを角の取れた線で囲む（ちょんちょんは枠から離して配置） */
+.nav .brand .brand-title {
+  padding: 6px 16px 6px 6px;
+  border: 2px solid #000;
+  border-radius: 16px;
+  gap: 12px;
+}
+.nav .brand .brand-title .brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.nav .brand .brand-tick-tr {
+  top: -17px;
+  right: -21px;
+}
+.nav .brand .brand-tick-bl {
+  left: -18px;
+}
+.nav .brand {
+  gap: 6px;
+  padding-left: 12px;
+}
+@media (max-width: 800px) {
+  .nav .brand .brand-title {
+    padding: 5px 12px 5px 5px;
+    border-radius: 13px;
+    gap: 10px;
+  }
+  .nav .brand .brand-title .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .nav .brand .brand-tick-tr {
+    top: -14px;
+    right: -18px;
+  }
+  .nav .brand .brand-tick-bl {
+    left: -14px;
+  }
+  .nav .brand {
+    padding-left: 10px;
+  }
+}
+/* ちょんちょんが切れないよう、タイトルの上と左に余白を足す */
+.nav .brand {
+  padding-top: 14px;
+  padding-bottom: 6px;
+  padding-left: 18px;
+}
+@media (min-width: 1100px) {
+  header.nav .brand-row,
+  header.nav .navlinks a {
+    min-height: 104px;
+  }
+}
+@media (max-width: 800px) {
+  .nav .brand {
+    padding-top: 12px;
+    padding-bottom: 4px;
+    padding-left: 14px;
+  }
+}
+html {
+  scroll-padding-top: 124px;
+}
+@media (max-width: 800px) {
+  html {
+    scroll-padding-top: 128px;
+  }
+}

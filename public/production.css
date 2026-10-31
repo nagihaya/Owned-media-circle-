@@ -2859,3 +2859,170 @@ html {
 .admin-nav .btn {
   white-space: nowrap;
 }
+
+/* ==========================================================================
+   編集画面だけ：角の取れた、洗練されたボタン
+   ========================================================================== */
+.admin-body {
+  --ab-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.admin-body .btn,
+.admin-body button.btn,
+.admin-body input[type="file"]::file-selector-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition:
+    background-color 0.18s var(--ab-ease),
+    color 0.18s var(--ab-ease),
+    border-color 0.18s var(--ab-ease),
+    box-shadow 0.18s var(--ab-ease),
+    transform 0.12s var(--ab-ease);
+}
+.admin-body .btn:hover {
+  background: #2b2b2b;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+.admin-body .btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+.admin-body .btn.small {
+  min-height: 40px;
+  padding: 0 18px;
+  font-size: 13px;
+}
+/* 補助ボタン：白地に細い枠 */
+.admin-body .btn.alt {
+  background: #fff;
+  color: #111;
+  border-color: #d5dae0;
+  box-shadow: none;
+}
+.admin-body .btn.alt:hover {
+  background: #f4f5f7;
+  border-color: #b9c0c8;
+  color: #111;
+  box-shadow: none;
+}
+/* 削除など取り消せない操作：赤の細枠 */
+.admin-body .btn.danger {
+  background: #fff;
+  color: #c62828;
+  border-color: #f0c4c4;
+  box-shadow: none;
+}
+.admin-body .btn.danger:hover {
+  background: #c62828;
+  border-color: #c62828;
+  color: #fff;
+}
+.admin-body .btn:disabled {
+  opacity: 0.45;
+  transform: none;
+  box-shadow: none;
+}
+.admin-body .btn:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.25);
+  outline-offset: 2px;
+}
+.admin-body input[type="file"]::file-selector-button {
+  min-height: 36px;
+  margin-right: 12px;
+  padding: 0 16px;
+  background: #fff;
+  color: #111;
+  border-color: #d5dae0;
+  box-shadow: none;
+  font-size: 13px;
+}
+.admin-body input[type="file"]::file-selector-button:hover {
+  background: #f4f5f7;
+}
+
+/* タブ：丸いトラックの中で選んだものだけ白く浮く */
+.admin-body .admin-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 5px;
+  border: 0;
+  border-radius: 999px;
+  background: #eef0f3;
+}
+.admin-body .admin-tabs a {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: transparent;
+  color: #4a5560;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background-color 0.18s var(--ab-ease),
+    color 0.18s var(--ab-ease),
+    box-shadow 0.18s var(--ab-ease);
+}
+.admin-body .admin-tabs a:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #111;
+}
+.admin-body .admin-tabs a.is-active {
+  background: #fff;
+  color: #111;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* 折りたたみ・パネルも角を丸く */
+.admin-body .panel {
+  border-radius: 16px;
+  border-color: #e3e6ea;
+}
+.admin-body .fold {
+  border-radius: 12px;
+}
+.admin-body .fold > summary {
+  border-radius: 12px;
+}
+.admin-body .fold-thumb {
+  border-radius: 6px;
+}
+@media (max-width: 800px) {
+  .admin-body .admin-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    border-radius: 14px;
+  }
+  .admin-body .admin-tabs a {
+    flex: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-body .btn,
+  .admin-body .admin-tabs a {
+    transition: none;
+  }
+  .admin-body .btn:active {
+    transform: none;
+  }
+}
+.admin-body .fold,
+.admin-body .fold[open] {
+  border: 1px solid #e3e6ea;
+}

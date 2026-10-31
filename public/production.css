@@ -3195,3 +3195,20 @@ html {
     left: -14px;
   }
 }
+/* 左下のちょんちょん：下の一文と同じ高さ、その左側に置く */
+.nav .brand {
+  position: relative;
+  padding-left: 8px;
+}
+.nav .brand .brand-tick-bl {
+  top: auto;
+  bottom: -1px;
+  left: -14px;
+  transform: rotate(180deg);
+}
+@media (max-width: 800px) {
+  .nav .brand .brand-tick-bl {
+    bottom: 0;
+    left: -10px;
+  }
+}

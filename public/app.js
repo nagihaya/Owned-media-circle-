@@ -68,6 +68,17 @@ if (menuToggle && mainNav) {
     if (m.matches) setMenu(false);
   });
 }
+// スマホ：記事カードを触った瞬間にふちを黒くする（マウスのない端末向け）
+document.addEventListener(
+  "touchstart",
+  (e) => {
+    const card = e.target.closest?.(".post-card");
+    if (!card) return;
+    card.classList.add("is-touched");
+    setTimeout(() => card.classList.remove("is-touched"), 600);
+  },
+  { passive: true },
+);
 const slider = document.querySelector(".hero-slider");
 if (slider) {
   const slides = [...slider.querySelectorAll(".slide")],

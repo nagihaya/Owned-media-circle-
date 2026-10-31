@@ -3039,3 +3039,46 @@ html {
     margin-top: -8px;
   }
 }
+
+/* スマホ：タップした瞬間もふちを黒く */
+.card.post-card.is-touched {
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+.card.post-card.is-touched .card-arrow {
+  background: #000;
+  color: #fff;
+}
+.post-card,
+.post-card-link {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 「すべて見る」：PCは見出しの右、スマホは3つ目の記事の下 */
+.more-link-sp {
+  display: none;
+}
+@media (max-width: 800px) {
+  .more-link-pc {
+    display: none !important;
+  }
+  .more-link-sp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 16px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .more-link-sp:active {
+    background: #000;
+    color: #fff;
+  }
+}

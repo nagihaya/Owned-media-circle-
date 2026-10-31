@@ -3237,3 +3237,47 @@ html {
     left: -13px;
   }
 }
+
+/* ===== ちょんちょん削除に合わせてヘッダーを低く ===== */
+.nav .brand {
+  padding: 0;
+  gap: 2px;
+}
+.nav .brand .brand-title .brand-logo,
+.nav .brand .brand-logo {
+  width: 42px;
+  height: 42px;
+}
+header.nav {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media (min-width: 1100px) {
+  header.nav {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  header.nav .brand-row,
+  header.nav .navlinks a {
+    min-height: 76px;
+  }
+}
+@media (max-width: 800px) {
+  .nav .brand .brand-title .brand-logo,
+  .nav .brand .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+  header.nav {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+html {
+  scroll-padding-top: 96px;
+}
+@media (max-width: 800px) {
+  html {
+    scroll-padding-top: 84px;
+  }
+}

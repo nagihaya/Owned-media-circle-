@@ -3026,3 +3026,16 @@ html {
 .admin-body .fold[open] {
   border: 1px solid #e3e6ea;
 }
+
+/* スライドショー：上下の余白を揃えて、少し下げる */
+.hero .hero-slider {
+  padding-top: 60px;
+}
+@media (max-width: 800px) {
+  .hero .hero-slider {
+    padding-top: 40px;
+  }
+  .hero-slider .slider-dots {
+    margin-top: -8px;
+  }
+}

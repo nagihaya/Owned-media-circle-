@@ -39,6 +39,20 @@ document.querySelectorAll("[data-login]").forEach((a) =>
     );
   }),
 );
+// なめらかスクロール（Lenis）。公開ページのみ・動きを減らす設定の端末では使わない。
+// スマホの指スクロールは標準のまま（Lenis既定）。
+if (
+  window.Lenis &&
+  !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+  !document.body.classList.contains("admin-body")
+) {
+  // ページ内リンクの止まる位置は CSS の scroll-padding-top（固定ヘッダー分）に従う
+  window.tbizLenis = new window.Lenis({
+    autoRaf: true,
+    lerp: 0.1,
+    anchors: true,
+  });
+}
 // スマホ：三本線ボタンでメニューを開閉
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.getElementById("mainNav");

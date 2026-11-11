@@ -54,6 +54,12 @@ app.get("/health", async (req, res) => {
     res.status(503).json({ ok: false });
   }
 });
+// Lenis (smooth scrolling) is served from the installed package, versioned URL.
+app.get("/vendor/lenis-1.3.27.min.js", (req, res) => {
+  res.set("Cache-Control", "public, max-age=31536000, immutable");
+  res.type("application/javascript");
+  res.sendFile(path.join(root, "node_modules/lenis/dist/lenis.min.js"));
+});
 app.use(
   express.static(path.join(root, "public"), {
     index: false,

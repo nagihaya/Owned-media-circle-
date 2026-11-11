@@ -3281,3 +3281,21 @@ html {
     scroll-padding-top: 84px;
   }
 }
+
+/* ===== Lenis（なめらかスクロール）用の基本設定 ===== */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

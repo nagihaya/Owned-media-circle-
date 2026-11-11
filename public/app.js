@@ -93,8 +93,127 @@ document.addEventListener(
   },
   { passive: true },
 );
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const slider = document.querySelector(".hero-slider");
 if (slider) {
+  const viewport = slider.querySelector(".slider-viewport");
+  const count = slider.querySelectorAll(".slide").length;
+  if (window.EmblaCarousel && viewport && count > 1) initEmblaSlider(slider);
+  else initPeekSlider(slider);
+}
+// スライドショー（Embla）：指のスワイプ・マウスのドラッグで切り替え。
+// 見た目（中央のカード＋左右45px・矢印・一時停止・進行バー・5秒自動送り）は従来どおり。
+function initEmblaSlider(slider) {
+  const viewport = slider.querySelector(".slider-viewport");
+  const slides = [...slider.querySelectorAll(".slide")],
+    dots = [...slider.querySelectorAll(".slider-dot")],
+    pause = slider.querySelector(".slider-pause");
+  // 横並びのレイアウトにしてから Embla を起動する（先に起動すると大きさを測り違える）
+  slider.classList.add("is-embla");
+  const embla = window.EmblaCarousel(viewport, {
+    loop: true,
+    align: "center",
+    duration: 32,
+    skipSnaps: false,
+  });
+  let timer,
+    manualPaused = reduceMotion,
+    hovered = false,
+    focused = false,
+    dragging = false;
+  const n = slides.length;
+  const go = (i) => embla.scrollTo(i, reduceMotion);
+  const mark = () => {
+    const index = embla.selectedScrollSnap();
+    slides.forEach((s, i) => {
+      const d = (i - index + n) % n;
+      s.classList.toggle("is-active", i === index);
+      s.classList.toggle("is-side", d === 1 || d === n - 1);
+      s.setAttribute("aria-hidden", String(i !== index));
+      s.querySelectorAll("a").forEach(
+        (a) => (a.tabIndex = i === index ? 0 : -1),
+      );
+    });
+    dots.forEach((d, i) => {
+      d.classList.remove("is-active");
+      d.setAttribute("aria-pressed", String(i === index));
+    });
+    // 進行バーのアニメーションを最初からやり直すため、付け直す
+    void dots[index]?.offsetWidth;
+    dots[index]?.classList.add("is-active");
+  };
+  const stop = () => {
+    clearInterval(timer);
+    timer = null;
+  };
+  const update = () => {
+    stop();
+    if (pause) pause.textContent = manualPaused ? "再生" : "一時停止";
+    if (!manualPaused && !hovered && !focused && !dragging && !document.hidden)
+      timer = setInterval(() => embla.scrollNext(reduceMotion), 5000);
+    slider.classList.toggle("is-playing", Boolean(timer));
+  };
+  embla.on("select", () => {
+    mark();
+    update();
+  });
+  embla.on("pointerDown", () => {
+    dragging = true;
+    update();
+  });
+  embla.on("pointerUp", () => {
+    dragging = false;
+    update();
+  });
+  slider
+    .querySelector(".prev")
+    ?.addEventListener("click", () => embla.scrollPrev(reduceMotion));
+  slider
+    .querySelector(".next")
+    ?.addEventListener("click", () => embla.scrollNext(reduceMotion));
+  dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
+  // 左右の写真を押すとその写真へ移動（ドラッグ直後のクリックは Embla が自動で無効にする）
+  slides.forEach((sl, i) =>
+    sl.addEventListener("click", (e) => {
+      if (i !== embla.selectedScrollSnap()) {
+        e.preventDefault();
+        go(i);
+      }
+    }),
+  );
+  pause?.addEventListener("click", () => {
+    manualPaused = !manualPaused;
+    update();
+  });
+  slider.addEventListener("pointerenter", (e) => {
+    if (e.pointerType !== "mouse") return;
+    hovered = true;
+    update();
+  });
+  slider.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse") return;
+    hovered = false;
+    update();
+  });
+  slider.addEventListener("focusin", () => {
+    focused = true;
+    update();
+  });
+  slider.addEventListener("focusout", () =>
+    setTimeout(() => {
+      focused = slider.contains(document.activeElement);
+      update();
+    }, 0),
+  );
+  slider.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") embla.scrollPrev(reduceMotion);
+    if (e.key === "ArrowRight") embla.scrollNext(reduceMotion);
+  });
+  document.addEventListener("visibilitychange", update);
+  mark();
+  update();
+}
+function initPeekSlider(slider) {
   const slides = [...slider.querySelectorAll(".slide")],
     dots = [...slider.querySelectorAll(".slider-dot")],
     pause = slider.querySelector(".slider-pause");
@@ -204,6 +323,42 @@ if (slider) {
   document.addEventListener("visibilitychange", update);
   if (slides.length) show(0);
   update();
+}
+
+// スクロールで見出しやカードがふわっと出る（Motion）。最初から画面内にあるものは動かさない。
+if (
+  window.Motion &&
+  !reduceMotion &&
+  !document.body.classList.contains("admin-body")
+) {
+  const { animate, inView } = window.Motion;
+  const targets = document.querySelectorAll(
+    "main .section-title, main .page-intro h1, .post-card, .feature, .feature-card, .cta, .quick-search, .site-footer-brand, .site-footer-col",
+  );
+  targets.forEach((el) => {
+    if (el.getBoundingClientRect().top < innerHeight * 0.9) return;
+    const siblings = el.parentElement ? [...el.parentElement.children] : [];
+    const delay = el.matches(".post-card, .feature-card, .site-footer-col")
+      ? (siblings.indexOf(el) % 3) * 0.08
+      : 0;
+    el.style.opacity = "0";
+    el.style.transform = "translateY(18px)";
+    const stopWatching = inView(
+      el,
+      () => {
+        stopWatching?.();
+        animate(
+          el,
+          { opacity: 1, transform: "translateY(0px)" },
+          { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] },
+        ).then(() => {
+          el.style.removeProperty("transform");
+          el.style.removeProperty("opacity");
+        });
+      },
+      { amount: 0.15 },
+    );
+  });
 }
 const search = document.querySelector(".search-form");
 if (search) {

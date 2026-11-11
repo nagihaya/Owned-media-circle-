@@ -3299,3 +3299,57 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+/* ===== スライドショー（Embla） ===== */
+.hero-slider .slider-viewport {
+  width: 100%;
+  height: 100%;
+}
+.hero-slider.is-embla .slider-viewport {
+  overflow: hidden;
+  cursor: grab;
+}
+.hero-slider.is-embla .slider-viewport:active {
+  cursor: grabbing;
+}
+.hero-slider.is-embla .slider-track {
+  display: flex;
+  height: 100%;
+  touch-action: pan-y pinch-zoom;
+  backface-visibility: hidden;
+}
+.hero-slider.is-embla .slide {
+  position: relative;
+  inset: auto;
+  top: auto;
+  left: auto;
+  flex: 0 0 var(--slide-w);
+  width: var(--slide-w);
+  min-width: 0;
+  height: 100%;
+  margin: 0 calc(var(--slide-gap) / 2);
+  transform: none;
+  visibility: visible;
+  opacity: 0.45;
+  pointer-events: auto;
+  transition: opacity 0.4s ease;
+}
+.hero-slider.is-embla .slide.is-active {
+  opacity: 1;
+}
+.hero-slider.is-embla .slide[aria-hidden="true"] a,
+.hero-slider.is-embla .slide.is-side span {
+  visibility: visible;
+}
+.hero-slider.is-embla .slide:not(.is-active) {
+  cursor: pointer;
+}
+.hero-slider.is-embla .slide img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider.is-embla .slide {
+    transition: none;
+  }
+}

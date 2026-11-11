@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import compression from "compression";
 import { rateLimit } from "express-rate-limit";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -37,6 +38,7 @@ app.disable("x-powered-by");
 app.set("view engine", "ejs");
 app.set("views", path.join(root, "views"));
 app.set("trust proxy", 1);
+app.use(compression());
 app.use(cookieParser());
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: false, limit: "16kb" }));
@@ -54,11 +56,20 @@ app.get("/health", async (req, res) => {
     res.status(503).json({ ok: false });
   }
 });
-// Lenis (smooth scrolling) is served from the installed package, versioned URL.
-app.get("/vendor/lenis-1.3.27.min.js", (req, res) => {
+// Browser libraries are served from the installed packages (no CDN) at
+// versioned URLs, so they can be cached forever.
+const vendor = {
+  "lenis-1.3.27.min.js": "node_modules/lenis/dist/lenis.min.js",
+  "motion-14.7.1.js": "node_modules/motion/dist/motion.js",
+  "embla-carousel-8.6.0.umd.js":
+    "node_modules/embla-carousel/embla-carousel.umd.js",
+};
+app.get("/vendor/:file", (req, res, next) => {
+  const file = vendor[req.params.file];
+  if (!file) return next();
   res.set("Cache-Control", "public, max-age=31536000, immutable");
   res.type("application/javascript");
-  res.sendFile(path.join(root, "node_modules/lenis/dist/lenis.min.js"));
+  res.sendFile(path.join(root, file));
 });
 app.use(
   express.static(path.join(root, "public"), {

@@ -3583,7 +3583,7 @@ body:not(.admin-body) form.search-form input[type="search"] {
   border-radius: 4px;
 }
 .post-card .thumb {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1 / 1;
 }
 .post-card .card-body {
   gap: 10px;

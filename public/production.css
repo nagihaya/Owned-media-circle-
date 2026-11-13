@@ -3368,3 +3368,16 @@ html {
     scroll-padding-top: 80px;
   }
 }
+/* スマホのタグは「活動記録」「イベント」を1・2番目に */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+}
+@media (max-width: 800px) {
+  .tag-cloud .tag-sp-first {
+    order: -2;
+  }
+  .tag-cloud .tag-sp-second {
+    order: -1;
+  }
+}

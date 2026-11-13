@@ -86,7 +86,7 @@ if (menuToggle && mainNav) {
 document.addEventListener(
   "touchstart",
   (e) => {
-    const card = e.target.closest?.(".post-card");
+    const card = e.target.closest?.(".post-card, .feature-card");
     if (!card) return;
     card.classList.add("is-touched");
     setTimeout(() => card.classList.remove("is-touched"), 600);

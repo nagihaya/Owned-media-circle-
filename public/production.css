@@ -3667,3 +3667,70 @@ main .post-card h3 {
     font-size: 16px;
   }
 }
+
+/* ===== 注目の記事：文字部分を白地に（ほかのカードと揃える） ===== */
+.feature,
+.feature-card {
+  background: #fff;
+  color: #000;
+  border: 1px solid #e3e6ea;
+  border-radius: 6px;
+  overflow: hidden;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.feature-copy,
+.feature-card-body {
+  background: #fff;
+  color: #000;
+}
+.feature-copy h3,
+main .feature-card-body h3,
+.feature-copy .eyebrow,
+.feature-card-body .eyebrow,
+.feature-copy p {
+  color: #000;
+}
+.feature .pill.dark,
+.feature-card .pill.dark {
+  background: #f0f1f3;
+  border-color: #f0f1f3;
+  color: #333;
+}
+.feature-card-link {
+  color: #000;
+}
+/* 黒い面用だった白いボタンを、通常の黒いボタンに戻す */
+.feature .btn {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+.feature .btn:hover {
+  background: #333;
+  color: #fff;
+}
+.feature .btn:active {
+  background: #333;
+  color: #fff;
+}
+.feature .btn:focus-visible {
+  outline-color: #000;
+}
+/* マウス・タップで枠を黒く */
+.feature:hover,
+.feature:focus-within,
+.feature-card:hover,
+.feature-card:focus-visible,
+.feature-card.is-touched {
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+.feature-card {
+  -webkit-tap-highlight-color: transparent;
+}
+/* 古いスタイルの白文字指定（!important）を上書き */
+.feature .feature-copy .eyebrow {
+  color: #000 !important;
+}

@@ -3508,3 +3508,34 @@ html {
     font-size: 15px;
   }
 }
+
+/* スマホ：一覧ページの検索欄はキーワード（部分一致）＋検索ボタンだけ */
+@media (max-width: 800px) {
+  form.filters.search-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  form.search-form > label:not(.search-query) {
+    display: none;
+  }
+  form.search-form .search-query {
+    grid-column: 1;
+    font-size: 0;
+    margin: 0;
+  }
+  form.search-form .search-query input[type="search"] {
+    margin-top: 0;
+    font-size: 15px;
+    min-height: 46px;
+  }
+  form.search-form button.btn {
+    grid-column: 2;
+    min-height: 46px;
+    padding: 0 20px;
+    width: auto;
+  }
+}

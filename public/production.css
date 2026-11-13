@@ -3572,13 +3572,8 @@ body:not(.admin-body) form.search-form input[type="search"] {
 }
 /* ==========================================================================
    試し：記事カードの中をエディトリアル（雑誌）寄りに
-   （元に戻すときはこのブロックと header.ejs の Shippori Mincho 読み込みを消す）
+   （元に戻すときはこのブロックを消す）
    ========================================================================== */
-.post-card {
-  --ed-serif:
-    "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
-    "Noto Serif JP", serif;
-}
 .card.post-card {
   border-radius: 4px;
 }
@@ -3607,7 +3602,6 @@ body:not(.admin-body) form.search-form input[type="search"] {
   color: #000;
 }
 .post-card .card-meta time {
-  font-family: var(--ed-serif);
   font-weight: 500;
   letter-spacing: 0.06em;
   color: #6b7480;
@@ -3637,19 +3631,17 @@ body:not(.admin-body) form.search-form input[type="search"] {
   margin: 0 6px;
   color: #b5bec7;
 }
-/* タイトル・冒頭文は明朝体 */
+/* タイトル・冒頭文（フォントは元のゴシック体） */
 main .post-card h3 {
-  font-family: var(--ed-serif);
-  font-size: 19px;
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: 0.03em;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
 }
 .post-card .card-lead {
-  font-family: var(--ed-serif);
-  font-size: 13.5px;
-  line-height: 1.9;
-  color: #5f6b77;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #333;
 }
 /* 下段：細い線＋「記事を読む →」 */
 .post-card:not(.post-card-placeholder) .card-body::after {
@@ -3674,6 +3666,6 @@ main .post-card h3 {
 }
 @media (max-width: 640px) {
   main .post-card h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
 }

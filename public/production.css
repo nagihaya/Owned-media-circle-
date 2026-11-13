@@ -3539,3 +3539,29 @@ html {
     width: auto;
   }
 }
+
+/* ===== 試し：公開ページのタグ・ボタンを角の丸い形に ===== */
+body:not(.admin-body) .tag-cloud a,
+body:not(.admin-body) .btn,
+body:not(.admin-body) .intro-btn,
+body:not(.admin-body) .more-link-sp,
+body:not(.admin-body) .slider-stage .slider-pause,
+body:not(.admin-body) form.search-form button.btn,
+body:not(.admin-body) .quick-search-row .btn {
+  border-radius: 999px;
+}
+body:not(.admin-body) .tag-cloud a {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+body:not(.admin-body) .btn,
+body:not(.admin-body) .intro-btn {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+/* ボタンと並ぶ検索欄も丸く揃える */
+body:not(.admin-body) .quick-search-row input,
+body:not(.admin-body) form.search-form input[type="search"] {
+  border-radius: 999px;
+  padding-left: 20px;
+}

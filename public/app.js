@@ -385,7 +385,7 @@ if (search) {
                   a.industry || a.size
                     ? `<div class="card-chips">${a.industry ? `<span class="chip chip-industry">${escapeHTML(a.industry)}</span>` : ""}${a.size ? `<span class="chip chip-size">${escapeHTML(a.size)}</span>` : ""}</div>`
                     : ""
-                }<h3>${escapeHTML(a.title)}</h3>${a.lead ? `<p class="card-lead">${escapeHTML(a.lead)}</p>` : ""}<div class="card-foot"><span class="card-meta">${a.type ? `<span class="card-type">${escapeHTML(a.type)}</span>` : ""}<time datetime="${escapeHTML(a.publishedAt)}">${escapeHTML(new Date(a.publishedAt).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }))}</time></span><span class="card-arrow" aria-hidden="true">→</span></div></div><span class="sr-only">（noteで読む・新しいタブで開く）</span></a></article>`,
+                }<h3>${escapeHTML(a.title)}</h3>${a.lead ? `<p class="card-lead">${escapeHTML(a.lead)}</p>` : ""}<div class="card-foot"><span class="card-meta">${a.type ? `<span class="card-type">${escapeHTML(a.type)}</span>` : ""}</span><span class="card-arrow" aria-hidden="true">→</span></div></div><span class="sr-only">（noteで読む・新しいタブで開く）</span></a></article>`,
             )
             .join("")
         : '<div class="panel empty-state">条件に一致する記事がありません。</div>';

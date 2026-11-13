@@ -5,23 +5,22 @@ const year = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", year: 
 const columns = [
   { title: "記事を探す", links: [
     ["インタビュー", "/interviews"],
+    ["活動記録", "/articles?q=" + encodeURIComponent("活動記録")],
     ["ビジネス知識", "/knowledge"],
     ["イベント", "/interviews?type=" + encodeURIComponent("座談会")],
     ["記事検索", "/articles"],
   ]},
-  { title: "メディアについて", links: [
-    ["メディアについて", "/about"],
+  { title: "T-Bizについて", links: [
+    ["T-Bizとは？", "/about"],
     ["T-Bizについて", settings.tbizUrl],
     ["note", settings.noteUrl],
   ]},
-  { title: "取材・協賛", links: [
+  { title: "取材", links: [
     ["取材のご依頼", "/contact?form=interview"],
-    ["協賛のご相談", "/contact?form=sponsor"],
     ["お問い合わせ", "/contact?form=inquiry"],
   ]},
   { title: "参加する", links: [
     ["メンバー募集", "/recruit"],
-    ["Instagram", settings.instagramUrl],
   ]},
   { title: "各種ポリシー", links: policies.map((p, i) => [p.title, "/policy#policy-" + i]) },
 ];

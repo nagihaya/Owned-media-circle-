@@ -212,20 +212,24 @@ export async function slides(publicOnly = true) {
   );
 }
 export async function homeData() {
-  const [s, sl, interview, knowledge, latest, featured] = await Promise.all([
-    settings(),
-    slides(),
-    articleList({ category: "interviews" }),
-    articleList({ category: "knowledge" }),
-    articleList(),
-    query(
-      "SELECT * FROM articles WHERE visible=1 AND featured=1 ORDER BY published_at DESC,created_at DESC,id DESC LIMIT 3",
-    ).then((rows) => rows.map(mapArticle)),
-  ]);
+  const [s, sl, interview, knowledge, latest, featured, activity] =
+    await Promise.all([
+      settings(),
+      slides(),
+      articleList({ category: "interviews" }),
+      articleList({ category: "knowledge" }),
+      articleList(),
+      query(
+        "SELECT * FROM articles WHERE visible=1 AND featured=1 ORDER BY published_at DESC,created_at DESC,id DESC LIMIT 3",
+      ).then((rows) => rows.map(mapArticle)),
+      // 活動記録：タイトルか冒頭文に「活動記録」を含む記事（タグ・メニューと同じ条件）
+      articleList({ q: "活動記録" }),
+    ]);
   return {
     settings: publicSettings(s),
     slides: sl,
     interviews: interview.items.slice(0, 3),
+    activity: activity.items.slice(0, 3),
     knowledge: knowledge.items.slice(0, 3),
     featured: featured.length ? featured : latest.items.slice(0, 3),
   };

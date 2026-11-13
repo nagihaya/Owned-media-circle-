@@ -3477,3 +3477,34 @@ html {
 .hero:has(+ .intro-band) {
   padding-bottom: 0;
 }
+/* 紹介ブロック：スマホの読みやすさを調整 */
+.intro-catch,
+.intro-body p {
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+@media (max-width: 800px) {
+  .intro-inner {
+    gap: 20px;
+    padding: 44px 20px 48px;
+  }
+  .intro-catch {
+    font-size: 24px;
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+  }
+  .intro-body p {
+    margin-bottom: 28px;
+    font-size: 14.5px;
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    color: #5f6b77;
+  }
+  .intro-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    font-size: 15px;
+  }
+}

@@ -3565,3 +3565,115 @@ body:not(.admin-body) form.search-form input[type="search"] {
   border-radius: 999px;
   padding-left: 20px;
 }
+
+/* 記事タイプと日付の区切り（エディトリアル版では使わない） */
+.card-meta .card-type::after {
+  content: "・";
+}
+/* ==========================================================================
+   試し：記事カードの中をエディトリアル（雑誌）寄りに
+   （元に戻すときはこのブロックと header.ejs の Shippori Mincho 読み込みを消す）
+   ========================================================================== */
+.post-card {
+  --ed-serif:
+    "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
+    "Noto Serif JP", serif;
+}
+.card.post-card {
+  border-radius: 4px;
+}
+.post-card .thumb {
+  aspect-ratio: 3 / 2;
+}
+.post-card .card-body {
+  gap: 10px;
+  padding: 18px 20px 16px;
+}
+/* 上段：記事タイプと日付 */
+.post-card .card-foot {
+  order: -2;
+  margin: 0;
+  padding: 0;
+}
+.post-card .card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #000;
+}
+.post-card .card-meta time {
+  font-family: var(--ed-serif);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #6b7480;
+}
+.post-card .card-arrow {
+  display: none;
+}
+.post-card .card-meta .card-type::after {
+  content: none;
+}
+/* ラベルは細い文字だけ */
+.post-card .card-chips {
+  order: -1;
+  gap: 0;
+}
+.post-card .chip {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: #6b7480;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.post-card .chip + .chip::before {
+  content: "／";
+  margin: 0 6px;
+  color: #b5bec7;
+}
+/* タイトル・冒頭文は明朝体 */
+main .post-card h3 {
+  font-family: var(--ed-serif);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+.post-card .card-lead {
+  font-family: var(--ed-serif);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: #5f6b77;
+}
+/* 下段：細い線＋「記事を読む →」 */
+.post-card:not(.post-card-placeholder) .card-body::after {
+  content: "記事を読む →";
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #e3e6ea;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #000;
+}
+.card.post-card:hover h3,
+.card.post-card:focus-within h3 {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+/* 準備中の枠も同じ並びに */
+.post-card-placeholder .card-foot .ph-meta {
+  width: 140px;
+}
+@media (max-width: 640px) {
+  main .post-card h3 {
+    font-size: 18px;
+  }
+}

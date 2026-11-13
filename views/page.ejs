@@ -13,7 +13,7 @@
 <section class="section"><div class="section-head"><h2 class="section-title">インタビュー</h2><a class="link more-link-pc" href="/interviews">すべて見る →</a></div><div class="cards"><%- include('cards',{items:data.interviews}) %></div><a class="more-link-sp" href="/interviews">インタビューをすべて見る →</a></section>
 <% const activityHref='/articles?q='+encodeURIComponent('活動記録'); %><section class="section"><div class="section-head"><h2 class="section-title">活動記録</h2><a class="link more-link-pc" href="<%= activityHref %>">すべて見る →</a></div><div class="cards"><%- include('cards',{items:data.activity}) %></div><a class="more-link-sp" href="<%= activityHref %>">活動記録をすべて見る →</a></section>
 <section class="section"><div class="section-head"><h2 class="section-title">ビジネス知識</h2><a class="link more-link-pc" href="/knowledge">すべて見る →</a></div><div class="cards"><%- include('cards',{items:data.knowledge}) %></div><a class="more-link-sp" href="/knowledge">ビジネス知識をすべて見る →</a></section>
-<section class="section"><div class="cta"><h2>取材・協賛</h2><a class="btn" href="/contact">お問い合わせ →</a></div></section>
+<section class="section"><div class="cta"><h2>取材</h2><a class="btn" href="/contact">お問い合わせ →</a></div></section>
 <% } else if(['/articles','/interviews','/knowledge'].includes(route)){ %>
 <div class="page-intro"><h1><%= heading %></h1></div><%- include('search') %>
 <% } else if(route==='/about'){ %>

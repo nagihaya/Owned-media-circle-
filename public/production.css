@@ -3353,3 +3353,18 @@ html.lenis body {
     transition: none;
   }
 }
+/* タイトル下の一文を外したので、PCの1行ヘッダーを低く */
+@media (min-width: 1100px) {
+  header.nav .brand-row,
+  header.nav .navlinks a {
+    min-height: 68px;
+  }
+}
+html {
+  scroll-padding-top: 88px;
+}
+@media (max-width: 800px) {
+  html {
+    scroll-padding-top: 80px;
+  }
+}

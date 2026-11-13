@@ -180,7 +180,7 @@ const names = {
   "/articles": "記事検索",
   "/interviews": "インタビュー",
   "/knowledge": "ビジネス知識",
-  "/about": "メディアについて",
+  "/about": "T-Bizとは？",
   "/contact": "取材・協賛",
   "/policy": "各種ポリシー",
   "/recruit": "メンバー募集",

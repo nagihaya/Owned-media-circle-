@@ -15,7 +15,7 @@
 <% } else if(['/articles','/interviews','/knowledge'].includes(route)){ %>
 <div class="page-intro"><h1><%= heading %></h1></div><%- include('search') %>
 <% } else if(route==='/about'){ %>
-<div class="page-intro"><h1>メディアについて</h1></div><div class="about-grid"><div class="panel"><h2>目的</h2><p>企業の経営者・社員へのインタビューを掲載し、学生が企業や仕事を知るための情報を提供します。</p></div><div class="panel"><h2>T-Biz</h2><p><%= settings.org %></p><a class="link" href="<%= settings.noteUrl %>" target="_blank" rel="noopener noreferrer">noteを見る →</a></div></div>
+<div class="page-intro"><h1>T-Bizとは？</h1></div><div class="about-grid"><div class="panel"><h2>目的</h2><p>企業の経営者・社員へのインタビューを掲載し、学生が企業や仕事を知るための情報を提供します。</p></div><div class="panel"><h2>T-Biz</h2><p><%= settings.org %></p><a class="link" href="<%= settings.noteUrl %>" target="_blank" rel="noopener noreferrer">noteを見る →</a></div></div>
 <% } else if(route==='/contact'){ %>
 <div class="page-intro"><h1>取材・協賛のご相談</h1></div><div class="contact-google-layout"><div class="panel"><h2>ご相談内容の例</h2><p>・経営者・社員インタビュー<br>・学生向けイベントの協賛<br>・採用広報や仕事紹介<br>・T-Bizとの共同企画</p><p>返信までの目安：<%= settings.response %></p><p><%= settings.contact %></p></div><%- include('google-form') %></div>
 <% } else if(route==='/policy'){ %>

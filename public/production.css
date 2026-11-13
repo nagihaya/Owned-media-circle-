@@ -3501,11 +3501,9 @@ html {
     color: #5f6b77;
   }
   .intro-btn {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    min-height: 52px;
-    font-size: 15px;
+    min-height: 44px;
+    padding: 0 22px;
+    font-size: 14px;
   }
 }
 

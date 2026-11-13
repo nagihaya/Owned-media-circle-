@@ -145,3 +145,23 @@ export async function migrateV8() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (8)");
 }
+// v9: top intro block under the slideshow (editable). Fill defaults only if
+// the keys are missing, never overwriting edits.
+export async function migrateV9() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=9"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introCatch',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'$.introCatch') IS NULL",
+    ["企業のリアルを、\n学生の明日へ。"],
+  );
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introText',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'$.introText') IS NULL",
+    [
+      "T-Biz Labは、東京理科大学発のビジネスサークルT-Bizが運営するメディアです。企業の経営者・社員へのインタビューを掲載し、学生が企業や仕事を知るための情報を届けます。",
+    ],
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (9)");
+}

@@ -3381,3 +3381,99 @@ html {
     order: -1;
   }
 }
+
+/* ===== スライドショー下の紹介ブロック ===== */
+.intro-band {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #f4f5f7;
+  border-bottom: 1px solid #e4e7eb;
+}
+.intro-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 80px;
+  align-items: start;
+  max-width: 1136px;
+  margin: 0 auto;
+  padding: 64px 22px 104px;
+}
+.intro-catch {
+  margin: 0;
+  font-size: clamp(28px, 3.3vw, 44px);
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: 0.32em;
+  color: #111;
+}
+.intro-body p {
+  margin: 0 0 36px;
+  font-size: 17px;
+  line-height: 2.05;
+  letter-spacing: 0.06em;
+  color: #6b7480;
+}
+.intro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 4px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.intro-btn span {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+.intro-btn:hover {
+  background: #333;
+  color: #fff;
+}
+.intro-btn:hover span {
+  transform: translateX(3px);
+}
+.intro-btn:active {
+  transform: scale(0.98);
+}
+.intro-btn:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 3px;
+}
+/* 紹介ブロックの直後のセクションは区切り線を重ねない */
+.intro-band + .section {
+  border-top: 0;
+}
+@media (max-width: 800px) {
+  .intro-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 40px 16px 56px;
+  }
+  .intro-catch {
+    font-size: 26px;
+    letter-spacing: 0.2em;
+  }
+  .intro-body p {
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.95;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-btn,
+  .intro-btn span {
+    transition: none;
+  }
+}
+.hero:has(+ .intro-band) {
+  padding-bottom: 0;
+}

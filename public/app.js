@@ -333,7 +333,7 @@ if (
 ) {
   const { animate, inView } = window.Motion;
   const targets = document.querySelectorAll(
-    "main .section-title, main .page-intro h1, .post-card, .feature, .feature-card, .cta, .quick-search, .site-footer-brand, .site-footer-col",
+    "main .section-title, main .page-intro h1, .intro-catch, .intro-body, .post-card, .feature, .feature-card, .cta, .quick-search, .site-footer-brand, .site-footer-col",
   );
   targets.forEach((el) => {
     if (el.getBoundingClientRect().top < innerHeight * 0.9) return;

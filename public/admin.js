@@ -80,6 +80,8 @@
       "tbizUrl",
       "instagramUrl",
       "xUrl",
+      "introCatch",
+      "introText",
       "response",
       "contact",
       "policyDate",

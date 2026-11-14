@@ -3734,3 +3734,186 @@ main .feature-card-body h3,
 .feature .feature-copy .eyebrow {
   color: #000 !important;
 }
+
+/* ===== T-Bizとは？ページ ===== */
+.tbiz-about {
+  max-width: 860px;
+}
+.tbiz-lead {
+  padding: 8px 0 40px;
+  border-bottom: 1px solid #e3e6ea;
+}
+.tbiz-label {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #5f6b77;
+}
+.tbiz-purpose {
+  margin: 0;
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #111;
+  word-break: auto-phrase;
+}
+.tbiz-block {
+  padding: 36px 0;
+  border-bottom: 1px solid #e3e6ea;
+}
+.tbiz-block:last-child {
+  border-bottom: 0;
+}
+main .tbiz-h {
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.tbiz-facts {
+  margin: 0;
+}
+.tbiz-facts > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid #eef0f3;
+}
+.tbiz-facts > div:last-child {
+  border-bottom: 1px solid #eef0f3;
+}
+.tbiz-facts dt {
+  font-size: 13px;
+  font-weight: 700;
+  color: #5f6b77;
+}
+.tbiz-facts dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.tbiz-activities {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: act;
+}
+.tbiz-activities li {
+  position: relative;
+  padding: 12px 0 12px 40px;
+  border-top: 1px solid #eef0f3;
+  font-size: 15px;
+  line-height: 1.8;
+  counter-increment: act;
+}
+.tbiz-activities li::before {
+  content: counter(act, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #8a96a2;
+}
+.tbiz-text {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.9;
+}
+/* 運営規約（押すと開く） */
+.tbiz-rules {
+  border: 1px solid #e3e6ea;
+  border-radius: 6px;
+  background: #fff;
+}
+.tbiz-rules > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 20px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 700;
+}
+.tbiz-rules > summary::-webkit-details-marker {
+  display: none;
+}
+.tbiz-rules > summary::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+  flex: none;
+}
+.tbiz-rules[open] > summary::after {
+  transform: rotate(-135deg);
+}
+.tbiz-rules > summary:hover {
+  background: #f7f8fa;
+}
+.tbiz-rules > summary:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: -3px;
+}
+.tbiz-rules-body {
+  padding: 4px 24px 28px;
+  border-top: 1px solid #e3e6ea;
+}
+.tbiz-article {
+  padding: 18px 0 4px;
+}
+main .tbiz-article h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.tbiz-article p,
+.tbiz-article li {
+  margin: 0 0 6px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #333;
+}
+.tbiz-article ol,
+.tbiz-article ul {
+  margin: 4px 0 8px;
+  padding-left: 1.6em;
+}
+.tbiz-cert {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eef0f3;
+  text-align: right;
+}
+.tbiz-cert p {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: #5f6b77;
+}
+@media (max-width: 800px) {
+  .tbiz-lead {
+    padding-bottom: 28px;
+  }
+  .tbiz-block {
+    padding: 28px 0;
+  }
+  .tbiz-facts > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .tbiz-rules-body {
+    padding: 4px 16px 20px;
+  }
+  .tbiz-cert {
+    text-align: left;
+  }
+}

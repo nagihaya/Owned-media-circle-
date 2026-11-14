@@ -31,6 +31,7 @@ import { maintenance } from "./maintenance.mjs";
 import { formView, FORM_SLOTS } from "./google-forms.mjs";
 import { syncRss, enrichPending } from "./rss.mjs";
 import { policies } from "./policies.mjs";
+import { tbizProfile, tbizRules } from "./tbiz.mjs";
 import { readImage, MEDIA_PATH } from "./media.mjs";
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const app = express();
@@ -215,6 +216,8 @@ for (const [route, title] of Object.entries(names))
       listing,
       settings: s,
       policies,
+      tbizProfile,
+      tbizRules,
       csrf,
       industries: INDUSTRIES,
       sizes: SIZES,

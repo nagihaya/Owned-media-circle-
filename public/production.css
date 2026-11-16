@@ -1896,8 +1896,12 @@ form.filters.search-form,
 .nav .brand span,
 .site-footer-logo span {
   font-family:
-    "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont,
-    "Hiragino Sans", "Noto Sans JP", sans-serif;
+    "Zen Kaku Gothic New",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Noto Sans JP",
+    sans-serif;
   font-weight: 500;
   letter-spacing: 0.06em;
 }
@@ -2094,10 +2098,7 @@ header.nav {
   padding: 28px 0 8px;
 }
 .hero-slider .slider-stage {
-  height: min(
-    calc(var(--slide-img-w) * 9 / 16),
-    calc(100vh - 240px)
-  );
+  height: min(calc(var(--slide-img-w) * 9 / 16), calc(100vh - 240px));
 }
 .hero-slider .slide {
   border-radius: 12px;
@@ -3368,16 +3369,13 @@ html {
     scroll-padding-top: 80px;
   }
 }
-/* スマホのタグは「活動記録」「イベント」を1・2番目に */
+/* スマホのタグは「活動記録」を1番目に */
 .tag-cloud {
   display: flex;
   flex-wrap: wrap;
 }
 @media (max-width: 800px) {
   .tag-cloud .tag-sp-first {
-    order: -2;
-  }
-  .tag-cloud .tag-sp-second {
     order: -1;
   }
 }
@@ -3915,5 +3913,35 @@ main .tbiz-article h3 {
   }
   .tbiz-cert {
     text-align: left;
+  }
+}
+
+/* ===== 絞り込み欄：記事タイプ → キーワード → 業界／コンテンツ → 並べ替え ===== */
+/* 業界はインタビュー、コンテンツは活動記録を選んだときだけ表示する */
+form.search-form [data-for-type][hidden],
+#articleForm [data-for-type][hidden] {
+  display: none !important;
+}
+form.filters.search-form {
+  grid-template-columns: minmax(150px, 1fr) minmax(220px, 1.8fr) minmax(
+      150px,
+      1fr
+    );
+}
+form.filters.search-form:is(
+    [data-type="インタビュー"],
+    [data-type="活動記録"]
+  ) {
+  grid-template-columns:
+    minmax(150px, 1fr) minmax(220px, 1.8fr) minmax(150px, 1fr)
+    minmax(150px, 1fr);
+}
+@media (max-width: 800px) {
+  form.filters.search-form,
+  form.filters.search-form:is(
+      [data-type="インタビュー"],
+      [data-type="活動記録"]
+    ) {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }

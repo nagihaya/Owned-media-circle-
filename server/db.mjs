@@ -1,5 +1,6 @@
 import mysql from "mysql2/promise";
 import { cleanForms } from "./google-forms.mjs";
+import { LEGACY_TYPES } from "./validation.mjs";
 let pool;
 function configError(hint) {
   const e = new Error("DATABASE_URL: " + hint);
@@ -145,9 +146,9 @@ export function mapArticle(a) {
     imageUrl: a.image_url || "",
     publishedAt: a.published_at.toISOString(),
     createdAt: a.created_at.toISOString(),
-    industry: a.industry,
-    size: a.company_size,
     type: a.article_type,
+    industry: a.industry,
+    activityKind: a.activity_kind || null,
     visible: Boolean(a.visible),
     featured: Boolean(a.featured),
     manualTags: Boolean(a.manual_tags),
@@ -159,23 +160,33 @@ export async function articleList(filters = {}, admin = false) {
   const parts = admin ? ["1=1"] : ["visible=1"];
   const args = [];
   if (filters.category === "interviews")
-    parts.push(
-      "article_type IN ('経営者インタビュー','若手社員インタビュー','座談会')",
-    );
+    parts.push("article_type='インタビュー'");
   if (filters.category === "knowledge")
     parts.push("article_type='ビジネス知識'");
-  for (const [key, col] of [
-    ["industry", "industry"],
-    ["size", "company_size"],
-    ["type", "article_type"],
-  ])
-    if (filters[key]) {
-      parts.push(`${col}=?`);
-      args.push(String(filters[key]).slice(0, 80));
-    }
+  // 旧タイプ名のURL（例：?type=座談会）も新しいタイプで絞り込む
+  const type = filters.type
+    ? LEGACY_TYPES[filters.type] || String(filters.type).slice(0, 80)
+    : "";
+  if (type) {
+    parts.push("article_type=?");
+    args.push(type);
+  }
+  // 業界はインタビュー、コンテンツは活動記録のときだけ絞り込みに使う
+  if (filters.industry && type !== "活動記録" && type !== "ビジネス知識") {
+    parts.push("industry=?");
+    args.push(String(filters.industry).slice(0, 80));
+  }
+  if (
+    filters.activityKind &&
+    type !== "インタビュー" &&
+    type !== "ビジネス知識"
+  ) {
+    parts.push("activity_kind=?");
+    args.push(String(filters.activityKind).slice(0, 80));
+  }
   if (filters.unclassified === "true") {
     parts.push(
-      "(industry IS NULL OR company_size IS NULL OR article_type IS NULL)",
+      "(article_type IS NULL OR (article_type='インタビュー' AND industry IS NULL) OR (article_type='活動記録' AND activity_kind IS NULL))",
     );
   }
   const q = String(filters.q || "")
@@ -226,8 +237,7 @@ export async function homeData() {
       query(
         "SELECT * FROM articles WHERE visible=1 AND featured=1 ORDER BY published_at DESC,created_at DESC,id DESC LIMIT 3",
       ).then((rows) => rows.map(mapArticle)),
-      // 活動記録：タイトルか冒頭文に「活動記録」を含む記事（タグ・メニューと同じ条件）
-      articleList({ q: "活動記録" }),
+      articleList({ type: "活動記録" }),
     ]);
   return {
     settings: publicSettings(s),
@@ -256,7 +266,7 @@ export async function metrics() {
       "SELECT m.target,a.title,SUM(m.count) AS count FROM daily_metrics m LEFT JOIN articles a ON a.id=m.target WHERE m.kind='click' GROUP BY m.target,a.title ORDER BY count DESC",
     ),
     query(
-      "SELECT COUNT(*) AS total,SUM(visible) AS published,SUM(industry IS NULL OR company_size IS NULL OR article_type IS NULL) AS unclassified FROM articles",
+      "SELECT COUNT(*) AS total,SUM(visible) AS published,SUM(article_type IS NULL OR (article_type='インタビュー' AND industry IS NULL) OR (article_type='活動記録' AND activity_kind IS NULL)) AS unclassified FROM articles",
     ),
   ]);
   return { monthly, pages, clicks, totals: totals[0] };

@@ -5,9 +5,8 @@ const year = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", year: 
 const columns = [
   { title: "記事を探す", links: [
     ["インタビュー", "/interviews"],
-    ["活動記録", "/articles?q=" + encodeURIComponent("活動記録")],
+    ["活動記録", "/articles?type=" + encodeURIComponent("活動記録")],
     ["ビジネス知識", "/knowledge"],
-    ["イベント", "/interviews?type=" + encodeURIComponent("座談会")],
     ["記事検索", "/articles"],
   ]},
   { title: "T-Bizについて", links: [

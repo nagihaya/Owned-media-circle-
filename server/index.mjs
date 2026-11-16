@@ -26,7 +26,7 @@ import {
   scheduledAuthorized,
   configuredOrigin,
 } from "./auth.mjs";
-import { INDUSTRIES, SIZES, TYPES } from "./validation.mjs";
+import { INDUSTRIES, ACTIVITY_KINDS, TYPES } from "./validation.mjs";
 import { maintenance } from "./maintenance.mjs";
 import { formView, FORM_SLOTS } from "./google-forms.mjs";
 import { syncRss, enrichPending } from "./rss.mjs";
@@ -172,7 +172,7 @@ app.get("/admin", async (req, res) => {
     csrf: csrfToken(req, res),
     types: TYPES,
     industries: INDUSTRIES,
-    sizes: SIZES,
+    activityKinds: ACTIVITY_KINDS,
     formSlots: FORM_SLOTS,
   });
 });
@@ -220,7 +220,7 @@ for (const [route, title] of Object.entries(names))
       tbizRules,
       csrf,
       industries: INDUSTRIES,
-      sizes: SIZES,
+      activityKinds: ACTIVITY_KINDS,
       types: TYPES,
       query: req.query,
       canonical,

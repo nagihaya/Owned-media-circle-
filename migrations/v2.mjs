@@ -165,3 +165,27 @@ export async function migrateV9() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (9)");
 }
+// v10: 記事タイプを3つ（インタビュー／活動記録／ビジネス知識）に統合し、
+// 活動記録の「コンテンツ」（ビジコン・ポップアップ・通常活動）列を追加する。
+// 企業規模・業界の既存データは消さない（企業規模は今後使わない）。
+export async function migrateV10() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=10"))
+      .length
+  )
+    return;
+  const cols = await query(
+    "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='articles' AND COLUMN_NAME='activity_kind'",
+  );
+  if (!cols.length)
+    await query(
+      "ALTER TABLE articles ADD COLUMN activity_kind VARCHAR(20) NULL",
+    );
+  await query(
+    "UPDATE articles SET article_type='インタビュー',revision=revision+1 WHERE article_type IN ('経営者インタビュー','若手社員インタビュー')",
+  );
+  await query(
+    "UPDATE articles SET article_type='活動記録',revision=revision+1 WHERE article_type='座談会'",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (10)");
+}

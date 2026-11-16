@@ -83,20 +83,14 @@ test("contact requires phone, all fields, consent and request UUID", () => {
     false,
   );
 });
-test("article type choices have exactly four types; unknown represented by null", () => {
-  assert.deepEqual(TYPES, [
-    "経営者インタビュー",
-    "若手社員インタビュー",
-    "座談会",
-    "ビジネス知識",
-  ]);
+test("article type choices are インタビュー・活動記録・ビジネス知識; unknown represented by null", () => {
+  assert.deepEqual(TYPES, ["インタビュー", "活動記録", "ビジネス知識"]);
   const v = {
     title: "記事",
     lead: "冒頭",
     noteUrl: note,
     publishedAt: "2026-01-02T09:00:00+09:00",
     industry: null,
-    size: null,
     type: null,
     visible: false,
     imageUrl: "",
@@ -144,7 +138,6 @@ test("bad note article URL is a validation failure rather than an uncaught excep
     noteUrl: "https://note.com/",
     publishedAt: "2026-01-02T00:00:00Z",
     industry: null,
-    size: null,
     type: null,
     visible: false,
     imageUrl: "",
@@ -255,9 +248,38 @@ test("X URL accepts x.com/twitter.com or blank, and rejects other hosts", async 
       xUrl,
     );
 });
-test("company size choices are 大企業 and スタートアップ・ベンチャー only", async () => {
-  const { SIZES } = await import("../server/validation.mjs");
-  assert.deepEqual(SIZES, ["大企業", "スタートアップ・ベンチャー"]);
+test("industry is kept only for インタビュー and コンテンツ only for 活動記録", async () => {
+  const { ACTIVITY_KINDS } = await import("../server/validation.mjs");
+  assert.deepEqual(ACTIVITY_KINDS, ["ビジコン", "ポップアップ", "通常活動"]);
+  const v = {
+    title: "記事",
+    lead: "冒頭",
+    noteUrl: "https://note.com/tbiz/n/n123abc",
+    publishedAt: "2026-01-02T09:00:00+09:00",
+    industry: "金融",
+    activityKind: "ビジコン",
+    visible: true,
+    imageUrl: "",
+  };
+  const i = articleSchema.parse({ ...v, type: "インタビュー" });
+  assert.equal(i.industry, "金融");
+  assert.equal(i.activityKind, null);
+  const a = articleSchema.parse({ ...v, type: "活動記録" });
+  assert.equal(a.industry, null);
+  assert.equal(a.activityKind, "ビジコン");
+  const k = articleSchema.parse({ ...v, type: "ビジネス知識" });
+  assert.equal(k.industry, null);
+  assert.equal(k.activityKind, null);
+  assert.equal(
+    articleSchema.safeParse({ ...v, type: "活動記録", activityKind: "その他" })
+      .success,
+    false,
+  );
+  assert.equal(
+    articleSchema.safeParse({ ...v, type: "インタビュー", size: "大企業" })
+      .success,
+    false,
+  );
 });
 test("article schema accepts the featured flag and defaults it to false", async () => {
   const v = {
@@ -266,7 +288,6 @@ test("article schema accepts the featured flag and defaults it to false", async 
     noteUrl: "https://note.com/tbiz/n/n123abc",
     publishedAt: "2026-01-02T09:00:00+09:00",
     industry: null,
-    size: null,
     type: null,
     visible: true,
     imageUrl: "",

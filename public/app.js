@@ -361,7 +361,27 @@ if (
   });
 }
 const search = document.querySelector(".search-form");
+// 業界はインタビュー、コンテンツは活動記録のときだけ表示・送信する
+const chipOf = (a) =>
+  a.type === "インタビュー"
+    ? a.industry
+    : a.type === "活動記録"
+      ? a.activityKind
+      : null;
+function syncTypeFields(form) {
+  const type = form.querySelector("[name=type]")?.value || "";
+  form.dataset.type = type;
+  for (const label of form.querySelectorAll("[data-for-type]")) {
+    const on = label.dataset.forType === type;
+    label.hidden = !on;
+    const select = label.querySelector("select");
+    if (select) select.disabled = !on;
+  }
+}
 if (search) {
+  search
+    .querySelector("[name=type]")
+    ?.addEventListener("change", () => syncTypeFields(search));
   let timer, controller;
   const grid = document.querySelector("#searchGrid"),
     count = document.querySelector("#resultCount");
@@ -382,8 +402,8 @@ if (search) {
             .map(
               (a) =>
                 `<article class="card post-card"><a class="post-card-link" href="/go/${escapeHTML(a.id)}" target="_blank" rel="noopener noreferrer"><div class="thumb">${a.imageUrl ? `<img src="${escapeHTML(a.imageUrl)}" alt="" loading="lazy" width="640" height="360">` : ""}</div><div class="card-body">${
-                  a.industry || a.size
-                    ? `<div class="card-chips">${a.industry ? `<span class="chip chip-industry">${escapeHTML(a.industry)}</span>` : ""}${a.size ? `<span class="chip chip-size">${escapeHTML(a.size)}</span>` : ""}</div>`
+                  chipOf(a)
+                    ? `<div class="card-chips"><span class="chip chip-industry">${escapeHTML(chipOf(a))}</span></div>`
                     : ""
                 }<h3>${escapeHTML(a.title)}</h3>${a.lead ? `<p class="card-lead">${escapeHTML(a.lead)}</p>` : ""}<div class="card-foot"><span class="card-meta">${a.type ? `<span class="card-type">${escapeHTML(a.type)}</span>` : ""}</span><span class="card-arrow" aria-hidden="true">→</span></div></div><span class="sr-only">（noteで読む・新しいタブで開く）</span></a></article>`,
             )

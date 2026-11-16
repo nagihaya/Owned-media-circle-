@@ -1,10 +1,13 @@
 import { z } from "zod";
-export const TYPES = [
-  "経営者インタビュー",
-  "若手社員インタビュー",
-  "座談会",
-  "ビジネス知識",
-];
+export const TYPES = ["インタビュー", "活動記録", "ビジネス知識"];
+// 活動記録の「コンテンツ」（記事タイプが活動記録のときだけ使う）
+export const ACTIVITY_KINDS = ["ビジコン", "ポップアップ", "通常活動"];
+// 旧タイプ名（URLや古いデータ）→ 新タイプ名
+export const LEGACY_TYPES = {
+  経営者インタビュー: "インタビュー",
+  若手社員インタビュー: "インタビュー",
+  座談会: "活動記録",
+};
 export const INDUSTRIES = [
   "IT・SaaS",
   "メーカー",
@@ -13,8 +16,6 @@ export const INDUSTRIES = [
   "人材",
   "その他",
 ];
-export const SIZES = ["大企業", "スタートアップ・ベンチャー"];
-export const INTERVIEW_TYPES = TYPES.slice(0, 3);
 const enumNullable = (values) => z.enum(values).nullable();
 export function safeUrl(value, { note = false, relative = false } = {}) {
   if (
@@ -114,15 +115,24 @@ export const articleSchema = z
       .string()
       .datetime({ offset: true })
       .transform((v) => new Date(v)),
-    industry: enumNullable(INDUSTRIES),
-    size: enumNullable(SIZES),
     type: enumNullable(TYPES),
+    industry: enumNullable(INDUSTRIES).default(null),
+    activityKind: enumNullable(ACTIVITY_KINDS).default(null),
     visible: z.boolean(),
     featured: z.boolean().default(false),
     imageUrl: webUrl.or(z.literal("")),
     revision: z.number().int().nonnegative().optional(),
   })
-  .strict();
+  .strict()
+  .transform(articleTags);
+// 業界はインタビューだけ、コンテンツは活動記録だけに付ける
+export function articleTags(v) {
+  return {
+    ...v,
+    industry: v.type === "インタビュー" ? (v.industry ?? null) : null,
+    activityKind: v.type === "活動記録" ? (v.activityKind ?? null) : null,
+  };
+}
 export const contactSchema = z
   .object({
     kind: z.enum(["取材依頼", "協賛相談", "その他"]),

@@ -185,6 +185,7 @@ const names = {
   "/contact": "取材・協賛",
   "/policy": "各種ポリシー",
   "/recruit": "メンバー募集",
+  "/shinkan": "新歓特設ページ",
 };
 for (const [route, title] of Object.entries(names))
   app.get(route, async (req, res) => {

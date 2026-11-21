@@ -3945,3 +3945,63 @@ form.filters.search-form:is(
     grid-template-columns: minmax(0, 1fr) auto;
   }
 }
+
+/* ===== 差し色（エメラルド）：使う場所を絞って少しだけ ===== */
+/* 線・バーは明るい色、文字・ボタンは読みやすい濃い色を使う */
+:root {
+  --tbiz-accent: #0e9f6e;
+  --tbiz-accent-text: #047857;
+  --tbiz-accent-hover: #065f46;
+  --tbiz-accent-soft: #d5f3e6;
+}
+/* メニュー：今いるページの下線（スマホは左の線） */
+.nav .navlinks a[aria-current="page"]::after {
+  background: var(--tbiz-accent);
+}
+@media (max-width: 800px) {
+  .js .nav .navlinks.is-open a[aria-current="page"] {
+    box-shadow: inset 3px 0 0 var(--tbiz-accent);
+  }
+}
+/* スライドの進行バー */
+.slider-dot::after {
+  background: var(--tbiz-accent);
+}
+/* 記事カード：記事タイプの文字と、業界・コンテンツのラベル */
+.post-card .card-meta .card-type,
+.card-meta .card-type,
+.feature-card-body .eyebrow {
+  color: var(--tbiz-accent-text) !important;
+}
+.chip-industry,
+.post-card .chip.chip-industry,
+.feature-meta .pill.dark,
+.feature-meta .pill {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--tbiz-accent-soft);
+  color: var(--tbiz-accent-text);
+  font-weight: 600;
+}
+/* 紹介文の最後の行にマーカー */
+.intro-mark {
+  background: linear-gradient(transparent 60%, var(--tbiz-accent-soft) 60%);
+  padding: 0 2px;
+}
+/* 押してほしいボタン：T-Bizとは？・取材のお問い合わせ */
+body:not(.admin-body) .intro-btn,
+body:not(.admin-body) .cta .btn {
+  background: var(--tbiz-accent-text);
+  border-color: var(--tbiz-accent-text);
+  color: #fff;
+}
+body:not(.admin-body) .intro-btn:hover,
+body:not(.admin-body) .cta .btn:hover {
+  background: var(--tbiz-accent-hover);
+  border-color: var(--tbiz-accent-hover);
+}
+/* 「すべて見る →」 */
+.more-link-pc,
+.more-link-sp {
+  color: var(--tbiz-accent-text);
+}

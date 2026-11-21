@@ -3946,12 +3946,12 @@ form.filters.search-form:is(
   }
 }
 
-/* ===== 差し色（エメラルド）：使う場所を絞って少しだけ ===== */
-/* 線・バーは明るい色、文字・ボタンは読みやすい濃い色を使う */
+/* ===== 差し色（紺色）：使う場所を絞って少しだけ ===== */
+/* 線・文字は紺、ラベル背景とマーカーは薄い紺 */
 :root {
-  --tbiz-accent: #3ccf91;
-  --tbiz-accent-text: #1fa36e;
-  --tbiz-accent-soft: #e6f8ef;
+  --tbiz-accent: #1f3a6e;
+  --tbiz-accent-text: #1f3a6e;
+  --tbiz-accent-soft: #e2e8f3;
 }
 /* メニュー：今いるページの下線（スマホは左の線） */
 .nav .navlinks a[aria-current="page"]::after {
@@ -3987,7 +3987,7 @@ form.filters.search-form:is(
   background: linear-gradient(transparent 60%, var(--tbiz-accent-soft) 60%);
   padding: 0 2px;
 }
-/* 記事を選んだとき（ホバー・キーボード選択・タップ）にタイトルを緑に */
+/* 記事を選んだとき（ホバー・キーボード選択・タップ）にタイトルを差し色に */
 .card.post-card:hover h3,
 .card.post-card:focus-within h3,
 .card.post-card.is-touched h3,

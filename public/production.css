@@ -4002,3 +4002,30 @@ form.filters.search-form:is(
 .more-link-sp {
   color: var(--tbiz-accent-text);
 }
+
+/* ===== ボタン：基本は黒、押すと白（黒い文字と黒いふち）に反転 ===== */
+/* マウスのある端末では、乗せたときも同じ表示にする */
+body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) {
+  background: #000;
+  border: 1px solid #000;
+  color: #fff;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger):active {
+  background: #fff;
+  border-color: #000;
+  color: #000;
+}
+@media (hover: hover) {
+  body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger):hover {
+    background: #fff;
+    border-color: #000;
+    color: #000;
+  }
+}
+body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg) {
+  color: inherit;
+}

@@ -3949,10 +3949,9 @@ form.filters.search-form:is(
 /* ===== 差し色（エメラルド）：使う場所を絞って少しだけ ===== */
 /* 線・バーは明るい色、文字・ボタンは読みやすい濃い色を使う */
 :root {
-  --tbiz-accent: #0e9f6e;
-  --tbiz-accent-text: #047857;
-  --tbiz-accent-hover: #065f46;
-  --tbiz-accent-soft: #d5f3e6;
+  --tbiz-accent: #3ccf91;
+  --tbiz-accent-text: #1fa36e;
+  --tbiz-accent-soft: #e6f8ef;
 }
 /* メニュー：今いるページの下線（スマホは左の線） */
 .nav .navlinks a[aria-current="page"]::after {
@@ -3988,17 +3987,15 @@ form.filters.search-form:is(
   background: linear-gradient(transparent 60%, var(--tbiz-accent-soft) 60%);
   padding: 0 2px;
 }
-/* 押してほしいボタン：T-Bizとは？・取材のお問い合わせ */
-body:not(.admin-body) .intro-btn,
-body:not(.admin-body) .cta .btn {
-  background: var(--tbiz-accent-text);
-  border-color: var(--tbiz-accent-text);
-  color: #fff;
-}
-body:not(.admin-body) .intro-btn:hover,
-body:not(.admin-body) .cta .btn:hover {
-  background: var(--tbiz-accent-hover);
-  border-color: var(--tbiz-accent-hover);
+/* 記事を選んだとき（ホバー・キーボード選択・タップ）にタイトルを緑に */
+.card.post-card:hover h3,
+.card.post-card:focus-within h3,
+.card.post-card.is-touched h3,
+.feature-card:hover h3,
+.feature-card:focus-visible h3,
+.feature-card.is-touched h3 {
+  color: var(--tbiz-accent-text);
+  transition: color 0.15s ease;
 }
 /* 「すべて見る →」 */
 .more-link-pc,

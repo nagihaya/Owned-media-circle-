@@ -4483,3 +4483,65 @@ form.filters.search-form {
     padding-bottom: 40px;
   }
 }
+
+/* ===== 記事を選んだときの表示：下線・紺色・写真の拡大はなし（代わりに丸いカーソル） ===== */
+.card.post-card:hover h3,
+.card.post-card:focus-within h3,
+.card.post-card.is-touched h3,
+.feature-card:hover h3,
+.feature-card:focus-visible h3,
+.feature-card.is-touched h3 {
+  color: inherit;
+  text-decoration: none;
+}
+.card.post-card:hover .thumb img,
+.card.post-card:focus-within .thumb img {
+  transform: none;
+}
+/* キーボードで選んだときは、分かるように枠を出す */
+.post-card-link:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 4px;
+}
+
+/* ===== 丸いカーソル（マウス操作のパソコンだけ。記事の上で黒い丸と矢印に） ===== */
+.cursor-follow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translate3d(var(--x, -200px), var(--y, -200px), 0);
+  will-change: transform;
+}
+.cursor-follow-dot {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.2);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cursor-follow svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+.cursor-follow.is-on .cursor-follow-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+/* 丸が出ている間は、元の矢印カーソルを隠す */
+.has-cursor-follow :is(.post-card, .feature-card),
+.has-cursor-follow :is(.post-card, .feature-card) * {
+  cursor: none;
+}

@@ -434,3 +434,55 @@ if (search) {
     timer = setTimeout(run, 350);
   });
 }
+// 記事カードの上で、マウスカーソルを黒い丸＋矢印に変える。
+// マウスで操作するパソコンだけ（スマホ・タッチ・動きを減らす設定では何もしない）。
+if (
+  matchMedia("(hover: hover) and (pointer: fine)").matches &&
+  !matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  const dot = document.createElement("div");
+  dot.className = "cursor-follow";
+  dot.setAttribute("aria-hidden", "true");
+  dot.innerHTML =
+    '<div class="cursor-follow-dot"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>';
+  document.body.append(dot);
+  document.documentElement.classList.add("has-cursor-follow");
+  let tx = -200,
+    ty = -200,
+    x = tx,
+    y = ty,
+    frame = 0;
+  const step = () => {
+    // 少し遅れてなめらかについてくる
+    x += (tx - x) * 0.22;
+    y += (ty - y) * 0.22;
+    dot.style.setProperty("--x", x.toFixed(1) + "px");
+    dot.style.setProperty("--y", y.toFixed(1) + "px");
+    frame =
+      Math.abs(tx - x) + Math.abs(ty - y) > 0.3
+        ? requestAnimationFrame(step)
+        : 0;
+  };
+  document.addEventListener(
+    "pointermove",
+    (e) => {
+      if (e.pointerType !== "mouse") return;
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!dot.classList.contains("is-on")) {
+        x = tx;
+        y = ty;
+      }
+      dot.classList.toggle(
+        "is-on",
+        Boolean(e.target.closest?.(".post-card:not(.post-card-placeholder), .feature-card")),
+      );
+      if (!frame) frame = requestAnimationFrame(step);
+    },
+    { passive: true },
+  );
+  document.addEventListener("pointerleave", () =>
+    dot.classList.remove("is-on"),
+  );
+  addEventListener("blur", () => dot.classList.remove("is-on"));
+}

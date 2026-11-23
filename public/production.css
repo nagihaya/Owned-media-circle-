@@ -4138,3 +4138,44 @@ body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg
     grid-row: 1;
   }
 }
+
+/* トップの記事欄：最新5件を「上に2件・下に3件」 */
+.section-split > .cards {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 40px;
+}
+.section-split > .cards > .post-card {
+  grid-column: span 2;
+}
+.section-split > .cards > .post-card:nth-of-type(-n + 2) {
+  grid-column: span 3;
+}
+.section-split > .cards > .post-card:nth-of-type(n + 3) .card-body h3 {
+  font-size: 15px;
+}
+.section-split > .cards > .post-card:nth-of-type(n + 3) .card-meta .card-type,
+.section-split > .cards > .post-card:nth-of-type(n + 3) .chip.chip-industry {
+  font-size: 12px;
+}
+/* スマホ：1件目は大きく、残り4件は2列 */
+@media (max-width: 900px) {
+  .section-split > .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 28px;
+  }
+  .section-split > .cards > .post-card,
+  .section-split > .cards > .post-card:nth-of-type(-n + 2) {
+    grid-column: span 1;
+  }
+  .section-split > .cards > .post-card:first-of-type {
+    grid-column: 1 / -1;
+  }
+  .section-split > .cards > .post-card:not(:first-of-type) .card-body h3 {
+    font-size: 14px;
+  }
+  .section-split > .cards > .post-card:not(:first-of-type) .card-body {
+    column-gap: 8px;
+  }
+}

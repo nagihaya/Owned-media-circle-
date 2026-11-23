@@ -242,9 +242,9 @@ export async function homeData() {
   return {
     settings: publicSettings(s),
     slides: sl,
-    interviews: interview.items.slice(0, 3),
-    activity: activity.items.slice(0, 3),
-    knowledge: knowledge.items.slice(0, 3),
+    interviews: interview.items.slice(0, 5),
+    activity: activity.items.slice(0, 5),
+    knowledge: knowledge.items.slice(0, 5),
     featured: featured.length ? featured : latest.items.slice(0, 3),
   };
 }

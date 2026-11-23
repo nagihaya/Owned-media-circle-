@@ -4139,11 +4139,21 @@ body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg
   }
 }
 
-/* トップの記事欄：最新5件をすべて同じ大きさで（パソコンは2列、スマホは1列） */
-.section-split > .cards {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 24px;
-  row-gap: 40px;
+/* トップの記事欄：最新5件をすべて同じ大きさで。
+   パソコンは3列の格子に「見出し＋記事2件」「記事3件」（見出しの下にも記事を置く）。スマホは1列 */
+@media (min-width: 901px) {
+  .section-split {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 48px;
+  }
+  .section-split > .cards {
+    display: contents;
+  }
+  .section-split .section-head {
+    grid-column: 1;
+    grid-row: 1;
+  }
 }
 @media (max-width: 900px) {
   .section-split > .cards {

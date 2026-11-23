@@ -4199,3 +4199,34 @@ body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg
     row-gap: 48px;
   }
 }
+
+/* ===== 見出し：英語を大きく、その下に日本語を小さく ===== */
+main .section-title.section-title-en {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.1;
+}
+.section-title-en .en {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.section-title-en .ja {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #6b7480;
+}
+@media (max-width: 800px) {
+  .section-title-en .en {
+    font-size: 28px;
+  }
+  .section-title-en .ja {
+    font-size: 12px;
+  }
+}
+/* ヘッダーのメニューは英語 */
+.nav .navlinks a {
+  letter-spacing: 0.02em;
+}

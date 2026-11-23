@@ -5398,3 +5398,42 @@ header.nav .navlinks {
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
   }
 }
+
+/* メニュー：英語の下に小さく日本語 */
+.nav-pills .np-ja {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+@media (min-width: 960px) {
+  header.nav .navlinks .nav-pills a {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+    min-height: 48px;
+    line-height: 1.15;
+  }
+  header.nav .navlinks .nav-pills a .np-en {
+    font-size: 15px;
+  }
+}
+@media (min-width: 960px) and (max-width: 1099px) {
+  header.nav .navlinks .nav-pills a .np-en {
+    font-size: 14px;
+  }
+  .nav-pills .np-ja {
+    font-size: 9px;
+  }
+}
+/* スマホ・タブレット：英語の右に小さく日本語 */
+@media (max-width: 959px) {
+  .nav-pills a {
+    gap: 12px;
+  }
+  .nav-pills .np-ja {
+    font-size: 12px;
+    color: #6b7480;
+    opacity: 1;
+  }
+}

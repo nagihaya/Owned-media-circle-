@@ -4912,3 +4912,127 @@ form.filters.search-form {
     background-size: 28px 28px;
   }
 }
+
+/* ===== フッターの上：Join Our Team（メンバー募集への案内） ===== */
+.join-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 96px;
+  background: #111;
+  color: #fff;
+}
+.join-band + .site-footer-wrap {
+  margin-top: 0;
+}
+.join-photos {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: flex;
+}
+.join-photos img {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  object-fit: cover;
+}
+/* 写真の上に黒い膜をかけて、白い文字を読みやすく */
+.join-band.has-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.42));
+}
+.join-inner {
+  max-width: 1136px;
+  margin: 0 auto;
+  padding: 144px 22px;
+}
+.join-title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 36px;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.join-plus {
+  position: absolute;
+  top: -0.35em;
+  right: -0.6em;
+  font-size: 0.55em;
+  font-weight: 400;
+}
+.join-text {
+  margin: 0 0 56px;
+  max-width: 40em;
+  font-size: 16px;
+  line-height: 2.3;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.92);
+}
+.join-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.join-more-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  color: #000;
+  font-size: 18px;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.2s ease;
+}
+.join-more:hover .join-more-icon,
+.join-more:active .join-more-icon {
+  background: #000;
+  color: #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+.join-more:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 6px;
+}
+@media (max-width: 800px) {
+  .join-band {
+    margin-top: 64px;
+  }
+  .join-photos img + img {
+    display: none;
+  }
+  .join-inner {
+    padding: 88px 20px;
+  }
+  .join-title {
+    margin-bottom: 24px;
+  }
+  .join-text {
+    margin-bottom: 40px;
+    font-size: 14px;
+    line-height: 2.1;
+    letter-spacing: 0.06em;
+  }
+  .join-more {
+    font-size: 17px;
+  }
+  .join-more-icon {
+    width: 44px;
+    height: 44px;
+  }
+}

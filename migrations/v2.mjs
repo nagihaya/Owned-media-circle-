@@ -216,3 +216,25 @@ export async function migrateV13() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (13)");
 }
+// v14: フッター上の「Join Our Team」（メンバー募集への案内）の初期値（未設定のときだけ）
+export async function migrateV14() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=14"))
+      .length
+  )
+    return;
+  const defaults = [
+    ["$.joinTitle", "Join Our Team"],
+    [
+      "$.joinText",
+      "T-Bizは、一緒に「やりたいを形にする」仲間を募集しています。\nビジネスコンテストへの挑戦、企業へのインタビュー、イベントの企画など、学年・学部を問わず活躍できます。\n募集要項をぜひご覧ください。",
+    ],
+    ["$.joinUrl", "/recruit"],
+  ];
+  for (const [path, value] of defaults)
+    await query(
+      `UPDATE site_settings SET data=JSON_SET(data,'${path}',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'${path}') IS NULL`,
+      [value],
+    );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (14)");
+}

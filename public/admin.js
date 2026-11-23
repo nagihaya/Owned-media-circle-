@@ -81,6 +81,9 @@
       "instagramUrl",
       "xUrl",
       "introLabel",
+      "joinTitle",
+      "joinText",
+      "joinUrl",
       "introCatch",
       "introText",
       "response",
@@ -91,6 +94,12 @@
     if ($("#rssForm"))
       $("#rssForm").elements.rssUrl.value = config.rssUrl || "";
     fillGoogleForms(config.googleForms);
+    for (const slot of ["left", "right"]) {
+      const url = slot === "left" ? config.joinImageLeft : config.joinImageRight;
+      document.querySelector(`[data-join-preview="${slot}"]`).innerHTML = url
+        ? `<img src="${h(url)}" alt="現在の写真">`
+        : "<p>写真は未設定です。</p>";
+    }
     $("#introImagePreview").innerHTML = config.introImageUrl
       ? `<img src="${h(config.introImageUrl)}" alt="現在の写真">`
       : "<p>写真は未設定です。</p>";
@@ -189,6 +198,39 @@
     ),
   );
   loadGallery().catch((e) => message("#galleryStatus", e.message, true));
+  for (const form of document.querySelectorAll(".join-image-form")) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      action(
+        e.submitter,
+        async () => {
+          const url = await upload(form.elements.file.files[0]);
+          await api("/api/admin/join-image", {
+            method: "PUT",
+            body: { slot: form.dataset.slot, url },
+          });
+          form.reset();
+          await loadSettings();
+          message("#joinImageStatus", "写真を保存しました。");
+        },
+        "#joinImageStatus",
+      );
+    });
+    form.querySelector("[data-join-remove]").addEventListener("click", (e) =>
+      action(
+        e.currentTarget,
+        async () => {
+          await api("/api/admin/join-image", {
+            method: "PUT",
+            body: { slot: form.dataset.slot, url: "" },
+          });
+          await loadSettings();
+          message("#joinImageStatus", "写真を外しました。");
+        },
+        "#joinImageStatus",
+      ),
+    );
+  }
   $("#introImageForm").addEventListener("submit", (e) => {
     e.preventDefault();
     action(

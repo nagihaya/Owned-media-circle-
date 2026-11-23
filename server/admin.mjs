@@ -255,6 +255,22 @@ admin.put("/intro-image", async (req, res) => {
   );
   res.json({ ok: true });
 });
+// フッター上の「Join Our Team」の写真（左右2枚。空文字で外す）
+admin.put("/join-image", async (req, res) => {
+  const { slot, url } = z
+    .object({
+      slot: z.enum(["left", "right"]),
+      url: z.string().regex(MEDIA_PATH).max(768).or(z.literal("")),
+    })
+    .strict()
+    .parse(req.body);
+  const key = slot === "left" ? "$.joinImageLeft" : "$.joinImageRight";
+  await query(
+    `UPDATE site_settings SET data=JSON_SET(data,'${key}',?),revision=revision+1 WHERE id=1`,
+    [url],
+  );
+  res.json({ ok: true });
+});
 // トップのギャラリー（活動写真の帯）。12枚まで、並び順どおりに保存する
 const GALLERY_MAX = 12;
 admin.put("/gallery", async (req, res) => {

@@ -4029,3 +4029,112 @@ body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger):active {
 body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg) {
   color: inherit;
 }
+
+/* ===== 記事カード：枠なしのシンプルな形（写真 → 記事タイプ・業界 → 太字タイトル2行） ===== */
+.card.post-card,
+.card.post-card:hover,
+.card.post-card:focus-within,
+.card.post-card:active,
+.card.post-card.is-touched {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.post-card .thumb {
+  border: 1px solid #e6e8eb;
+  border-radius: 0;
+  overflow: hidden;
+}
+.post-card .thumb img {
+  transition: transform 0.4s var(--tbiz-ease);
+}
+.card.post-card:hover .thumb img,
+.card.post-card:focus-within .thumb img {
+  transform: scale(1.03);
+}
+.card.post-card .card-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 8px;
+  padding: 16px 0 0;
+}
+.card.post-card .card-body::after,
+.card.post-card .card-lead,
+.card.post-card .card-arrow {
+  display: none;
+}
+/* 1行目：記事タイプ（紺）＋業界・コンテンツ（グレー） */
+.card.post-card .card-foot {
+  order: -2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.card.post-card .card-type::after {
+  display: none;
+}
+.card.post-card .card-meta .card-type {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.card.post-card .card-chips {
+  order: -1;
+  margin: 0;
+}
+.card.post-card .chip.chip-industry {
+  padding: 0;
+  background: none;
+  color: #8a939c;
+  font-size: 13px;
+  font-weight: 500;
+}
+/* 2行目：太字のタイトル（2行を超えたら「…」） */
+.card.post-card .card-body h3 {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+/* 準備中の枠も同じ形に */
+.post-card-placeholder .ph-line,
+.post-card-placeholder .card-foot .card-arrow {
+  display: none;
+}
+
+/* ===== トップの記事欄：左に見出し＋「すべて見る」、右に記事 ===== */
+@media (min-width: 901px) {
+  .section-split {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr);
+    column-gap: 48px;
+    align-items: start;
+  }
+  .section-split .section-head {
+    grid-column: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
+    margin: 0;
+  }
+  .section-split .section-head .more-link-pc {
+    display: inline-flex;
+    margin: 0;
+  }
+  .section-split > .cards {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

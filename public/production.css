@@ -4868,3 +4868,22 @@ form.filters.search-form {
     background-size: 100% 100%;
   }
 }
+
+/* Pick up（見出し＋スライドショー）の背景を、画面の端から端まで薄いグレーに */
+.section.pickup-head,
+.hero.hero-pickup {
+  background: #f4f5f7;
+  box-shadow: 0 0 0 100vmax #f4f5f7;
+  clip-path: inset(0 -100vmax);
+}
+.hero.hero-pickup {
+  padding-bottom: 72px;
+}
+@media (max-width: 800px) {
+  .hero.hero-pickup {
+    padding-bottom: 48px;
+  }
+}
+.hero.hero-pickup + .section {
+  border-top: 0;
+}

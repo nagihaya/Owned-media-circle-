@@ -4541,9 +4541,12 @@ form.filters.search-form {
   transform: scale(1);
 }
 /* 丸が出ている間は、元の矢印カーソルを隠す */
-.has-cursor-follow :is(.post-card, .feature-card),
-.has-cursor-follow :is(.post-card, .feature-card) * {
+.has-cursor-follow :is(.post-card, .feature-card, .hero-slider a.slide-inner, .join-band[data-href]),
+.has-cursor-follow :is(.post-card, .feature-card, .hero-slider a.slide-inner, .join-band[data-href]) * {
   cursor: none;
+}
+.join-band[data-href] {
+  cursor: pointer;
 }
 
 /* ===== フッター：黒ベース（文字は白。真っ黒より目に優しい #111） ===== */
@@ -5066,4 +5069,9 @@ form.filters.search-form {
   .join-track {
     animation: none;
   }
+}
+
+.cursor-follow.is-light .cursor-follow-dot {
+  background: #fff;
+  color: #000;
 }

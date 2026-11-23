@@ -440,6 +440,9 @@ if (
   matchMedia("(hover: hover) and (pointer: fine)").matches &&
   !matchMedia("(prefers-reduced-motion: reduce)").matches
 ) {
+  // 丸いカーソルを出す場所：記事カード、リンク付きのスライド、Join Our Circle
+  const CURSOR_TARGETS =
+    ".post-card:not(.post-card-placeholder), .feature-card, .hero-slider a.slide-inner, .join-band[data-href]";
   const dot = document.createElement("div");
   dot.className = "cursor-follow";
   dot.setAttribute("aria-hidden", "true");
@@ -475,8 +478,10 @@ if (
       }
       dot.classList.toggle(
         "is-on",
-        Boolean(e.target.closest?.(".post-card:not(.post-card-placeholder), .feature-card")),
+        Boolean(e.target.closest?.(CURSOR_TARGETS)),
       );
+      // 暗い背景（Join Our Circle）の上では白い丸にする
+      dot.classList.toggle("is-light", Boolean(e.target.closest?.(".join-band")));
       if (!frame) frame = requestAnimationFrame(step);
     },
     { passive: true },
@@ -486,3 +491,11 @@ if (
   );
   addEventListener("blur", () => dot.classList.remove("is-on"));
 }
+// Join Our Circle：欄のどこを押しても see more と同じページへ（キーボードは see more のリンクで操作）
+document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) => {
+  if (e.target.closest("a")) return;
+  const band = e.currentTarget;
+  const href = band.dataset.href;
+  if (/^https:/.test(href)) window.open(href, "_blank", "noopener");
+  else location.assign(href);
+});

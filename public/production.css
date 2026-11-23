@@ -4545,3 +4545,54 @@ form.filters.search-form {
 .has-cursor-follow :is(.post-card, .feature-card) * {
   cursor: none;
 }
+
+/* ===== フッター：紺色ベース（文字は白） ===== */
+.site-footer-wrap {
+  background: var(--tbiz-accent);
+  border-top: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+.site-footer-wrap .site-footer {
+  background: transparent;
+}
+.site-footer-wrap .site-footer-logo,
+.site-footer-wrap .site-footer-logo span,
+.site-footer-wrap .site-footer-col h2,
+.site-footer-wrap .site-footer-social a,
+.site-footer-wrap .site-footer-note {
+  color: #fff;
+}
+.site-footer-wrap .site-footer-logo img {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+.site-footer-wrap .site-footer-brand p {
+  color: rgba(255, 255, 255, 0.72);
+}
+.site-footer-wrap .site-footer-col a {
+  color: rgba(255, 255, 255, 0.78);
+}
+.site-footer-wrap .site-footer-col a:hover,
+.site-footer-wrap .site-footer-social a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.site-footer-wrap .site-footer-social a:hover {
+  text-decoration: none;
+  opacity: 0.75;
+}
+.site-footer-wrap .site-footer-copy,
+.site-footer-wrap .site-footer-admin {
+  color: rgba(255, 255, 255, 0.62);
+}
+.site-footer-wrap .site-footer-admin:hover {
+  color: #fff;
+}
+.site-footer-wrap .site-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: 24px;
+}
+.site-footer-wrap a:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}

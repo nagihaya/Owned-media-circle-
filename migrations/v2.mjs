@@ -160,7 +160,7 @@ export async function migrateV9() {
   await query(
     "UPDATE site_settings SET data=JSON_SET(data,'$.introText',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'$.introText') IS NULL",
     [
-      "T-Biz Labは、東京理科大学発のビジネスサークルT-Bizが運営するメディアです。企業の経営者・社員へのインタビューを掲載し、学生が企業や仕事を知るための情報を届けます。",
+      "T-Bizは、東京理科大学発のビジネスサークルです。企業の経営者・社員へのインタビューや活動の記録を掲載し、学生が企業や仕事を知るための情報を届けます。",
     ],
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (9)");
@@ -261,4 +261,30 @@ export async function migrateV16() {
     "UPDATE site_settings SET data=JSON_SET(data,'$.joinUrl','/shinkan'),revision=revision+1 WHERE id=1 AND JSON_UNQUOTE(JSON_EXTRACT(data,'$.joinUrl'))='/recruit'",
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (16)");
+}
+// v17: サイト名を「T-Biz Lab」から「T-Biz」に。保存済みの文章の「T-Biz Lab」も「T-Biz」に置き換える
+// （紹介文が初期値のままなら、言い回しが重ならない新しい初期値にする）
+const OLD_INTRO_TEXT =
+  "T-Biz Labは、東京理科大学発のビジネスサークルT-Bizが運営するメディアです。企業の経営者・社員へのインタビューを掲載し、学生が企業や仕事を知るための情報を届けます。";
+const NEW_INTRO_TEXT =
+  "T-Bizは、東京理科大学発のビジネスサークルです。企業の経営者・社員へのインタビューや活動の記録を掲載し、学生が企業や仕事を知るための情報を届けます。";
+export async function migrateV17() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=17"))
+      .length
+  )
+    return;
+  const [row] = await query("SELECT data FROM site_settings WHERE id=1");
+  if (row) {
+    const data = typeof row.data === "string" ? JSON.parse(row.data) : row.data;
+    if (data.introText === OLD_INTRO_TEXT) data.introText = NEW_INTRO_TEXT;
+    for (const [k, v] of Object.entries(data))
+      if (typeof v === "string" && v.includes("T-Biz Lab"))
+        data[k] = v.replaceAll("T-Biz Lab", "T-Biz");
+    await query(
+      "UPDATE site_settings SET data=?,revision=revision+1 WHERE id=1",
+      [JSON.stringify(data)],
+    );
+  }
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (17)");
 }

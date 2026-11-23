@@ -4362,3 +4362,13 @@ main .section-title.section-title-en {
     height: 160px;
   }
 }
+
+/* ギャラリーは角を丸めない（ほかの丸み指定に影響されないよう明示） */
+.gallery-band,
+.gallery-viewport,
+.gallery-item,
+.gallery-item img,
+.gallery-admin-item,
+.gallery-admin-item img {
+  border-radius: 0 !important;
+}

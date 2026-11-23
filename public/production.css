@@ -4596,3 +4596,35 @@ form.filters.search-form {
   outline: 2px solid #fff;
   outline-offset: 3px;
 }
+
+/* ===== スライドショー：中の枠を外し、角をとってシャープに ===== */
+.hero-slider .slide,
+.hero-slider .slide-inner,
+.hero-slider .slide-img,
+.hero-slider .slide img,
+.hero-slider .slider-viewport,
+.hero-slider .slider-stage {
+  border-radius: 0 !important;
+}
+/* カテゴリ（例：若手社員インタビュー）は枠なしの文字だけに */
+.hero-slider .slide .slide-text .slide-cat {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+}
+/* タグも枠なしの文字に（「・」の代わりに間隔で区切る） */
+.hero-slider .slide-tags li {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+  color: #6b7480;
+}
+.hero-slider .slide-tags {
+  column-gap: 14px;
+}
+.hero-slider .slide-tags li::before {
+  content: "#";
+  margin-right: 1px;
+}

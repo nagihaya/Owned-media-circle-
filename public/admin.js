@@ -82,8 +82,6 @@
       "xUrl",
       "heroTitle",
       "heroSub",
-      "heroBadgeText",
-      "heroBadgeUrl",
       "introCatch",
       "introText",
       "response",

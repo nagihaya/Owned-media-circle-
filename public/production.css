@@ -4887,3 +4887,28 @@ form.filters.search-form {
 .hero.hero-pickup + .section {
   border-top: 0;
 }
+
+/* ===== 紹介ブロックの背景：方眼（ます目）。下に向かって薄く消える ===== */
+.intro-band.intro-split {
+  position: relative;
+  isolation: isolate;
+}
+.intro-band.intro-split::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, #e6e9ed 1px, transparent 1px),
+    linear-gradient(to bottom, #e6e9ed 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  pointer-events: none;
+}
+@media (max-width: 800px) {
+  .intro-band.intro-split::before {
+    background-size: 28px 28px;
+  }
+}

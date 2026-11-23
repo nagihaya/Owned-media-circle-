@@ -4759,3 +4759,112 @@ form.filters.search-form {
     padding-top: 32px;
   }
 }
+
+/* ===== 紹介ブロック：ページを開くと順番に現れる ===== */
+.intro-split .intro-catch .intro-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.intro-split .intro-catch .intro-line-in {
+  display: inline-block;
+}
+.intro-label {
+  position: relative;
+  border-bottom: 0;
+}
+.intro-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #111;
+  transform-origin: left center;
+}
+.intro-mark {
+  background: linear-gradient(transparent 60%, var(--tbiz-accent-soft) 60%) no-repeat 0 0 / 100% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. 写真：右から幕が開くように */
+  .intro-split .intro-photo {
+    animation: intro-photo-in 1.3s cubic-bezier(0.7, 0, 0.2, 1) 0.1s both;
+  }
+  .intro-split .intro-photo img {
+    animation: intro-photo-zoom 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  }
+  /* 2. 小見出し → 下線が左から伸びる */
+  .intro-split .intro-label {
+    animation: intro-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+  }
+  .intro-split .intro-label::after {
+    animation: intro-line-draw 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.6s both;
+  }
+  /* 3. キャッチコピー：1行ずつ下からせり上がる */
+  .intro-split .intro-catch .intro-line-in {
+    animation: intro-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(0.55s + var(--i) * 0.14s);
+  }
+  /* 4. マーカーが左から引かれる */
+  .intro-split .intro-catch .intro-mark {
+    animation: intro-mark-draw 0.7s cubic-bezier(0.7, 0, 0.2, 1) 1.25s both;
+  }
+  /* 5. 説明文とボタン */
+  .intro-split .intro-body p {
+    animation: intro-fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 1.05s both;
+  }
+  .intro-split .intro-btn {
+    animation: intro-fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 1.2s both;
+  }
+}
+@keyframes intro-photo-in {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes intro-photo-zoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes intro-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes intro-line-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes intro-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes intro-mark-draw {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}

@@ -4263,7 +4263,8 @@ main .section-title.section-title-en {
 }
 .gallery-item {
   flex: none;
-  height: 340px;
+  /* 画面幅に合わせて、一度に3枚ほど見える高さ */
+  height: clamp(160px, 18vw, 340px);
   margin: 0;
   overflow: hidden;
   background: #eef0f3;
@@ -4306,7 +4307,7 @@ main .section-title.section-title-en {
     padding: 40px 0;
   }
   .gallery-item {
-    height: 220px;
+    height: 150px;
   }
 }
 

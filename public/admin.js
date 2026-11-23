@@ -100,6 +100,9 @@
         ? `<img src="${h(url)}" alt="現在の写真">`
         : "<p>写真は未設定です。</p>";
     }
+    $("#footerImagePreview").innerHTML = config.footerImageUrl
+      ? `<img src="${h(config.footerImageUrl)}" alt="現在の写真">`
+      : "<p>写真は未設定です。</p>";
     $("#introImagePreview").innerHTML = config.introImageUrl
       ? `<img src="${h(config.introImageUrl)}" alt="現在の写真">`
       : "<p>写真は未設定です。</p>";
@@ -231,6 +234,31 @@
       ),
     );
   }
+  $("#footerImageForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    action(
+      e.submitter,
+      async () => {
+        const url = await upload(e.target.elements.file.files[0]);
+        await api("/api/admin/footer-image", { method: "PUT", body: { url } });
+        e.target.reset();
+        await loadSettings();
+        message("#footerImageStatus", "写真を保存しました。");
+      },
+      "#footerImageStatus",
+    );
+  });
+  $("#footerImageRemove").addEventListener("click", (e) =>
+    action(
+      e.currentTarget,
+      async () => {
+        await api("/api/admin/footer-image", { method: "PUT", body: { url: "" } });
+        await loadSettings();
+        message("#footerImageStatus", "写真を外しました。");
+      },
+      "#footerImageStatus",
+    ),
+  );
   $("#introImageForm").addEventListener("submit", (e) => {
     e.preventDefault();
     action(

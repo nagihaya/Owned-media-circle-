@@ -2,49 +2,22 @@
 const ext = (u) => /^https:/.test(u || "");
 const extAttr = (u) => ext(u) ? 'target="_blank" rel="noopener noreferrer"' : "";
 const year = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric" }).replace(/\D/g, "");
-const columns = [
-  { title: "記事を探す", links: [
-    ["インタビュー", "/interviews"],
-    ["活動記録", "/articles?type=" + encodeURIComponent("活動記録")],
-    ["ビジネス知識", "/knowledge"],
-    ["記事検索", "/articles"],
-  ]},
-  { title: "T-Bizについて", links: [
-    ["T-Bizとは？", "/about"],
-    ["note", settings.noteUrl],
-  ]},
-  { title: "取材", links: [
-    ["取材のご依頼", "/contact?form=interview"],
-    ["お問い合わせ", "/contact?form=inquiry"],
-  ]},
-  { title: "参加する", links: [
-    ["新歓特設ページ", "/shinkan"],
-    ["メンバー募集", "/recruit"],
-  ]},
-  { title: "各種ポリシー", links: policies.map((p, i) => [p.title, "/policy#policy-" + i]) },
-];
 %>
-<% if((settings.joinTitle||settings.joinText)&&!(typeof route!=='undefined'&&settings.joinUrl&&route===settings.joinUrl)){ const joinTag=settings.joinUrl?'a':'div'; %><section class="join-band<%= settings.joinImageLeft||settings.joinImageRight?' has-photo':'' %>" aria-label="仲間募集"<% if(settings.joinUrl){ %> data-href="<%= settings.joinUrl %>"<% } %>><% const joinPhotos=[settings.joinImageLeft,settings.joinImageRight].filter(Boolean); let joinSet=[...joinPhotos]; while(joinSet.length&&joinSet.length<2) joinSet=joinSet.concat(joinPhotos); %><div class="join-photos" aria-hidden="true"><% if(joinSet.length){ %><div class="join-track"><% for(const copy of [0,1]){ for(const src of joinSet){ %><img src="<%= src %>" alt="" loading="lazy"><% } } %></div><% } %></div><div class="join-inner"><h2 class="join-title" lang="en"><%= settings.joinTitle %></h2><% if(settings.joinText){ %><p class="join-text"><% settings.joinText.split(/\r?\n/).forEach((line,li,all)=>{ %><%= line %><% if(li<all.length-1){ %><br><% } %><% }) %></p><% } %><% if(settings.joinUrl){ %><a class="join-more" href="<%= settings.joinUrl %>" <%- settings.joinUrl.startsWith('https:')?'target="_blank" rel="noopener noreferrer"':'' %>><span lang="en">see more</span><span class="join-more-icon" aria-hidden="true">→</span><span class="sr-only">（詳しく見る）</span></a><% } %></div></section><% } %><div class="site-footer-wrap"><footer class="shell site-footer">
-  <div class="site-footer-grid">
-    <div class="site-footer-brand">
-      <a class="site-footer-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="40" height="40" loading="lazy"><span>T-Biz</span></a>
-      <p><%= settings.org %></p>
-      <div class="site-footer-social">
+<% if((settings.joinTitle||settings.joinText)&&!(typeof route!=='undefined'&&settings.joinUrl&&route===settings.joinUrl)){ const joinTag=settings.joinUrl?'a':'div'; %><section class="join-band<%= settings.joinImageLeft||settings.joinImageRight?' has-photo':'' %>" aria-label="仲間募集"<% if(settings.joinUrl){ %> data-href="<%= settings.joinUrl %>"<% } %>><% const joinPhotos=[settings.joinImageLeft,settings.joinImageRight].filter(Boolean); let joinSet=[...joinPhotos]; while(joinSet.length&&joinSet.length<2) joinSet=joinSet.concat(joinPhotos); %><div class="join-photos" aria-hidden="true"><% if(joinSet.length){ %><div class="join-track"><% for(const copy of [0,1]){ for(const src of joinSet){ %><img src="<%= src %>" alt="" loading="lazy"><% } } %></div><% } %></div><div class="join-inner"><h2 class="join-title" lang="en"><%= settings.joinTitle %></h2><% if(settings.joinText){ %><p class="join-text"><% settings.joinText.split(/\r?\n/).forEach((line,li,all)=>{ %><%= line %><% if(li<all.length-1){ %><br><% } %><% }) %></p><% } %><% if(settings.joinUrl){ %><a class="join-more" href="<%= settings.joinUrl %>" <%- settings.joinUrl.startsWith('https:')?'target="_blank" rel="noopener noreferrer"':'' %>><span lang="en">see more</span><span class="join-more-icon" aria-hidden="true">→</span><span class="sr-only">（詳しく見る）</span></a><% } %></div></section><% } %><% const ftNav=[["About","T-Bizとは？","/about"],["Interview","インタビュー","/interviews"],["Activity","活動記録","/articles?type="+encodeURIComponent("活動記録")],["Knowledge","ビジネス知識","/knowledge"],["Search","記事検索","/articles"],["Welcome","新歓特設ページ","/shinkan"],["Recruit","メンバー募集","/recruit"],["Contact","お問い合わせ","/contact"]]; %><div class="ft-wrap"><footer class="shell ft" aria-label="サイトの案内">
+  <a class="ft-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="64" height="64" loading="lazy"><span lang="en"><%= settings.siteName %></span></a>
+  <div class="ft-body">
+    <div class="ft-photo"><% if(settings.footerImageUrl){ %><img src="<%= settings.footerImageUrl %>" alt="" loading="lazy"><% } %></div>
+    <nav class="ft-nav" aria-label="フッターメニュー"><ul><% for(const [en,ja,href] of ftNav){ %><li><a href="<%= href %>"><span class="ft-en" lang="en"><%= en %></span><span class="ft-ja"><%= ja %></span></a></li><% } %></ul></nav>
+  </div>
+  <div class="ft-bottom">
+    <ul class="ft-small"><% for (const [i,p] of policies.entries()) { %><li><a href="/policy#policy-<%= i %>"><%= p.title %></a></li><% } %><li><a href="/contact?form=interview">取材のご依頼</a></li><li><a href="/admin">編集ログイン</a></li></ul>
+    <div class="ft-right">
+      <div class="ft-social">
         <a href="<%= settings.instagramUrl %>" <%- extAttr(settings.instagramUrl) %> aria-label="Instagram（新しいタブで開く）"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a>
         <% if (settings.xUrl) { %><a href="<%= settings.xUrl %>" <%- extAttr(settings.xUrl) %> aria-label="X（新しいタブで開く）"><svg class="x-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a><% } %>
-        <a href="<%= settings.noteUrl %>" <%- extAttr(settings.noteUrl) %> aria-label="note（新しいタブで開く）" class="site-footer-note">note</a>
+        <% if (settings.noteUrl) { %><a href="<%= settings.noteUrl %>" <%- extAttr(settings.noteUrl) %> aria-label="note（新しいタブで開く）" class="ft-note">note</a><% } %>
       </div>
+      <p class="ft-copy">© <%= year %> <%= settings.siteName %></p>
     </div>
-    <% for (const col of columns) { %>
-    <nav class="site-footer-col" aria-label="<%= col.title %>">
-      <h2><%= col.title %></h2>
-      <ul>
-        <% for (const [label, href] of col.links) { %>
-        <li><a href="<%= href %>" <%- extAttr(href) %>><%= label %><% if (ext(href)) { %><span class="sr-only">（新しいタブで開く）</span><% } %></a></li>
-        <% } %>
-      </ul>
-    </nav>
-    <% } %>
   </div>
-  <div class="site-footer-bottom"><p class="site-footer-copy">© <%= year %> <%= settings.siteName %></p><a class="site-footer-admin" href="/admin">編集ログイン</a></div>
 </footer></div>

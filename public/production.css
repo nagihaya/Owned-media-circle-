@@ -4546,9 +4546,9 @@ form.filters.search-form {
   cursor: none;
 }
 
-/* ===== フッター：紺色ベース（文字は白） ===== */
+/* ===== フッター：黒ベース（文字は白。真っ黒より目に優しい #111） ===== */
 .site-footer-wrap {
-  background: var(--tbiz-accent);
+  background: #111;
   border-top: 0;
   color: rgba(255, 255, 255, 0.78);
 }

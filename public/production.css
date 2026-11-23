@@ -4729,3 +4729,33 @@ form.filters.search-form {
   max-height: 220px;
   margin: 8px 0;
 }
+
+/* ===== Pick up：見出しのすぐ下にスライドショー ===== */
+.section.pickup-head {
+  padding-bottom: 0;
+}
+.section.pickup-head .section-head {
+  margin-bottom: 0;
+}
+.hero.hero-pickup .hero-slider {
+  background: transparent;
+  padding-top: 32px;
+  padding-bottom: 24px;
+}
+.hero.hero-pickup + .section {
+  border-top: 0;
+}
+@media (max-width: 800px) {
+  .hero.hero-pickup .hero-slider {
+    padding-top: 24px;
+  }
+}
+/* 紹介ブロックがページの一番上に来たので、上の余白を少し詰める */
+.page-home > .intro-band:first-of-type .intro-inner {
+  padding-top: 72px;
+}
+@media (max-width: 800px) {
+  .page-home > .intro-band:first-of-type .intro-inner {
+    padding-top: 32px;
+  }
+}

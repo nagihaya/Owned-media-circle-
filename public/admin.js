@@ -239,7 +239,7 @@
       ? r.items
           .map(
             (a) =>
-              `<tr><td>${a.featured ? '<span class="featured-badge">★注目</span> ' : ""}<b>${h(a.title)}</b><br><time>${h(new Date(a.publishedAt).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" }))}</time></td><td>${h([a.type || "未分類", a.type === "インタビュー" ? a.industry || "業界未分類" : a.type === "活動記録" ? a.activityKind || "コンテンツ未分類" : ""].filter(Boolean).join(" / "))}<br>${h(a.manualTags ? "手動設定" : a.classificationStatus === "review" ? "AI推定・要確認" : a.classificationStatus === "failed" ? "AI推定失敗" : "推定待ち")}</td><td><span class="toggle ${a.visible ? "" : "off"}">${a.visible ? "公開" : "非表示"}</span></td><td><button class="btn small alt" type="button" data-edit="${h(a.id)}">編集</button></td></tr>`,
+              `<tr><td><b>${h(a.title)}</b><br><time>${h(new Date(a.publishedAt).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" }))}</time></td><td>${h([a.type || "未分類", a.type === "インタビュー" ? a.industry || "業界未分類" : a.type === "活動記録" ? a.activityKind || "コンテンツ未分類" : ""].filter(Boolean).join(" / "))}<br>${h(a.manualTags ? "手動設定" : a.classificationStatus === "review" ? "AI推定・要確認" : a.classificationStatus === "failed" ? "AI推定失敗" : "推定待ち")}</td><td><span class="toggle ${a.visible ? "" : "off"}">${a.visible ? "公開" : "非表示"}</span></td><td><button class="btn small alt" type="button" data-edit="${h(a.id)}">編集</button></td></tr>`,
           )
           .join("")
       : '<tr><td colspan="4">登録記事がありません。</td></tr>';
@@ -286,7 +286,6 @@
     const pad = (n) => String(n).padStart(2, "0");
     f.elements.date.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     f.elements.visible.checked = a ? a.visible : false;
-    f.elements.featured.checked = a ? a.featured : false;
     $("#articleDialogTitle").textContent = a ? "記事を編集" : "記事を登録";
     $("#articleStatus").textContent = "";
     $("#articleDialog").showModal();
@@ -316,7 +315,6 @@
           activityKind: v.type === "活動記録" ? v.activityKind || null : null,
           imageUrl: v.imageUrl,
           visible: f.elements.visible.checked,
-          featured: f.elements.featured.checked,
         };
         if (f.elements.file.files[0])
           body.imageUrl = await upload(f.elements.file.files[0]);

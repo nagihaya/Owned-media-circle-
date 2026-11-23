@@ -4635,3 +4635,97 @@ form.filters.search-form {
 .hero-slider .slider-pause {
   display: none !important;
 }
+
+/* ===== 紹介ブロック：左に文章（小見出し・キャッチ・説明・ボタン）、右に写真 ===== */
+.intro-band.intro-split {
+  background: #fff;
+  border-bottom: 0;
+  overflow: hidden;
+}
+.intro-split .intro-inner {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  position: relative;
+}
+.intro-split.has-photo .intro-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 64px;
+}
+.intro-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+.intro-label {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #111;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #111;
+}
+.intro-split .intro-catch {
+  font-size: clamp(32px, 3.4vw, 48px);
+  font-weight: 800;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}
+.intro-split .intro-body p {
+  margin-bottom: 36px;
+  font-size: 16px;
+  line-height: 2.2;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+/* 右の写真：画面の右端まで広げ、左側を大きな曲線で切り抜く */
+.intro-photo {
+  align-self: stretch;
+  min-height: 520px;
+  margin-right: calc((100vw - min(100vw, 1136px)) / -2 - 22px);
+  overflow: hidden;
+  border-radius: 50% 0 0 50% / 50% 0 0 50%;
+  background: #eef0f3;
+}
+.intro-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 800px) {
+  .intro-split.has-photo .intro-inner {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+  .intro-photo {
+    order: -1;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    margin-right: -40px;
+    border-radius: 50% 0 0 50% / 50% 0 0 50%;
+  }
+  .intro-copy {
+    gap: 24px;
+  }
+  .intro-label {
+    font-size: 14px;
+  }
+  .intro-split .intro-catch {
+    font-size: clamp(26px, 7.4vw, 34px);
+    letter-spacing: 0.04em;
+  }
+  .intro-split .intro-body p {
+    font-size: 15px;
+    line-height: 2;
+    letter-spacing: 0.06em;
+  }
+}
+/* 編集画面：写真のプレビュー */
+.hero-image-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  margin: 8px 0;
+}

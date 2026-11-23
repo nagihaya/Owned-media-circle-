@@ -203,3 +203,16 @@ export async function migrateV12() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (12)");
 }
+// v13: 紹介ブロックのキャッチコピーの上に出す小さな一文の初期値（未設定のときだけ）
+export async function migrateV13() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=13"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introLabel',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'$.introLabel') IS NULL",
+    ["東京理科大学発のビジネスサークル"],
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (13)");
+}

@@ -243,6 +243,18 @@ admin.put("/logo", async (req, res) => {
   );
   res.json({ ok: true });
 });
+// トップの紹介ブロックの右の写真（空文字で外す）
+admin.put("/intro-image", async (req, res) => {
+  const { url } = z
+    .object({ url: z.string().regex(MEDIA_PATH).max(768).or(z.literal("")) })
+    .strict()
+    .parse(req.body);
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introImageUrl',?),revision=revision+1 WHERE id=1",
+    [url],
+  );
+  res.json({ ok: true });
+});
 // トップのギャラリー（活動写真の帯）。12枚まで、並び順どおりに保存する
 const GALLERY_MAX = 12;
 admin.put("/gallery", async (req, res) => {

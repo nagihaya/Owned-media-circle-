@@ -4628,3 +4628,10 @@ form.filters.search-form {
   content: "#";
   margin-right: 1px;
 }
+
+/* スライドショーの左右の矢印と一時停止ボタンは表示しない
+   （マウスを乗せる・キーボードで選ぶと自動で止まる。動きを減らす設定の人は最初から止まった状態） */
+.hero-slider .slider-control,
+.hero-slider .slider-pause {
+  display: none !important;
+}

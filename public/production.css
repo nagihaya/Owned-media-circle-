@@ -2007,8 +2007,8 @@ form.filters.search-form,
   }
 }
 
-/* ===== PC：ヘッダーを1行に（サイト名の右にメニュー）。収まる幅（1100px以上）のみ ===== */
-@media (min-width: 1100px) {
+/* ===== PC：ヘッダーを1行に（サイト名の右にメニュー）。収まる幅（960px以上）のみ ===== */
+@media (min-width: 960px) {
   header.nav {
     display: flex;
     align-items: center;
@@ -2055,7 +2055,7 @@ header.nav {
   padding-right: var(--safe-inline-end, 16px);
 }
 /* 1行ヘッダー：メニューはサイト名の右に左寄せ、SNSアイコンだけ右端 */
-@media (min-width: 1100px) {
+@media (min-width: 960px) {
   header.nav {
     gap: 40px;
   }
@@ -3144,7 +3144,7 @@ html {
 .nav .brand .brand-name {
   overflow: visible;
 }
-@media (min-width: 1100px) {
+@media (min-width: 960px) {
   header.nav .brand-row,
   header.nav .navlinks a {
     min-height: 92px;
@@ -3253,7 +3253,7 @@ header.nav {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-@media (min-width: 1100px) {
+@media (min-width: 960px) {
   header.nav {
     padding-top: 0;
     padding-bottom: 0;
@@ -3355,7 +3355,7 @@ html.lenis body {
   }
 }
 /* タイトル下の一文を外したので、PCの1行ヘッダーを低く */
-@media (min-width: 1100px) {
+@media (min-width: 960px) {
   header.nav .brand-row,
   header.nav .navlinks a {
     min-height: 68px;
@@ -5294,5 +5294,59 @@ form.filters.search-form {
   }
   .ft-en {
     font-size: 20px;
+  }
+}
+
+/* ===== ヘッダーのメニュー：薄いグレーの丸い枠の中に並べ、今のページを紺色の丸で示す ===== */
+@media (min-width: 801px) {
+  .nav-pills {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 5px;
+    border-radius: 999px;
+    background: #f1f2f4;
+  }
+  header.nav .navlinks .nav-pills a {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    color: #444;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  header.nav .navlinks .nav-pills a::after {
+    display: none;
+  }
+  header.nav .navlinks .nav-pills a:hover {
+    background: #e3e5e9;
+    color: #111;
+  }
+  header.nav .navlinks .nav-pills a[aria-current="page"] {
+    background: var(--tbiz-accent);
+    color: #fff;
+  }
+  header.nav .navlinks .nav-pills a:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 2px;
+  }
+}
+/* スマホの三本線メニューでは、これまでどおり縦に並べる */
+@media (max-width: 800px) {
+  .nav-pills {
+    display: contents;
+  }
+}
+/* 少し狭いパソコン画面（960〜1099px）では、メニューの丸を詰めて1行に収める */
+@media (min-width: 960px) and (max-width: 1099px) {
+  header.nav {
+    gap: 20px;
+  }
+  header.nav .navlinks .nav-pills a {
+    padding: 0 12px;
+    font-size: 14px;
   }
 }

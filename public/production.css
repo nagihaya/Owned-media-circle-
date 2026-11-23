@@ -4239,9 +4239,9 @@ main .section-title.section-title-en {
 }
 .top-hero-title {
   margin: 0;
-  font-size: clamp(40px, 5.6vw, 88px);
-  font-weight: 700;
-  line-height: 1.18;
+  font-size: clamp(48px, 8.4vw, 128px);
+  font-weight: 800;
+  line-height: 1.12;
   letter-spacing: -0.02em;
   color: #1a1a1a;
 }
@@ -4295,7 +4295,7 @@ main .section-title.section-title-en {
     padding-top: 28px;
   }
   .top-hero-title {
-    font-size: clamp(32px, 10vw, 52px);
+    font-size: clamp(40px, 12vw, 64px);
   }
   .top-hero-sub {
     margin-top: 18px;

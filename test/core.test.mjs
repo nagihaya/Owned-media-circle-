@@ -295,3 +295,19 @@ test("article schema accepts the featured flag and defaults it to false", async 
   assert.equal(articleSchema.parse(v).featured, false);
   assert.equal(articleSchema.parse({ ...v, featured: true }).featured, true);
 });
+test("gallery keeps only stored media images, at most 12, with short alt text", async () => {
+  const { cleanGallery } = await import("../server/db.mjs");
+  const ok = "/media/6726228c-ef40-4e50-afbe-d6ba592202ce.webp";
+  assert.deepEqual(cleanGallery(null), []);
+  assert.deepEqual(
+    cleanGallery([
+      { url: ok, alt: "ピッチ" },
+      { url: "https://evil.example/x.webp", alt: "x" },
+      { url: "/media/../etc/passwd" },
+      "bad",
+    ]),
+    [{ url: ok, alt: "ピッチ" }],
+  );
+  assert.equal(cleanGallery(Array(20).fill({ url: ok })).length, 12);
+  assert.equal(cleanGallery([{ url: ok, alt: "あ".repeat(200) }])[0].alt.length, 80);
+});

@@ -110,6 +110,81 @@
       "#settingsStatus",
     );
   });
+  // ===== ギャラリー：追加・並べ替え・説明・削除 =====
+  let gallery = [];
+  function renderGallery() {
+    $("#galleryList").innerHTML = gallery.length
+      ? gallery
+          .map(
+            (g, i) =>
+              `<li class="gallery-admin-item"><img src="${h(g.url)}" alt=""><div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}枚目</span><label>写真の説明（読み上げ用・任意）<input data-alt="${i}" maxlength="80" value="${h(g.alt || "")}" placeholder="例：ビジコン本番のピッチ"></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-move="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""} aria-label="${i + 1}枚目を前へ">↑ 前へ</button><button class="btn small alt" type="button" data-move="${i}" data-dir="1" ${i === gallery.length - 1 ? "disabled" : ""} aria-label="${i + 1}枚目を後ろへ">↓ 後ろへ</button><button class="btn small danger" type="button" data-remove="${i}" aria-label="${i + 1}枚目を削除">削除</button></div></div></li>`,
+          )
+          .join("")
+      : "<li class=\"gallery-admin-empty\">写真はまだありません。</li>";
+  }
+  async function loadGallery() {
+    const s = await api("/api/admin/settings");
+    gallery = Array.isArray(s.gallery) ? s.gallery.map((g) => ({ ...g })) : [];
+    renderGallery();
+  }
+  $("#galleryList").addEventListener("input", (e) => {
+    const i = e.target.dataset.alt;
+    if (i !== undefined) gallery[Number(i)].alt = e.target.value;
+  });
+  $("#galleryList").addEventListener("click", (e) => {
+    const mv = e.target.closest("[data-move]");
+    const rm = e.target.closest("[data-remove]");
+    if (mv) {
+      const i = Number(mv.dataset.move),
+        j = i + Number(mv.dataset.dir);
+      [gallery[i], gallery[j]] = [gallery[j], gallery[i]];
+      renderGallery();
+    } else if (rm) {
+      gallery.splice(Number(rm.dataset.remove), 1);
+      renderGallery();
+    }
+  });
+  $("#galleryFiles").addEventListener("change", (e) => {
+    const input = e.target;
+    const files = [...input.files];
+    if (!files.length) return;
+    action(
+      input,
+      async () => {
+        const room = 12 - gallery.length;
+        if (room <= 0) throw new Error("ギャラリーは12枚までです。");
+        for (const [k, f] of files.slice(0, room).entries()) {
+          message("#galleryStatus", `アップロード中… ${k + 1} / ${Math.min(files.length, room)}`);
+          gallery.push({ url: await upload(f), alt: "" });
+          renderGallery();
+        }
+        input.value = "";
+        message(
+          "#galleryStatus",
+          files.length > room
+            ? `12枚を超えた ${files.length - room} 枚は追加していません。「ギャラリーを保存」で公開されます。`
+            : "追加しました。「ギャラリーを保存」で公開されます。",
+        );
+      },
+      "#galleryStatus",
+    );
+  });
+  $("#saveGallery").addEventListener("click", (e) =>
+    action(
+      e.currentTarget,
+      async () => {
+        await api("/api/admin/gallery", {
+          method: "PUT",
+          body: { photos: gallery.map((g) => ({ url: g.url, alt: g.alt || "" })) },
+        });
+        // サイト設定の版番号も進むので、設定フォームを読み直して食い違いを防ぐ
+        await loadSettings();
+        message("#galleryStatus", "保存しました。トップの再読み込みで確認できます。");
+      },
+      "#galleryStatus",
+    ),
+  );
+  loadGallery().catch((e) => message("#galleryStatus", e.message, true));
   $("#logoForm").addEventListener("submit", (e) => {
     e.preventDefault();
     action(

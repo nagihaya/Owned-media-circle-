@@ -104,6 +104,14 @@ export async function settings() {
     rssUrl: rows[0].rssUrl,
   };
 }
+// ギャラリーは保存済みの画像パス（/media/<uuid>.webp）だけを通す
+const GALLERY_PATH = /^\/media\/[0-9a-f-]{36}\.webp$/;
+export function cleanGallery(list) {
+  return (Array.isArray(list) ? list : [])
+    .filter((p) => p && typeof p.url === "string" && GALLERY_PATH.test(p.url))
+    .slice(0, 12)
+    .map((p) => ({ url: p.url, alt: String(p.alt || "").slice(0, 80) }));
+}
 export function publicSettings(s) {
   const {
     siteName,
@@ -135,6 +143,7 @@ export function publicSettings(s) {
     policyDate,
     logoUrl,
     googleForms: cleanForms(s.googleForms),
+    gallery: cleanGallery(s.gallery),
   };
 }
 export function mapArticle(a) {

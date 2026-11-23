@@ -243,6 +243,39 @@ admin.put("/logo", async (req, res) => {
   );
   res.json({ ok: true });
 });
+// トップのギャラリー（活動写真の帯）。12枚まで、並び順どおりに保存する
+const GALLERY_MAX = 12;
+admin.put("/gallery", async (req, res) => {
+  const { photos } = z
+    .object({
+      photos: z
+        .array(
+          z
+            .object({
+              url: z.string().regex(MEDIA_PATH).max(768),
+              alt: z.string().trim().max(80).default(""),
+            })
+            .strict(),
+        )
+        .max(GALLERY_MAX),
+    })
+    .strict()
+    .parse(req.body);
+  // JSON を文字列として読み書きする（TiDB とローカルの MariaDB の両方で動く形）
+  const [row] = await query(
+    "SELECT data,revision FROM site_settings WHERE id=1",
+  );
+  const data = typeof row.data === "string" ? JSON.parse(row.data) : row.data;
+  const r = await query(
+    "UPDATE site_settings SET data=?,revision=revision+1 WHERE id=1 AND revision=?",
+    [JSON.stringify({ ...data, gallery: photos }), row.revision],
+  );
+  if (!r.affectedRows)
+    return res.status(409).json({
+      error: "別の編集者が同時に更新しました。もう一度保存してください。",
+    });
+  res.json({ ok: true });
+});
 admin.get("/articles", async (req, res) =>
   res.json(await articleList(req.query, true)),
 );

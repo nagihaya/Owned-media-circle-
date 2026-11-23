@@ -4226,3 +4226,185 @@ main .section-title.section-title-en {
     font-size: 12px;
   }
 }
+
+/* ===== ギャラリー：活動写真の帯（端から端まで、ゆっくり横に流れる） ===== */
+.gallery-band {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 72px 0 80px;
+  overflow: hidden;
+}
+.gallery-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto 32px;
+  padding: 0 16px;
+}
+.gallery-head .section-title {
+  margin: 0;
+}
+.gallery-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.gallery-more span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.gallery-more:hover span,
+.gallery-more:active span {
+  background: #fff;
+  color: #000;
+}
+.gallery-viewport {
+  overflow: hidden;
+}
+.gallery-viewport:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: -3px;
+}
+.gallery-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: gallery-flow calc(var(--n) * 7s) linear infinite;
+}
+.gallery-viewport:hover .gallery-track,
+.gallery-viewport:focus-within .gallery-track {
+  animation-play-state: paused;
+}
+/* 2組並べて半分ずらすと、つなぎ目なく流れ続ける（gap分も含めて揃える） */
+.gallery-track > .gallery-item:last-child {
+  margin-right: 20px;
+}
+@keyframes gallery-flow {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.gallery-item {
+  flex: none;
+  height: 340px;
+  margin: 0;
+  overflow: hidden;
+  background: #eef0f3;
+}
+.gallery-item img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+/* スマホ・動きを減らす設定：自動では流さず、指で横にスクロール */
+@media (max-width: 800px), (prefers-reduced-motion: reduce) {
+  .gallery-viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 16px;
+    scroll-padding: 0 16px;
+  }
+  .gallery-viewport::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery-track {
+    animation: none;
+    gap: 12px;
+  }
+  .gallery-item[data-copy] {
+    display: none;
+  }
+  .gallery-item {
+    scroll-snap-align: start;
+  }
+  .gallery-track > .gallery-item:last-child {
+    margin-right: 0;
+  }
+}
+@media (max-width: 800px) {
+  .gallery-band {
+    padding: 48px 0 56px;
+  }
+  .gallery-head {
+    margin-bottom: 20px;
+  }
+  .gallery-item {
+    height: 220px;
+  }
+  .gallery-more span {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* 編集画面：ギャラリーの写真一覧 */
+.gallery-admin-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.gallery-admin-item {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+}
+.gallery-admin-item img {
+  width: 160px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.gallery-admin-fields {
+  display: grid;
+  gap: 8px;
+}
+.gallery-admin-no {
+  font-weight: 700;
+}
+.gallery-admin-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gallery-admin-empty {
+  color: #6b7480;
+}
+.gallery-add {
+  display: block;
+  margin-top: 12px;
+}
+@media (max-width: 640px) {
+  .gallery-admin-item {
+    grid-template-columns: 1fr;
+  }
+  .gallery-admin-item img {
+    width: 100%;
+    height: 160px;
+  }
+}

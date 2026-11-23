@@ -5350,3 +5350,51 @@ form.filters.search-form {
     font-size: 14px;
   }
 }
+
+/* ===== ヘッダー：帯と線をなくし、メニューの丸い枠だけが独立して浮かぶ ===== */
+header.nav {
+  border-bottom: 0 !important;
+}
+header.nav .navlinks {
+  border: 0 !important;
+}
+@media (min-width: 960px) {
+  /* 帯（白い背景）をなくし、ロゴとSNSはページの上に直接置く */
+  header.nav {
+    background: transparent;
+    pointer-events: none;
+  }
+  header.nav::before {
+    display: none;
+  }
+  header.nav > *,
+  header.nav .navlinks > * {
+    pointer-events: auto;
+  }
+  /* メニューは画面上部の中央に浮かせる */
+  header.nav .nav-pills {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(241, 242, 244, 0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: box-shadow 0.25s ease;
+  }
+  /* スクロールしたら、ロゴとSNSは消え、メニューだけが影付きで残る */
+  header.nav .brand-row,
+  header.nav .navlinks > a {
+    transition:
+      opacity 0.25s ease,
+      visibility 0.25s;
+  }
+  html.is-scrolled header.nav .brand-row,
+  html.is-scrolled header.nav .navlinks > a {
+    opacity: 0;
+    visibility: hidden;
+  }
+  html.is-scrolled header.nav .nav-pills {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+}

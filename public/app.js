@@ -499,3 +499,10 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
   if (/^https:/.test(href)) window.open(href, "_blank", "noopener");
   else location.assign(href);
 });
+// 少しスクロールしたら html に is-scrolled を付ける（ヘッダーのロゴを隠し、メニューだけ残す）
+{
+  const mark = () =>
+    document.documentElement.classList.toggle("is-scrolled", scrollY > 24);
+  mark();
+  addEventListener("scroll", mark, { passive: true });
+}

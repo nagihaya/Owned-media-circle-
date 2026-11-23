@@ -5029,3 +5029,41 @@ form.filters.search-form {
     height: 44px;
   }
 }
+
+/* Join Our Circle：背景の写真が横にゆっくり流れ続ける（2組並べて半分ずらすと継ぎ目なくループ） */
+.join-photos {
+  overflow: hidden;
+}
+.join-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: join-flow 70s linear infinite;
+}
+.join-track img,
+.join-photos .join-track img + img {
+  display: block;
+  flex: none;
+  width: 50vw;
+  height: 100%;
+  object-fit: cover;
+}
+@keyframes join-flow {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 800px) {
+  .join-track img,
+  .join-photos .join-track img + img {
+    width: 100vw;
+  }
+  .join-track {
+    animation-duration: 50s;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .join-track {
+    animation: none;
+  }
+}

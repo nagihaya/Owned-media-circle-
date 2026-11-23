@@ -5265,3 +5265,34 @@ form.filters.search-form {
   display: inline-block;
   padding: 1px 0;
 }
+
+/* フッターの文字を一回り小さく */
+.ft-logo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+}
+.ft-logo span {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.ft-en {
+  font-size: clamp(20px, 1.8vw, 24px);
+}
+.ft-ja {
+  font-size: 12px;
+}
+.ft-nav a {
+  padding: 12px 0 10px;
+}
+.ft-photo {
+  min-height: 340px;
+}
+@media (max-width: 900px) {
+  .ft-logo img {
+    width: 40px;
+    height: 40px;
+  }
+  .ft-en {
+    font-size: 20px;
+  }
+}

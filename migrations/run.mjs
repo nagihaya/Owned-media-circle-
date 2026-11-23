@@ -10,6 +10,7 @@ import {
   migrateV8,
   migrateV9,
   migrateV10,
+  migrateV12,
 } from "./v2.mjs";
 export async function migrate() {
   await query(
@@ -28,6 +29,7 @@ export async function migrate() {
     await migrateV8();
     await migrateV9();
     await migrateV10();
+    await migrateV12();
     return;
   }
   const statements = [
@@ -71,6 +73,7 @@ export async function migrate() {
   await migrateV8();
   await migrateV9();
   await migrateV10();
+  await migrateV12();
 }
 if (
   process.argv[1] &&

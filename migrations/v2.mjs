@@ -189,3 +189,17 @@ export async function migrateV10() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (10)");
 }
+// v12: 冒頭レイアウトの試し（一度だけ本番で動いた可能性のある v11）を取り消す。
+// v11 で冒頭へ移した大きな一文（heroTitle）を、紹介ブロック（introCatch）へ戻す。
+// introCatch に何か入っている場合は上書きしない。
+export async function migrateV12() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=12"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introCatch',JSON_UNQUOTE(JSON_EXTRACT(data,'$.heroTitle'))),revision=revision+1 WHERE id=1 AND COALESCE(JSON_UNQUOTE(JSON_EXTRACT(data,'$.introCatch')),'')='' AND COALESCE(JSON_UNQUOTE(JSON_EXTRACT(data,'$.heroTitle')),'')<>''",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (12)");
+}

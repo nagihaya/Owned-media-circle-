@@ -4913,7 +4913,7 @@ form.filters.search-form {
   }
 }
 
-/* ===== フッターの上：Join Our Team（メンバー募集への案内） ===== */
+/* ===== フッターの上：Join Our Circle（メンバー募集への案内） ===== */
 .join-band {
   position: relative;
   isolation: isolate;
@@ -4959,13 +4959,6 @@ form.filters.search-form {
   line-height: 1.1;
   letter-spacing: 0.04em;
   color: #fff;
-}
-.join-plus {
-  position: absolute;
-  top: -0.35em;
-  right: -0.6em;
-  font-size: 0.55em;
-  font-weight: 400;
 }
 .join-text {
   margin: 0 0 56px;

@@ -255,7 +255,7 @@ admin.put("/intro-image", async (req, res) => {
   );
   res.json({ ok: true });
 });
-// フッター上の「Join Our Team」の写真（左右2枚。空文字で外す）
+// フッター上の「Join Our Circle」の写真（左右2枚。空文字で外す）
 admin.put("/join-image", async (req, res) => {
   const { slot, url } = z
     .object({

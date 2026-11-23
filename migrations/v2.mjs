@@ -224,7 +224,7 @@ export async function migrateV14() {
   )
     return;
   const defaults = [
-    ["$.joinTitle", "Join Our Team"],
+    ["$.joinTitle", "Join Our Circle"],
     [
       "$.joinText",
       "T-Bizは、一緒に「やりたいを形にする」仲間を募集しています。\nビジネスコンテストへの挑戦、企業へのインタビュー、イベントの企画など、学年・学部を問わず活躍できます。\n募集要項をぜひご覧ください。",
@@ -237,4 +237,16 @@ export async function migrateV14() {
       [value],
     );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (14)");
+}
+// v15: 「Join Our Team」の初期値を「Join Our Circle」に（初期値のままの場合だけ変える）
+export async function migrateV15() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=15"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.joinTitle','Join Our Circle'),revision=revision+1 WHERE id=1 AND JSON_UNQUOTE(JSON_EXTRACT(data,'$.joinTitle'))='Join Our Team'",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (15)");
 }

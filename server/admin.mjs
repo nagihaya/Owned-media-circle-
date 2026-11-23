@@ -243,6 +243,18 @@ admin.put("/logo", async (req, res) => {
   );
   res.json({ ok: true });
 });
+// トップ冒頭の写真（空文字で削除）
+admin.put("/hero-image", async (req, res) => {
+  const { url } = z
+    .object({ url: z.string().regex(MEDIA_PATH).max(768).or(z.literal("")) })
+    .strict()
+    .parse(req.body);
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.heroImageUrl',?),revision=revision+1 WHERE id=1",
+    [url],
+  );
+  res.json({ ok: true });
+});
 admin.get("/articles", async (req, res) =>
   res.json(await articleList(req.query, true)),
 );

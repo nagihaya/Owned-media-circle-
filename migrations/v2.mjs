@@ -189,3 +189,16 @@ export async function migrateV10() {
   );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (10)");
 }
+// v11: トップ冒頭の大きなキャッチコピー（heroTitle）を追加。
+// 紹介ブロックの大きな一文（introCatch）をそのまま冒頭へ移し、二重表示を避ける。
+export async function migrateV11() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=11"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.heroTitle',COALESCE(JSON_UNQUOTE(JSON_EXTRACT(data,'$.introCatch')),''),'$.introCatch',''),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'$.heroTitle') IS NULL",
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (11)");
+}

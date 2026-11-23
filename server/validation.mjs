@@ -85,6 +85,10 @@ export const settingSchema = z
           return false;
         }
       }, "XのURLは https://x.com/アカウント名 の形で入力してください（空欄なら非表示）。"),
+    heroTitle: z.string().trim().max(80).default(""),
+    heroSub: z.string().trim().max(120).default(""),
+    heroBadgeText: z.string().trim().max(60).default(""),
+    heroBadgeUrl: webUrl.or(z.literal("")).default(""),
     introCatch: z.string().trim().max(60).default(""),
     introText: z.string().trim().max(300).default(""),
     response: z.string().trim().min(1).max(40),

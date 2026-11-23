@@ -4372,3 +4372,114 @@ main .section-title.section-title-en {
 .gallery-admin-item img {
   border-radius: 0 !important;
 }
+
+/* ===== 余白を全体的に広く（読みやすさ・高級感のため） ===== */
+/* パソコン */
+main .page:not(.page-home) {
+  padding-top: 72px;
+}
+main .page {
+  padding-bottom: 120px;
+}
+.hero .hero-slider {
+  padding-top: 72px;
+  padding-bottom: 24px;
+}
+.intro-inner {
+  padding-top: 96px;
+  padding-bottom: 128px;
+}
+.gallery-band {
+  padding: 104px 0;
+}
+.section {
+  padding-top: 80px;
+  padding-bottom: 96px;
+}
+.section.section-split {
+  padding-top: 96px;
+  padding-bottom: 128px;
+}
+.section-head,
+.quick-search {
+  margin-bottom: 40px;
+}
+.cta {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.page-intro {
+  margin-bottom: 56px;
+}
+form.filters.search-form {
+  margin-bottom: 48px;
+}
+.results-line {
+  margin-bottom: 28px;
+}
+.pagination {
+  margin-top: 72px;
+}
+.tbiz-block {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+.site-footer-wrap {
+  margin-top: 96px;
+}
+.site-footer {
+  padding-top: 80px;
+  padding-bottom: 56px;
+}
+/* スマホ（画面が小さいので、パソコンの7割ほど） */
+@media (max-width: 800px) {
+  main .page:not(.page-home) {
+    padding-top: 48px;
+  }
+  main .page {
+    padding-bottom: 88px;
+  }
+  .hero .hero-slider {
+    padding-top: 48px;
+    padding-bottom: 16px;
+  }
+  .intro-inner {
+    padding-top: 64px;
+    padding-bottom: 72px;
+  }
+  .gallery-band {
+    padding: 64px 0;
+  }
+  .section {
+    padding-top: 56px;
+    padding-bottom: 64px;
+  }
+  .section.section-split {
+    padding-top: 64px;
+    padding-bottom: 80px;
+  }
+  .section-head,
+  .quick-search {
+    margin-bottom: 32px;
+  }
+  .page-intro {
+    margin-bottom: 40px;
+  }
+  form.filters.search-form {
+    margin-bottom: 36px;
+  }
+  .pagination {
+    margin-top: 56px;
+  }
+  .tbiz-block {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .site-footer-wrap {
+    margin-top: 64px;
+  }
+  .site-footer {
+    padding-top: 56px;
+    padding-bottom: 40px;
+  }
+}

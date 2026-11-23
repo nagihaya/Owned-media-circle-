@@ -4161,3 +4161,41 @@ body:not(.admin-body) :is(.btn, .intro-btn):not(.alt):not(.danger) :is(span, svg
     row-gap: 32px;
   }
 }
+
+/* ===== 記事欄の余白を広めに（窮屈さの解消） ===== */
+.section.section-split {
+  padding-top: 56px;
+  padding-bottom: 88px;
+}
+.card.post-card .card-body {
+  row-gap: 10px;
+  padding-top: 20px;
+}
+@media (min-width: 901px) {
+  .section-split {
+    column-gap: 40px;
+    row-gap: 72px;
+  }
+}
+@media (max-width: 900px) {
+  .section.section-split {
+    padding-top: 40px;
+    padding-bottom: 64px;
+  }
+  .section-split > .cards {
+    row-gap: 48px;
+  }
+  .section-split .more-link-sp {
+    margin-top: 40px;
+  }
+}
+/* 一覧ページのカードも同じくらいの間隔に */
+.article-grid {
+  column-gap: 40px;
+  row-gap: 56px;
+}
+@media (max-width: 800px) {
+  .article-grid {
+    row-gap: 48px;
+  }
+}

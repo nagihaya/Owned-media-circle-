@@ -80,10 +80,6 @@
       "tbizUrl",
       "instagramUrl",
       "xUrl",
-      "heroTitle",
-      "heroSub",
-      "heroBadgeText",
-      "heroBadgeUrl",
       "introCatch",
       "introText",
       "response",
@@ -94,10 +90,6 @@
     if ($("#rssForm"))
       $("#rssForm").elements.rssUrl.value = config.rssUrl || "";
     fillGoogleForms(config.googleForms);
-    const prev = $("#heroImagePreview");
-    prev.innerHTML = config.heroImageUrl
-      ? `<img src="${h(config.heroImageUrl)}" alt="現在の写真">`
-      : "<p>写真は未設定です。</p>";
   }
   $("#settingsForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -118,31 +110,6 @@
       "#settingsStatus",
     );
   });
-  $("#heroImageForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    action(
-      e.submitter,
-      async () => {
-        const url = await upload(e.target.elements.file.files[0]);
-        await api("/api/admin/hero-image", { method: "PUT", body: { url } });
-        e.target.reset();
-        await loadSettings();
-        message("#heroImageStatus", "写真を保存しました。");
-      },
-      "#heroImageStatus",
-    );
-  });
-  $("#heroImageRemove").addEventListener("click", (e) =>
-    action(
-      e.currentTarget,
-      async () => {
-        await api("/api/admin/hero-image", { method: "PUT", body: { url: "" } });
-        await loadSettings();
-        message("#heroImageStatus", "写真を外しました。");
-      },
-      "#heroImageStatus",
-    ),
-  );
   $("#logoForm").addEventListener("submit", (e) => {
     e.preventDefault();
     action(

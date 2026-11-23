@@ -4226,7 +4226,3 @@ main .section-title.section-title-en {
     font-size: 12px;
   }
 }
-/* ヘッダーのメニューは英語 */
-.nav .navlinks a {
-  letter-spacing: 0.02em;
-}

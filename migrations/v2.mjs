@@ -288,3 +288,29 @@ export async function migrateV17() {
   }
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (17)");
 }
+// v18: 「T-Biz lab」「T-BIZ LAB」「T-Biz　Lab」など、表記ゆれのある「Lab」付きの名前もすべて「T-Biz」に
+export async function migrateV18() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=18"))
+      .length
+  )
+    return;
+  const [row] = await query("SELECT data FROM site_settings WHERE id=1");
+  if (row) {
+    const data = typeof row.data === "string" ? JSON.parse(row.data) : row.data;
+    const re = /T[-‐－ー]?Biz[\s　]*Lab/gi;
+    let changed = false;
+    for (const [k, v] of Object.entries(data))
+      if (typeof v === "string" && re.test(v)) {
+        re.lastIndex = 0;
+        data[k] = v.replace(re, "T-Biz");
+        changed = true;
+      }
+    if (changed)
+      await query(
+        "UPDATE site_settings SET data=?,revision=revision+1 WHERE id=1",
+        [JSON.stringify(data)],
+      );
+  }
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (18)");
+}

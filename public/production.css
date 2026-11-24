@@ -5687,3 +5687,32 @@ main .page:has(.about-page) {
     margin: 0 calc(-1 * var(--safe-inline-end, 16px)) 0 calc(-1 * var(--safe-inline, 16px));
   }
 }
+
+/* T-Bizとは？：太字の見出しを一回り小さく */
+.about-title > span:first-child {
+  font-size: clamp(36px, 4vw, 56px);
+}
+.about-profile-title > span:first-child {
+  font-size: clamp(32px, 3.6vw, 52px);
+}
+.about-col-title > span:first-child {
+  font-size: clamp(26px, 2.4vw, 34px);
+}
+.about-statement-text {
+  font-size: clamp(26px, 3vw, 42px);
+}
+.about-year-num {
+  font-size: clamp(26px, 2.2vw, 32px);
+}
+.about-title-ja,
+.about-sub {
+  font-size: 15px;
+}
+.about-dl dt {
+  font-size: 14px;
+}
+@media (max-width: 900px) {
+  .about-statement-text {
+    font-size: clamp(22px, 6.4vw, 28px);
+  }
+}

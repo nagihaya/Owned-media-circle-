@@ -5833,17 +5833,12 @@ main .page:has(.about-page) {
     padding-right: 12px !important;
   }
 }
-/* メニューは右側（SNSアイコンの左）に置き、左へ向かって開く。Menu ボタンは右端なので、開いても指・マウスの下から動かない */
+/* メニューは画面上部の中央に置き、左右へ広がるように開く */
 @media (min-width: 960px) {
   header.nav .nav-pills {
-    position: static;
-    transform: none;
-    margin-left: auto;
-  }
-  header.nav .navlinks {
-    justify-content: flex-end;
-  }
-  header.nav .navlinks a.instagram-link {
-    margin-left: 16px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }

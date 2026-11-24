@@ -5716,3 +5716,134 @@ main .page:has(.about-page) {
     font-size: clamp(22px, 6.4vw, 28px);
   }
 }
+
+/* ===== ヘッダーのメニュー：最初は閉じていて（Menu＋今のページだけ）、触る・マウスを乗せると開く ===== */
+.nav-pills-toggle {
+  display: none;
+}
+@media (min-width: 960px) {
+  .nav-pills-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 18px 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #111;
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .nav-pills-toggle:hover {
+    background: #e3e5e9;
+  }
+  .nav-pills-toggle:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 2px;
+  }
+  .np-burger {
+    display: grid;
+    gap: 4px;
+    width: 16px;
+  }
+  .np-burger i {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 0.3s ease,
+      opacity 0.2s ease;
+  }
+  /* 開いているときは三本線を×に */
+  .nav-pills.is-open .np-burger i:nth-child(1),
+  .nav-pills:focus-within .np-burger i:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .nav-pills.is-open .np-burger i:nth-child(2),
+  .nav-pills:focus-within .np-burger i:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-pills.is-open .np-burger i:nth-child(3),
+  .nav-pills:focus-within .np-burger i:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+  /* 閉じているとき：今のページ以外の項目は幅0で隠す */
+  header.nav .navlinks .nav-pills a:not([aria-current="page"]) {
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition:
+      max-width 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      padding 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.3s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  /* 開いたとき（マウスを乗せる・キーボードで選ぶ・Menuを押す） */
+  .nav-pills:focus-within a:not([aria-current="page"]),
+  .nav-pills.is-open a:not([aria-current="page"]) {
+    max-width: 180px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    opacity: 1 !important;
+  }
+}
+@media (min-width: 960px) and (max-width: 1099px) {
+  .nav-pills:focus-within a:not([aria-current="page"]),
+  .nav-pills.is-open a:not([aria-current="page"]) {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  header.nav .navlinks .nav-pills a,
+  .np-burger i {
+    transition: none !important;
+  }
+}
+
+/* マウスのある端末だけ：乗せたら開く（タッチ端末は Menu を押して開く） */
+@media (min-width: 960px) and (hover: hover) {
+  .nav-pills:hover a:not([aria-current="page"]) {
+    max-width: 180px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    opacity: 1 !important;
+  }
+  .nav-pills:hover .np-burger i:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .nav-pills:hover .np-burger i:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-pills:hover .np-burger i:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}
+@media (min-width: 960px) and (max-width: 1099px) and (hover: hover) {
+  .nav-pills:hover a:not([aria-current="page"]) {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+/* メニューは右側（SNSアイコンの左）に置き、左へ向かって開く。Menu ボタンは右端なので、開いても指・マウスの下から動かない */
+@media (min-width: 960px) {
+  header.nav .nav-pills {
+    position: static;
+    transform: none;
+    margin-left: auto;
+  }
+  header.nav .navlinks {
+    justify-content: flex-end;
+  }
+  header.nav .navlinks a.instagram-link {
+    margin-left: 16px;
+  }
+}

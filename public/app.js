@@ -506,3 +506,29 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
   mark();
   addEventListener("scroll", mark, { passive: true });
 }
+// ヘッダーのメニュー（パソコン）：Menu を押すと開閉。外側を押すと閉じる
+{
+  const pills = document.querySelector(".nav-pills");
+  const toggle = pills?.querySelector(".nav-pills-toggle");
+  if (pills && toggle) {
+    const set = (open) => {
+      pills.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+    };
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      set(!pills.classList.contains("is-open"));
+    });
+    document.addEventListener("click", (e) => {
+      if (!pills.contains(e.target)) set(false);
+    });
+    // マウスが離れたら閉じる（指で開いたときは、外側を押すまで開いたまま）
+    pills.addEventListener("pointerleave", (e) => {
+      if (e.pointerType === "mouse") set(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") set(false);
+    });
+  }
+}

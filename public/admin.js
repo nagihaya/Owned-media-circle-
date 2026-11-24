@@ -81,6 +81,8 @@
       "instagramUrl",
       "xUrl",
       "introLabel",
+      "aboutLead",
+      "aboutHistory",
       "joinTitle",
       "joinText",
       "joinUrl",
@@ -102,6 +104,9 @@
     }
     $("#footerImagePreview").innerHTML = config.footerImageUrl
       ? `<img src="${h(config.footerImageUrl)}" alt="現在の写真">`
+      : "<p>写真は未設定です。</p>";
+    $("#aboutImagePreview").innerHTML = config.aboutImageUrl
+      ? `<img src="${h(config.aboutImageUrl)}" alt="現在の写真">`
       : "<p>写真は未設定です。</p>";
     $("#introImagePreview").innerHTML = config.introImageUrl
       ? `<img src="${h(config.introImageUrl)}" alt="現在の写真">`
@@ -257,6 +262,31 @@
         message("#footerImageStatus", "写真を外しました。");
       },
       "#footerImageStatus",
+    ),
+  );
+  $("#aboutImageForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    action(
+      e.submitter,
+      async () => {
+        const url = await upload(e.target.elements.file.files[0]);
+        await api("/api/admin/about-image", { method: "PUT", body: { url } });
+        e.target.reset();
+        await loadSettings();
+        message("#aboutImageStatus", "写真を保存しました。");
+      },
+      "#aboutImageStatus",
+    );
+  });
+  $("#aboutImageRemove").addEventListener("click", (e) =>
+    action(
+      e.currentTarget,
+      async () => {
+        await api("/api/admin/about-image", { method: "PUT", body: { url: "" } });
+        await loadSettings();
+        message("#aboutImageStatus", "写真を外しました。");
+      },
+      "#aboutImageStatus",
     ),
   );
   $("#introImageForm").addEventListener("submit", (e) => {

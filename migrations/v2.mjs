@@ -314,3 +314,24 @@ export async function migrateV18() {
   }
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (18)");
 }
+// v19: 「T-Bizとは？」ページの紹介文と沿革の初期値（未設定のときだけ）
+export async function migrateV19() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=19"))
+      .length
+  )
+    return;
+  const defaults = [
+    [
+      "$.aboutLead",
+      "T-Bizは、東京理科大学発のビジネスサークルです。ビジネスコンテストへの挑戦や企業へのインタビューを通じて、実践的なビジネススキルと、互いに高め合える仲間を育てています。",
+    ],
+    ["$.aboutHistory", "2026.01 T-Bizを設立。"],
+  ];
+  for (const [path, value] of defaults)
+    await query(
+      `UPDATE site_settings SET data=JSON_SET(data,'${path}',?),revision=revision+1 WHERE id=1 AND JSON_EXTRACT(data,'${path}') IS NULL`,
+      [value],
+    );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (19)");
+}

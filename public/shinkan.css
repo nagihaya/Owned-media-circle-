@@ -1,0 +1,250 @@
+/* 新歓特設ページ（サイト共通のヘッダー・フッターを使わない独立したデザイン） */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+body.sk {
+  background: #0b1022;
+  color: #fff;
+  font-family:
+    "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    "Yu Gothic", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.sk-main {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 64px 24px;
+  isolation: isolate;
+}
+/* 背景：ゆっくり動く光の玉と、薄い方眼 */
+.sk-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.sk-blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: sk-float 22s ease-in-out infinite alternate;
+}
+.sk-blob-1 {
+  top: -25vmax;
+  left: -15vmax;
+  background: #2f5bd8;
+}
+.sk-blob-2 {
+  bottom: -30vmax;
+  right: -20vmax;
+  background: #0e9f6e;
+  animation-delay: -7s;
+}
+.sk-blob-3 {
+  top: 30%;
+  left: 45%;
+  width: 36vmax;
+  height: 36vmax;
+  background: #e2471b;
+  opacity: 0.35;
+  animation-delay: -14s;
+}
+.sk-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(circle at center, #000 30%, transparent 75%);
+  mask-image: radial-gradient(circle at center, #000 30%, transparent 75%);
+}
+@keyframes sk-float {
+  to {
+    transform: translate(8vmax, 6vmax) scale(1.08);
+  }
+}
+.sk-hero {
+  width: min(100%, 880px);
+}
+.sk-kicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 40px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.sk-kicker img {
+  border-radius: 8px;
+}
+.sk-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sk-title {
+  margin: 0 0 28px;
+  font-size: clamp(52px, 11vw, 132px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.sk-line {
+  display: block;
+  animation: sk-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(0.15s + var(--i) * 0.15s);
+}
+.sk-line + .sk-line {
+  background: linear-gradient(90deg, #8fb4ff, #6be3b4 60%, #ffb38f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sk-catch {
+  margin: 0 0 48px;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  animation: sk-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.45s both;
+}
+.sk-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: sk-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.6s both;
+}
+.sk-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6be3b4;
+  box-shadow: 0 0 0 0 rgba(107, 227, 180, 0.7);
+  animation: sk-pulse 1.8s ease-out infinite;
+}
+@keyframes sk-pulse {
+  to {
+    box-shadow: 0 0 0 12px rgba(107, 227, 180, 0);
+  }
+}
+.sk-text {
+  margin: 0 0 48px;
+  max-width: 36em;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.78);
+  animation: sk-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.7s both;
+}
+.sk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+  animation: sk-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.8s both;
+}
+.sk-btn,
+.sk-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.sk-btn {
+  padding: 0 24px;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  background: #fff;
+  color: #0b1022;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.sk-btn:hover,
+.sk-btn:active {
+  background: transparent;
+  color: #fff;
+}
+.sk-link {
+  color: rgba(255, 255, 255, 0.85);
+}
+.sk-link:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.sk-btn:focus-visible,
+.sk-link:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+.sk-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@keyframes sk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 600px) {
+  .sk-kicker {
+    margin-bottom: 28px;
+    font-size: 13px;
+  }
+  .sk-catch {
+    margin-bottom: 36px;
+  }
+  .sk-text {
+    font-size: 14px;
+    margin-bottom: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-blob,
+  .sk-line,
+  .sk-catch,
+  .sk-soon,
+  .sk-pulse,
+  .sk-text,
+  .sk-actions {
+    animation: none;
+  }
+}

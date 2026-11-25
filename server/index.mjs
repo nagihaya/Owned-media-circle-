@@ -209,7 +209,8 @@ for (const [route, title] of Object.entries(names))
     const canonical = origin ? origin + route : "";
     res.set("Cache-Control", "no-store");
     const csrf = csrfToken(req, res);
-    res.render("page", {
+    // 新歓特設ページは、サイト共通のヘッダー・フッターを使わない独立したデザイン
+    res.render(route === "/shinkan" ? "shinkan" : "page", {
       route,
       title: route === "/" ? s.siteName : title + " | " + s.siteName,
       heading: title,

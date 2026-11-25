@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><%= title %></title><meta name="description" content="T-Bizの新歓特設ページ。公開準備中です。"><meta property="og:title" content="<%= title %>"><meta property="og:site_name" content="<%= settings.siteName %>"><meta property="og:type" content="website"><% if(canonical){ %><link rel="canonical" href="<%= canonical %>"><meta property="og:url" content="<%= canonical %>"><% } %><link rel="icon" href="<%= settings.logoUrl %>"><link rel="stylesheet" href="/shinkan.css"></head>
+<body class="sk">
+<main class="sk-main" id="main">
+  <div class="sk-bg" aria-hidden="true"><span class="sk-blob sk-blob-1"></span><span class="sk-blob sk-blob-2"></span><span class="sk-blob sk-blob-3"></span><span class="sk-grid"></span></div>
+  <section class="sk-hero">
+    <p class="sk-kicker"><img src="<%= settings.logoUrl %>" alt="" width="36" height="36"><span><%= settings.siteName %></span><span class="sk-dot" aria-hidden="true"></span><span>新歓特設ページ</span></p>
+    <h1 class="sk-title" lang="en"><span class="sk-line" style="--i:0">Welcome</span><span class="sk-line" style="--i:1">to <%= settings.siteName %>.</span></h1>
+    <p class="sk-catch">やりたいを、形にする仲間へ。</p>
+    <p class="sk-soon" lang="en"><span class="sk-pulse" aria-hidden="true"></span>Coming Soon</p>
+    <p class="sk-text">新歓特設ページは、ただいま公開の準備中です。<br>説明会の日程や活動の紹介を、ここでお知らせします。</p>
+    <div class="sk-actions">
+      <% if(settings.instagramUrl){ %><a class="sk-btn" href="<%= settings.instagramUrl %>" target="_blank" rel="noopener noreferrer">Instagramで最新情報を見る<span aria-hidden="true">→</span><span class="sk-sr">（新しいタブで開く）</span></a><% } %>
+      <a class="sk-link" href="/">T-Bizのサイトへ<span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</main>
+</body></html>

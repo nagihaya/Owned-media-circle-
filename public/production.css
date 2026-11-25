@@ -5984,3 +5984,60 @@ main .page:has(.about-page) {
     animation: none;
   }
 }
+
+/* ===== 全体の文字を紹介ブロックに合わせる（太字をやめて中くらいの太さ・字間を少し広く） ===== */
+main h1,
+main h2,
+main h3,
+main .section-title,
+.section-title-en .en,
+main .post-card h3,
+.card.post-card .card-body h3,
+.slide-title,
+.hero-slider .slide .slide-title,
+.hero-slider .slide .slide-person,
+.about-title > span:first-child,
+.about-profile-title > span:first-child,
+.about-col-title > span:first-child,
+.about-statement-text,
+.about-year-num,
+.about-title-ja,
+.about-sub,
+.about-dl dt,
+.join-title,
+.ft-logo span,
+.ft-en,
+.ft-small a,
+.ft-copy,
+main .page-intro h1,
+form.search-form label,
+.tbiz-h {
+  font-weight: 500 !important;
+}
+main .section-title,
+.section-title-en .en,
+.about-title > span:first-child,
+.about-profile-title > span:first-child,
+.about-col-title > span:first-child,
+.join-title,
+.ft-en {
+  letter-spacing: 0.04em;
+}
+.about-statement-text {
+  letter-spacing: 0.1em;
+}
+main .post-card h3,
+.card.post-card .card-body h3 {
+  letter-spacing: 0.04em;
+}
+.card-meta .card-type,
+.post-card .card-meta .card-type,
+.chip-industry,
+.post-card .chip.chip-industry {
+  font-weight: 500 !important;
+}
+main p,
+main dd,
+main li {
+  font-weight: 400;
+}

@@ -6041,3 +6041,24 @@ main dd,
 main li {
   font-weight: 400;
 }
+
+/* ヘッダーも紹介ブロックに合わせて細く */
+header.nav .navlinks .nav-pills a,
+header.nav .navlinks .nav-pills a .np-en,
+.nav-pills-toggle,
+.nav-pills-toggle .np-en,
+header.nav .navlinks a,
+.nav .navlinks a[aria-current="page"],
+.js .nav .navlinks.is-open a[aria-current="page"] {
+  font-weight: 500 !important;
+}
+header.nav .navlinks .nav-pills a .np-en,
+.nav-pills-toggle .np-en {
+  letter-spacing: 0.04em;
+}
+.nav-pills .np-ja {
+  font-weight: 400;
+}
+.nav .brand .brand-name {
+  font-weight: 500;
+}

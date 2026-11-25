@@ -5950,3 +5950,37 @@ main .page:has(.about-page) {
     top: 62%;
   }
 }
+
+/* ===== 紹介ブロックの背景：白地に、ごく薄い赤・青の小さな丸がいくつも漂う ===== */
+.intro-band.intro-split::before,
+.intro-band.intro-split::after {
+  display: none;
+}
+.intro-dots {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.intro-dot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: var(--c);
+  opacity: var(--o);
+  animation: intro-dot-drift var(--d) ease-in-out var(--delay) infinite alternate;
+}
+@keyframes intro-dot-drift {
+  to {
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-dot {
+    animation: none;
+  }
+}

@@ -5857,3 +5857,96 @@ main .page:has(.about-page) {
 .intro-split .intro-body p {
   font-weight: 400;
 }
+
+/* ===== 紹介ブロックの背景：方眼をやめ、ぼかした赤と青の丸がゆっくり動く ===== */
+.intro-band.intro-split::before,
+.intro-band.intro-split::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  background-image: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  inset: auto;
+}
+.intro-band.intro-split::before {
+  width: 460px;
+  height: 460px;
+  left: -120px;
+  top: 40px;
+  background: #ef4b4b;
+  opacity: 0.32;
+  animation: intro-orb-red 18s ease-in-out infinite alternate;
+}
+.intro-band.intro-split::after {
+  width: 520px;
+  height: 520px;
+  left: 32%;
+  bottom: -220px;
+  background: #2f5bd8;
+  opacity: 0.3;
+  animation: intro-orb-blue 22s ease-in-out infinite alternate;
+}
+@keyframes intro-orb-red {
+  50% {
+    transform: translate(180px, 120px) scale(1.12);
+  }
+  100% {
+    transform: translate(60px, 260px) scale(0.92);
+  }
+}
+@keyframes intro-orb-blue {
+  50% {
+    transform: translate(-160px, -180px) scale(0.9);
+  }
+  100% {
+    transform: translate(120px, -80px) scale(1.15);
+  }
+}
+@media (max-width: 800px) {
+  .intro-band.intro-split::before {
+    width: 280px;
+    height: 280px;
+    left: -100px;
+    top: 260px;
+  }
+  .intro-band.intro-split::after {
+    width: 300px;
+    height: 300px;
+    left: 40%;
+    bottom: -120px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-band.intro-split::before,
+  .intro-band.intro-split::after {
+    animation: none;
+  }
+}
+/* 青い丸が欄の下端で切れないよう、内側に収める */
+.intro-band.intro-split::after {
+  width: 440px;
+  height: 440px;
+  left: 30%;
+  top: 34%;
+  bottom: auto;
+}
+@keyframes intro-orb-blue {
+  50% {
+    transform: translate(-140px, -120px) scale(0.92);
+  }
+  100% {
+    transform: translate(140px, -40px) scale(1.08);
+  }
+}
+@media (max-width: 800px) {
+  .intro-band.intro-split::after {
+    width: 280px;
+    height: 280px;
+    left: 35%;
+    top: 62%;
+  }
+}

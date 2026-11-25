@@ -15,4 +15,25 @@
     </div>
   </section>
 </main>
+<% const skYear=new Date().toLocaleString("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric"}).replace(/\D/g,""); const skExt=(u)=>/^https:/.test(u||""); const skCols=[["About",[["T-Bizとは？","/about"],["活動記録","/articles?type="+encodeURIComponent("活動記録")],["インタビュー","/interviews"],["ビジネス知識","/knowledge"]]],["Join",[["メンバー募集","/recruit"],["お問い合わせ","/contact"]]],["Related",[["T-Biz（メディア）","/"],settings.noteUrl?["note",settings.noteUrl]:null,settings.instagramUrl?["Instagram",settings.instagramUrl]:null].filter(Boolean)]]; %>
+<footer class="skf" aria-label="新歓特設ページの案内">
+  <div class="skf-inner">
+    <div class="skf-brand">
+      <a class="skf-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="40" height="40" loading="lazy"><span><span lang="en"><%= settings.siteName %></span> <span class="skf-logo-sub">新歓</span></span></a>
+      <div class="skf-social">
+        <% if(settings.xUrl){ %><a href="<%= settings.xUrl %>" target="_blank" rel="noopener noreferrer" aria-label="X（新しいタブで開く）"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a><% } %>
+        <% if(settings.instagramUrl){ %><a href="<%= settings.instagramUrl %>" target="_blank" rel="noopener noreferrer" aria-label="Instagram（新しいタブで開く）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a><% } %>
+        <% if(settings.noteUrl){ %><a class="skf-note" href="<%= settings.noteUrl %>" target="_blank" rel="noopener noreferrer" aria-label="note（新しいタブで開く）">note</a><% } %>
+      </div>
+    </div>
+    <nav class="skf-cols" aria-label="リンク">
+      <% for(const [title,links] of skCols){ %><div class="skf-col"><h2 lang="en"><%= title %></h2><ul><% for(const [label,href] of links){ %><li><a href="<%= href %>" <%- skExt(href)?'target="_blank" rel="noopener noreferrer"':'' %>><%= label %><% if(skExt(href)){ %><svg class="skf-ext" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M12 9.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="sk-sr">（新しいタブで開く）</span><% } %></a></li><% } %></ul></div><% } %>
+    </nav>
+    <div class="skf-banners">
+      <a class="skf-banner skf-banner-media" href="/"><span class="skf-banner-title" lang="en"><%= settings.siteName %></span><span class="skf-banner-sub">企業インタビュー・活動記録を読む</span></a>
+      <% if(settings.instagramUrl){ %><a class="skf-banner skf-banner-ig" href="<%= settings.instagramUrl %>" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg><span class="skf-banner-sub">Instagramでも<br>新歓情報を更新中</span><span class="sk-sr">（新しいタブで開く）</span></a><% } %>
+    </div>
+  </div>
+  <div class="skf-bottom"><a href="/policy#policy-0">プライバシーポリシー</a><p>© <%= skYear %> <%= settings.siteName %></p></div>
+</footer>
 </body></html>

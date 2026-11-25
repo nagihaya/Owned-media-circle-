@@ -437,3 +437,9 @@ body.sk {
     margin-top: 36px;
   }
 }
+
+/* フッターは白地に */
+.skf {
+  background: #fff;
+  border-top: 1px solid #e6e8eb;
+}

@@ -1,17 +1,32 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><%= title %></title><meta name="description" content="T-Bizの新歓特設ページ。公開準備中です。"><meta property="og:title" content="<%= title %>"><meta property="og:site_name" content="<%= settings.siteName %>"><meta property="og:type" content="website"><% if(canonical){ %><link rel="canonical" href="<%= canonical %>"><meta property="og:url" content="<%= canonical %>"><% } %><link rel="icon" href="<%= settings.logoUrl %>"><link rel="stylesheet" href="/shinkan.css"></head>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><%= title %></title><meta name="description" content="T-Bizの新歓特設ページ。公開準備中です。"><meta property="og:title" content="<%= title %>"><meta property="og:site_name" content="<%= settings.siteName %>"><meta property="og:type" content="website"><% if(canonical){ %><link rel="canonical" href="<%= canonical %>"><meta property="og:url" content="<%= canonical %>"><% } %><link rel="icon" href="<%= settings.logoUrl %>"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/shinkan.css"></head>
 <body class="sk">
 <main class="sk-main" id="main">
-  <div class="sk-bg" aria-hidden="true"><span class="sk-blob sk-blob-1"></span><span class="sk-blob sk-blob-2"></span><span class="sk-blob sk-blob-3"></span><span class="sk-grid"></span></div>
-  <section class="sk-hero">
-    <p class="sk-kicker"><img src="<%= settings.logoUrl %>" alt="" width="36" height="36"><span><%= settings.siteName %></span><span class="sk-dot" aria-hidden="true"></span><span>新歓特設ページ</span></p>
-    <h1 class="sk-title" lang="en"><span class="sk-line" style="--i:0">Welcome</span><span class="sk-line" style="--i:1">to <%= settings.siteName %>.</span></h1>
-    <p class="sk-catch">やりたいを、形にする仲間へ。</p>
-    <p class="sk-soon" lang="en"><span class="sk-pulse" aria-hidden="true"></span>Coming Soon</p>
-    <p class="sk-text">新歓特設ページは、ただいま公開の準備中です。<br>説明会の日程や活動の紹介を、ここでお知らせします。</p>
-    <div class="sk-actions">
-      <% if(settings.instagramUrl){ %><a class="sk-btn" href="<%= settings.instagramUrl %>" target="_blank" rel="noopener noreferrer">Instagramで最新情報を見る<span aria-hidden="true">→</span><span class="sk-sr">（新しいタブで開く）</span></a><% } %>
-      <a class="sk-link" href="/">T-Bizのサイトへ<span aria-hidden="true">→</span></a>
+  <% const skY=new Date().toLocaleString("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric"}).replace(/\D/g,""); %>
+  <header class="sk-mast" lang="en">
+    <a class="sk-mast-logo" href="/"><img src="<%= settings.logoUrl %>" alt="" width="28" height="28"><span><%= settings.siteName %></span></a>
+    <span>MAGAZINE</span><span>VOL.01 / WELCOME ISSUE</span><span class="sk-mast-hide">TOKYO UNIV. OF SCIENCE</span><span><%= skY %></span>
+  </header>
+  <section class="sk-cover">
+    <p class="sk-no" lang="en" aria-hidden="true">№01</p>
+    <h1 class="sk-title" lang="en"><span class="sk-line" style="--i:0">WELCOME</span><span class="sk-line" style="--i:1">TO <%= settings.siteName.toUpperCase() %></span></h1>
+    <div class="sk-hazard" aria-hidden="true"></div>
+    <div class="sk-grid">
+      <div class="sk-cell"><p class="sk-label" lang="en">ISSUE</p><p class="sk-value">新歓特設ページ</p></div>
+      <div class="sk-cell"><p class="sk-label" lang="en">STATUS</p><p class="sk-value sk-status" lang="en"><span class="sk-pulse" aria-hidden="true"></span>COMING SOON</p></div>
+      <div class="sk-cell"><p class="sk-label" lang="en">LOCATION</p><p class="sk-value">東京都新宿区神楽坂</p></div>
+      <div class="sk-cell sk-cell-code" aria-hidden="true"><span class="sk-barcode"></span><span class="sk-code" lang="en">TBZ-<%= skY %>-001</span></div>
+    </div>
+    <div class="sk-body">
+      <p class="sk-catch">やりたいを、<br>形にする仲間へ。</p>
+      <div class="sk-text-col">
+        <p class="sk-label" lang="en">EDITOR'S NOTE</p>
+        <p class="sk-text">新歓特設ページは、ただいま公開の準備中です。説明会の日程や活動の紹介を、ここでお知らせします。</p>
+        <div class="sk-actions">
+          <% if(settings.instagramUrl){ %><a class="sk-btn" href="<%= settings.instagramUrl %>" target="_blank" rel="noopener noreferrer"><span>Instagramで最新情報を見る</span><span aria-hidden="true">↗</span><span class="sk-sr">（新しいタブで開く）</span></a><% } %>
+          <a class="sk-link" href="/"><span>T-Bizのサイトへ</span><span aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </div>
   </section>
 </main>

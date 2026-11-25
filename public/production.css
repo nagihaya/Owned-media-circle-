@@ -5842,3 +5842,18 @@ main .page:has(.about-page) {
     transform: translate(-50%, -50%);
   }
 }
+
+/* 紹介ブロック：文字を細く */
+.intro-split .intro-catch {
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.intro-label {
+  font-weight: 500;
+}
+.intro-label::after {
+  height: 1px;
+}
+.intro-split .intro-body p {
+  font-weight: 400;
+}

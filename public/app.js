@@ -532,13 +532,13 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     });
   }
 }
-// 紹介ブロックの背景：ごく薄い赤・青の小さな丸を、大きさ・位置・動きをばらばらにして並べる
+// 紹介ブロックの背景：薄い赤・青・緑の小さな丸を、大きさ・位置・動きをばらばらにして並べる
 {
   const box = document.querySelector(".intro-dots");
   if (box) {
     const r = (a, b) => a + Math.random() * (b - a);
     const n = innerWidth < 800 ? 9 : 16;
-    const colors = ["#e5484d", "#2f5bd8"];
+    const colors = ["#e5484d", "#2f5bd8", "#12a26b"];
     for (let i = 0; i < n; i++) {
       const d = document.createElement("span");
       d.className = "intro-dot";
@@ -547,9 +547,9 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
         `--x:${r(0, 96).toFixed(1)}%`,
         `--y:${r(4, 92).toFixed(1)}%`,
         `--s:${size}px`,
-        `--c:${colors[i % 2]}`,
-        // 大きい丸ほど薄く（色をほとんど感じない程度）
-        `--o:${(size > 28 ? r(0.05, 0.09) : r(0.08, 0.14)).toFixed(3)}`,
+        `--c:${colors[i % colors.length]}`,
+        // 大きい丸ほど少し薄く
+        `--o:${(size > 28 ? r(0.16, 0.24) : r(0.24, 0.36)).toFixed(3)}`,
         `--dx:${Math.round(r(-60, 60))}px`,
         `--dy:${Math.round(r(-50, 50))}px`,
         `--d:${r(9, 20).toFixed(1)}s`,

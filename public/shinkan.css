@@ -599,3 +599,134 @@ body.sk {
     display: none;
   }
 }
+
+/* ===== メインのページと色をそろえる：白地・黒い文字・紹介ブロックと同じ色の図形 ===== */
+body.sk {
+  background: #fff;
+  color: #111;
+}
+.sk-blob,
+.sk-grid {
+  display: none;
+}
+.sk-shape {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  background: var(--c);
+  opacity: 0.8;
+  animation: sk-shape-drift 22s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -2.7s);
+}
+.sk-shape.is-circle {
+  border-radius: 50%;
+}
+.sk-shape.is-square {
+  border-radius: 18%;
+}
+.sk-shape.is-blob {
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+}
+.sk-shape.is-pill {
+  height: calc(var(--s) * 0.46);
+  border-radius: 999px;
+}
+.sk-shape.is-ring {
+  background: transparent;
+  border: calc(var(--s) * 0.16) solid var(--c);
+  border-radius: 50%;
+}
+.sk-shape.is-triangle {
+  clip-path: polygon(50% 4%, 96% 92%, 4% 92%);
+}
+@keyframes sk-shape-drift {
+  50% {
+    transform: translate(30px, -24px) rotate(18deg) scale(1.08);
+  }
+  to {
+    transform: translate(-20px, 18px) rotate(-12deg) scale(0.94);
+  }
+}
+.sk-kicker {
+  color: #333;
+}
+.sk-line + .sk-line {
+  background: none;
+  color: #111;
+}
+.sk-title {
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.sk-catch {
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.sk-soon {
+  border-color: #d5d8dd;
+  color: #111;
+}
+.sk-pulse {
+  background: #12a26b;
+  box-shadow: 0 0 0 0 rgba(18, 162, 107, 0.6);
+}
+@keyframes sk-pulse {
+  to {
+    box-shadow: 0 0 0 12px rgba(18, 162, 107, 0);
+  }
+}
+.sk-text {
+  color: #444;
+}
+.sk-btn {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.sk-btn:hover,
+.sk-btn:active {
+  background: #fff;
+  color: #111;
+}
+.sk-link {
+  color: #111;
+}
+.sk-link:hover {
+  color: #111;
+}
+.sk-btn:focus-visible,
+.sk-link:focus-visible {
+  outline-color: #111;
+}
+/* メンバーの声：メインと同じ薄いグレーの背景、吹き出しは図形と同じ色 */
+.skv {
+  background: #f4f5f7;
+}
+.skv-c0 {
+  background: #e5484d;
+}
+.skv-c1 {
+  background: #2f5bd8;
+}
+.skv-c2 {
+  background: #12a26b;
+}
+.skv-c3 {
+  background: #f2b705;
+  color: #111;
+}
+.skv-bubble p {
+  font-weight: 500;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-shape {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .sk-shape {
+    scale: 0.7;
+    opacity: 0.6;
+  }
+}

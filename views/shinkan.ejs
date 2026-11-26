@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><%= title %></title><meta name="description" content="T-Bizの新歓特設ページ。公開準備中です。"><meta property="og:title" content="<%= title %>"><meta property="og:site_name" content="<%= settings.siteName %>"><meta property="og:type" content="website"><% if(canonical){ %><link rel="canonical" href="<%= canonical %>"><meta property="og:url" content="<%= canonical %>"><% } %><link rel="icon" href="<%= settings.logoUrl %>"><link rel="stylesheet" href="/shinkan.css"></head>
 <body class="sk">
 <main class="sk-main" id="main">
-  <div class="sk-bg" aria-hidden="true"><span class="sk-blob sk-blob-1"></span><span class="sk-blob sk-blob-2"></span><span class="sk-blob sk-blob-3"></span><span class="sk-grid"></span></div>
+  <div class="sk-bg" aria-hidden="true"><% [["circle","#e5484d",56,"8%","18%"],["square","#2f5bd8",44,"86%","14%"],["triangle","#f2b705",60,"78%","72%"],["ring","#12a26b",50,"6%","66%"],["blob","#ff7a1a",64,"92%","46%"],["circle","#2f5bd8",22,"56%","10%"],["square","#12a26b",26,"52%","96%"],["pill","#8e5bd8",58,"64%","90%"]].forEach(([k,c,sz,x,y],i)=>{ %><span class="sk-shape is-<%= k %>" style="--c:<%= c %>;--s:<%= sz %>px;left:<%= x %>;top:<%= y %>;--i:<%= i %>"></span><% }) %></div>
   <section class="sk-hero">
     <p class="sk-kicker"><img src="<%= settings.logoUrl %>" alt="" width="36" height="36"><span><%= settings.siteName %></span><span class="sk-dot" aria-hidden="true"></span><span>新歓特設ページ</span></p>
     <h1 class="sk-title" lang="en"><span class="sk-line" style="--i:0">Welcome</span><span class="sk-line" style="--i:1">to <%= settings.siteName %>.</span></h1>

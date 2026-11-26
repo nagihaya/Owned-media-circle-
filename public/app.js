@@ -550,9 +550,10 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
         `--c:${colors[i % colors.length]}`,
         // 大きい丸ほど少し薄く
         `--o:${(size > 28 ? r(0.16, 0.24) : r(0.24, 0.36)).toFixed(3)}`,
-        `--dx:${Math.round(r(-60, 60))}px`,
-        `--dy:${Math.round(r(-50, 50))}px`,
-        `--d:${r(9, 20).toFixed(1)}s`,
+        // 動く幅は大きめ（横±180px・縦±140px）。小さい丸ほど大きく動く
+        `--dx:${Math.round(r(-180, 180) * (size < 20 ? 1.2 : 1))}px`,
+        `--dy:${Math.round(r(-140, 140) * (size < 20 ? 1.2 : 1))}px`,
+        `--d:${r(8, 16).toFixed(1)}s`,
         `--delay:${(-r(0, 20)).toFixed(1)}s`,
       ].join(";");
       box.append(d);

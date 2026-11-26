@@ -5975,8 +5975,11 @@ main .page:has(.about-page) {
   animation: intro-dot-drift var(--d) ease-in-out var(--delay) infinite alternate;
 }
 @keyframes intro-dot-drift {
+  50% {
+    transform: translate(calc(var(--dx) * -0.6), calc(var(--dy) * 0.8)) scale(1.25);
+  }
   to {
-    transform: translate(var(--dx), var(--dy));
+    transform: translate(var(--dx), var(--dy)) scale(0.9);
   }
 }
 @media (prefers-reduced-motion: reduce) {

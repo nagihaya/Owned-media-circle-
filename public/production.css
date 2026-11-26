@@ -6185,3 +6185,83 @@ header.nav .navlinks .nav-pills a .np-en,
     animation: none !important;
   }
 }
+
+/* ===== Interview などの記事欄：記事は4件（2列×2段）。右下の空きに紹介ブロックと同じ図形を並べる ===== */
+.section-deco {
+  display: none;
+}
+@media (min-width: 901px) {
+  .section-deco {
+    grid-column: 3;
+    grid-row: 2;
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    place-items: center;
+    gap: 36px 12px;
+    padding: 24px;
+  }
+}
+.deco-shape {
+  display: block;
+  width: var(--s);
+  height: var(--s);
+  background: var(--c);
+  opacity: 0;
+  transform: translateX(-24px) scale(0.3) rotate(-90deg);
+  transition:
+    opacity 0.6s ease,
+    transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--i) * 0.18s);
+}
+.deco-shape.is-circle {
+  border-radius: 50%;
+}
+.deco-shape.is-square {
+  border-radius: 18%;
+}
+.deco-shape.is-blob {
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+}
+.deco-shape.is-pill {
+  height: calc(var(--s) * 0.46);
+  border-radius: 999px;
+}
+.deco-shape.is-ring {
+  background: transparent;
+  border: calc(var(--s) * 0.16) solid var(--c);
+  border-radius: 50%;
+}
+.deco-shape.is-triangle {
+  clip-path: polygon(50% 4%, 96% 92%, 4% 92%);
+}
+/* 画面に入ったら、左から順に現れて、その後ゆっくり形を変え続ける */
+.section-deco.is-in .deco-shape {
+  opacity: 0.85;
+  transform: none;
+  animation: deco-breathe 14s ease-in-out infinite alternate;
+  animation-delay: calc(1.2s + var(--i) * 0.18s);
+}
+.section-deco.is-in .deco-shape:is(.is-circle, .is-square, .is-blob) {
+  animation:
+    deco-breathe 14s ease-in-out infinite alternate,
+    intro-shape-morph 12s ease-in-out infinite alternate;
+  animation-delay: calc(1.2s + var(--i) * 0.18s);
+}
+@keyframes deco-breathe {
+  50% {
+    transform: translateY(-10px) rotate(12deg) scale(1.06);
+  }
+  to {
+    transform: translateY(6px) rotate(-8deg) scale(0.96);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deco-shape,
+  .section-deco.is-in .deco-shape {
+    opacity: 0.85;
+    transform: none;
+    transition: none;
+    animation: none !important;
+  }
+}

@@ -579,3 +579,20 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     }
   }
 }
+// 記事欄の右下の図形：画面に入ったら左から順に現れる
+{
+  const decos = document.querySelectorAll(".section-deco");
+  if (decos.length && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries)
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+      },
+      { threshold: 0.4 },
+    );
+    decos.forEach((d) => io.observe(d));
+  } else decos.forEach((d) => d.classList.add("is-in"));
+}

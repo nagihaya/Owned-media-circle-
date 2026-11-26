@@ -268,9 +268,9 @@ export async function homeData() {
   return {
     settings: publicSettings(s),
     slides: sl,
-    interviews: interview.items.slice(0, 5),
-    activity: activity.items.slice(0, 5),
-    knowledge: knowledge.items.slice(0, 5),
+    interviews: interview.items.slice(0, 4),
+    activity: activity.items.slice(0, 4),
+    knowledge: knowledge.items.slice(0, 4),
   };
 }
 export async function countEvent(kind, key) {

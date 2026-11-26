@@ -6084,3 +6084,104 @@ header.nav .navlinks .nav-pills a .np-en,
 .feature-meta .pill {
   color: #444;
 }
+
+/* ===== 紹介ブロックの動き：写真はぼかしから浮かび上がる → 背後から図形が飛び出し、漂いながら形を変える ===== */
+.intro-dots {
+  z-index: 0;
+}
+.intro-split .intro-inner {
+  position: relative;
+  z-index: 1;
+}
+.intro-shape {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  opacity: var(--o);
+  will-change: transform, opacity;
+}
+.intro-shape-in {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--c);
+  animation:
+    intro-shape-drift var(--d) ease-in-out var(--delay) infinite alternate,
+    intro-shape-morph var(--m) ease-in-out var(--delay) infinite alternate;
+}
+.intro-shape-in.is-circle {
+  border-radius: 50%;
+}
+.intro-shape-in.is-square {
+  border-radius: 18%;
+}
+.intro-shape-in.is-blob {
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+}
+.intro-shape-in.is-pill {
+  height: 46%;
+  margin-top: 27%;
+  border-radius: 999px;
+}
+.intro-shape-in.is-ring {
+  background: transparent;
+  border: max(3px, calc(var(--s) * 0.16)) solid var(--c);
+  border-radius: 50%;
+}
+.intro-shape-in.is-triangle {
+  clip-path: polygon(50% 4%, 96% 92%, 4% 92%);
+  animation: intro-shape-drift var(--d) ease-in-out var(--delay) infinite alternate;
+}
+@keyframes intro-shape-drift {
+  50% {
+    transform: translate(calc(var(--dx) * -0.6), calc(var(--dy) * 0.7)) rotate(calc(var(--rot) * 0.5)) scale(1.2);
+  }
+  to {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.9);
+  }
+}
+/* 可塑性：丸 ↔ 角丸の四角 ↔ やわらかい不定形 を行き来する */
+@keyframes intro-shape-morph {
+  33% {
+    border-radius: 18%;
+  }
+  66% {
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+  }
+  to {
+    border-radius: 50%;
+  }
+}
+/* 写真：ぼやけた状態から、ピントが合うように現れる（以前の幕が開く動きの代わり） */
+@media (prefers-reduced-motion: no-preference) {
+  .intro-split .intro-photo {
+    animation: intro-photo-focus 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  }
+  .intro-split .intro-photo img {
+    animation: intro-photo-unblur 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  }
+}
+@keyframes intro-photo-focus {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-photo-unblur {
+  from {
+    filter: blur(28px) saturate(0.6);
+    transform: scale(1.12);
+  }
+  to {
+    filter: none;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-shape-in {
+    animation: none !important;
+  }
+}

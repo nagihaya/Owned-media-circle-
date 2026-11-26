@@ -532,31 +532,74 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     });
   }
 }
-// 紹介ブロックの背景：薄い赤・青・緑の小さな丸を、大きさ・位置・動きをばらばらにして並べる
+// 紹介ブロック：写真がぼかしから浮かび上がったあと、その背後から色とりどりの図形が飛び出し、
+// 漂いながら形を変え続ける（サークルのフレッシュさと「やりたいを形にする」可塑性の表現）
 {
   const box = document.querySelector(".intro-dots");
-  if (box) {
+  const band = box?.closest(".intro-band");
+  if (box && band) {
     const r = (a, b) => a + Math.random() * (b - a);
-    const n = innerWidth < 800 ? 9 : 16;
-    const colors = ["#e5484d", "#2f5bd8", "#12a26b"];
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const n = innerWidth < 800 ? 12 : 22;
+    const colors = ["#e5484d", "#2f5bd8", "#12a26b", "#f2b705", "#ff7a1a", "#8e5bd8"];
+    const kinds = ["circle", "square", "blob", "ring", "triangle", "pill"];
+    const photo = band.querySelector(".intro-photo");
+    const br = band.getBoundingClientRect();
+    const pr = photo ? photo.getBoundingClientRect() : null;
+    // 飛び出す起点：写真の中央（写真がなければブロックの中央）
+    const rel = (el, pad = 0) => {
+      const q = el.getBoundingClientRect();
+      return { l: q.left - br.left - pad, r: q.right - br.left + pad, t: q.top - br.top - pad, b: q.bottom - br.top + pad };
+    };
+    const avoid = [...band.querySelectorAll(".intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 12));
+    if (photo) avoid.push(rel(photo, 0));
+    const ox = pr ? pr.left + pr.width / 2 - br.left : br.width / 2;
+    const oy = pr ? pr.top + pr.height / 2 - br.top : br.height / 2;
     for (let i = 0; i < n; i++) {
-      const d = document.createElement("span");
-      d.className = "intro-dot";
-      const size = Math.round(r(6, 46));
-      d.style.cssText = [
-        `--x:${r(0, 96).toFixed(1)}%`,
-        `--y:${r(4, 92).toFixed(1)}%`,
-        `--s:${size}px`,
-        `--c:${colors[i % colors.length]}`,
-        // 大きい丸ほど少し薄く
-        `--o:${(size > 28 ? r(0.16, 0.24) : r(0.24, 0.36)).toFixed(3)}`,
-        // 動く幅は大きめ（横±180px・縦±140px）。小さい丸ほど大きく動く
-        `--dx:${Math.round(r(-180, 180) * (size < 20 ? 1.2 : 1))}px`,
-        `--dy:${Math.round(r(-140, 140) * (size < 20 ? 1.2 : 1))}px`,
-        `--d:${r(8, 16).toFixed(1)}s`,
-        `--delay:${(-r(0, 20)).toFixed(1)}s`,
+      const kind = kinds[i % kinds.length];
+      const size = Math.round(r(10, 54));
+      // 文章と写真の上には置かない（読みやすさのため）。空いている場所を探す
+      let x = 0,
+        y = 0;
+      for (let t = 0; t < 40; t++) {
+        x = r(0.02, 0.98) * br.width;
+        y = r(0.04, 0.96) * br.height;
+        if (!avoid.some((a) => x > a.l - size && x < a.r + size && y > a.t - size && y < a.b + size)) break;
+      }
+      const el = document.createElement("span");
+      el.className = "intro-shape";
+      el.style.cssText = `left:${x.toFixed(0)}px;top:${y.toFixed(0)}px;--s:${size}px;--c:${colors[i % colors.length]};--o:${r(0.55, 0.85).toFixed(2)}`;
+      const inner = document.createElement("span");
+      inner.className = `intro-shape-in is-${kind}`;
+      inner.style.cssText = [
+        `--dx:${Math.round(r(-120, 120))}px`,
+        `--dy:${Math.round(r(-90, 90))}px`,
+        `--rot:${Math.round(r(-180, 180))}deg`,
+        `--d:${r(9, 17).toFixed(1)}s`,
+        `--m:${r(5, 9).toFixed(1)}s`,
+        `--delay:${(-r(0, 12)).toFixed(1)}s`,
       ].join(";");
-      box.append(d);
+      el.append(inner);
+      box.append(el);
+      if (still) continue;
+      // 写真の背後から、勢いよく飛び出して所定の位置へ（少し行き過ぎて戻る）
+      el.animate(
+        [
+          { transform: `translate(${ox - x}px, ${oy - y}px) scale(0)`, opacity: 0 },
+          { opacity: 1, offset: 0.15 },
+          {
+            transform: `translate(${(x - ox) * 0.08}px, ${(y - oy) * 0.08}px) scale(1.15)`,
+            offset: 0.75,
+          },
+          { transform: "translate(0, 0) scale(1)", opacity: 1 },
+        ],
+        {
+          duration: r(900, 1400),
+          delay: 1000 + i * 45,
+          easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+          fill: "backwards",
+        },
+      );
     }
   }
 }

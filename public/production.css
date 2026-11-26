@@ -6265,3 +6265,25 @@ header.nav .navlinks .nav-pills a .np-en,
     animation: none !important;
   }
 }
+/* 図形は横1列に並べる */
+@media (min-width: 901px) {
+  .section-deco {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 24px 4px;
+  }
+  .section-deco .deco-shape {
+    --s2: calc(var(--s) * 0.72);
+    width: var(--s2);
+    height: var(--s2);
+    flex: none;
+  }
+  .section-deco .deco-shape.is-pill {
+    height: calc(var(--s2) * 0.46);
+  }
+  .section-deco .deco-shape.is-ring {
+    border-width: calc(var(--s2) * 0.16);
+  }
+}

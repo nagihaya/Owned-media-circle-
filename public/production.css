@@ -6287,3 +6287,11 @@ header.nav .navlinks .nav-pills a .np-en,
     border-width: calc(var(--s2) * 0.16);
   }
 }
+/* 図形は詰めて右端にそろえる */
+@media (min-width: 901px) {
+  .section-deco {
+    justify-content: flex-end;
+    gap: 22px;
+    padding-right: 0;
+  }
+}

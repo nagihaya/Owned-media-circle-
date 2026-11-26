@@ -81,6 +81,8 @@
       "instagramUrl",
       "xUrl",
       "introLabel",
+      "shinkanVoices",
+      "shinkanVoicesNote",
       "aboutLead",
       "aboutHistory",
       "joinTitle",

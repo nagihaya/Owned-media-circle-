@@ -443,3 +443,159 @@ body.sk {
   background: #fff;
   border-top: 1px solid #e6e8eb;
 }
+
+/* ===== メンバーの声：色とりどりの吹き出しが横にゆっくり流れる ===== */
+.skv {
+  background: #f4f4f4;
+  color: #1a1a1a;
+  padding: 88px 0 56px;
+  overflow: hidden;
+}
+.skv-head {
+  max-width: 1280px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+.skv-head h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.skv-head h2 > span:first-child {
+  font-size: clamp(36px, 4.4vw, 56px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.skv-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+.skv-viewport {
+  overflow: hidden;
+  padding: 8px 0 40px;
+}
+.skv-viewport:focus-visible {
+  outline: 3px solid #1a1a1a;
+  outline-offset: -3px;
+}
+.skv-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+  width: max-content;
+  padding-left: 40px;
+  animation: skv-flow calc(var(--n) * 11s) linear infinite;
+}
+.skv-viewport:hover .skv-track,
+.skv-viewport:focus-within .skv-track {
+  animation-play-state: paused;
+}
+@keyframes skv-flow {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.skv-bubble {
+  position: relative;
+  flex: none;
+  width: 400px;
+  margin: 0;
+  padding: 40px 42px 36px;
+  border-radius: 22px;
+  color: #fff;
+}
+.skv-bubble blockquote {
+  margin: 0;
+}
+.skv-bubble p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.95;
+  letter-spacing: 0.1em;
+}
+.skv-bubble figcaption {
+  margin-top: 26px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.92;
+}
+/* 色（4色を順番に） */
+.skv-c0 {
+  background: #7b66a8;
+}
+.skv-c1 {
+  background: #2bbcc4;
+}
+.skv-c2 {
+  background: #e8b63f;
+}
+.skv-c3 {
+  background: #c96f4c;
+}
+/* 吹き出しのしっぽ（位置を3通りで変える） */
+.skv-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -32px;
+  width: 34px;
+  height: 34px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.skv-t0::after {
+  right: 84px;
+}
+.skv-t1::after {
+  left: 140px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.skv-t2::after {
+  right: 84px;
+}
+.skv-note {
+  max-width: 1280px;
+  margin: 8px auto 0;
+  padding: 0 28px;
+  font-size: 13px;
+  color: #888;
+}
+@media (max-width: 600px) {
+  .skv {
+    padding: 64px 0 40px;
+  }
+  .skv-head {
+    padding: 0 18px;
+    margin-bottom: 32px;
+  }
+  .skv-bubble {
+    width: 290px;
+    padding: 28px 28px 26px;
+  }
+  .skv-bubble p {
+    font-size: 15px;
+    letter-spacing: 0.06em;
+  }
+  .skv-track {
+    gap: 24px;
+    padding-left: 18px;
+  }
+  .skv-note {
+    padding: 0 18px;
+  }
+}
+/* 動きを減らす設定：自動で流さず、指やスクロールで横に見る */
+@media (prefers-reduced-motion: reduce) {
+  .skv-viewport {
+    overflow-x: auto;
+  }
+  .skv-track {
+    animation: none;
+  }
+  .skv-bubble[data-copy] {
+    display: none;
+  }
+}

@@ -540,7 +540,7 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
   if (box && band) {
     const r = (a, b) => a + Math.random() * (b - a);
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const n = innerWidth < 800 ? 12 : 22;
+    const n = innerWidth < 800 ? 6 : 10;
     const colors = ["#e5484d", "#2f5bd8", "#12a26b", "#f2b705", "#ff7a1a", "#8e5bd8"];
     const kinds = ["circle", "square", "blob", "ring", "triangle", "pill"];
     const photo = band.querySelector(".intro-photo");
@@ -572,12 +572,12 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
       const inner = document.createElement("span");
       inner.className = `intro-shape-in is-${kind}`;
       inner.style.cssText = [
-        `--dx:${Math.round(r(-120, 120))}px`,
-        `--dy:${Math.round(r(-90, 90))}px`,
-        `--rot:${Math.round(r(-180, 180))}deg`,
-        `--d:${r(9, 17).toFixed(1)}s`,
-        `--m:${r(5, 9).toFixed(1)}s`,
-        `--delay:${(-r(0, 12)).toFixed(1)}s`,
+        `--dx:${Math.round(r(-90, 90))}px`,
+        `--dy:${Math.round(r(-70, 70))}px`,
+        `--rot:${Math.round(r(-60, 60))}deg`,
+        `--d:${r(20, 32).toFixed(1)}s`,
+        `--m:${r(12, 20).toFixed(1)}s`,
+        `--delay:${(-r(0, 20)).toFixed(1)}s`,
       ].join(";");
       el.append(inner);
       box.append(el);
@@ -594,8 +594,8 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
           { transform: "translate(0, 0) scale(1)", opacity: 1 },
         ],
         {
-          duration: r(900, 1400),
-          delay: 1000 + i * 45,
+          duration: r(2000, 2800),
+          delay: 1100 + i * 160,
           easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
           fill: "backwards",
         },

@@ -361,7 +361,7 @@ body.sk {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
 }
 .skf-banner-media {
-  background: linear-gradient(135deg, #1f3a6e, #2f5bd8);
+  background: #111;
 }
 .skf-banner-title {
   font-size: 32px;

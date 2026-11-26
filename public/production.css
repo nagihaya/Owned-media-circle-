@@ -6065,3 +6065,22 @@ header.nav .navlinks .nav-pills a .np-en,
 .nav .brand .brand-name {
   font-weight: 500;
 }
+
+/* ===== 紺色の差し色をやめる（黒とグレーに置き換え） ===== */
+:root {
+  --tbiz-accent: #111;
+  --tbiz-accent-text: #111;
+  --tbiz-accent-soft: #e6e7ea;
+}
+/* 記事タイプの文字は、黒の本文と区別できるよう少しグレーに */
+.card-meta .card-type,
+.post-card .card-meta .card-type,
+.feature-card-body .eyebrow {
+  color: #555 !important;
+}
+.chip-industry,
+.post-card .chip.chip-industry,
+.feature-meta .pill.dark,
+.feature-meta .pill {
+  color: #444;
+}

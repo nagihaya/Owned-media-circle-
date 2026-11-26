@@ -6295,3 +6295,39 @@ header.nav .navlinks .nav-pills a .np-en,
     padding-right: 0;
   }
 }
+
+/* ===== Activity：左右を反転した配置（見出しは右上、図形は左下） ===== */
+@media (min-width: 901px) {
+  .section-mirror .section-head {
+    grid-column: 3;
+    grid-row: 1;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .section-mirror .section-title-en {
+    align-items: flex-end;
+  }
+  .section-mirror > .cards > .post-card:nth-of-type(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .section-mirror > .cards > .post-card:nth-of-type(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .section-mirror > .cards > .post-card:nth-of-type(3) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .section-mirror > .cards > .post-card:nth-of-type(4) {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .section-mirror .section-deco {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: flex-start;
+    padding-left: 0;
+    padding-right: 4px;
+  }
+}

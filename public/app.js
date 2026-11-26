@@ -532,29 +532,24 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     });
   }
 }
-// 紹介ブロック：写真がぼかしから浮かび上がったあと、その背後から色とりどりの図形が飛び出し、
-// 漂いながら形を変え続ける（サークルのフレッシュさと「やりたいを形にする」可塑性の表現）
+// 紹介ブロック：色とりどりの図形を最初から置き、漂いながら形を変え続ける（サークルのフレッシュさと「やりたいを形にする」可塑性の表現）
 {
   const box = document.querySelector(".intro-dots");
   const band = box?.closest(".intro-band");
   if (box && band) {
     const r = (a, b) => a + Math.random() * (b - a);
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const n = innerWidth < 800 ? 6 : 10;
     const colors = ["#e5484d", "#2f5bd8", "#12a26b", "#f2b705", "#ff7a1a", "#8e5bd8"];
     const kinds = ["circle", "square", "blob", "ring", "triangle", "pill"];
     const photo = band.querySelector(".intro-photo");
     const br = band.getBoundingClientRect();
     const pr = photo ? photo.getBoundingClientRect() : null;
-    // 飛び出す起点：写真の中央（写真がなければブロックの中央）
     const rel = (el, pad = 0) => {
       const q = el.getBoundingClientRect();
       return { l: q.left - br.left - pad, r: q.right - br.left + pad, t: q.top - br.top - pad, b: q.bottom - br.top + pad };
     };
     const avoid = [...band.querySelectorAll(".intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 12));
     if (photo) avoid.push(rel(photo, 0));
-    const ox = pr ? pr.left + pr.width / 2 - br.left : br.width / 2;
-    const oy = pr ? pr.top + pr.height / 2 - br.top : br.height / 2;
     for (let i = 0; i < n; i++) {
       const kind = kinds[i % kinds.length];
       const size = Math.round(r(10, 54));
@@ -581,25 +576,6 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
       ].join(";");
       el.append(inner);
       box.append(el);
-      if (still) continue;
-      // 写真の背後から、勢いよく飛び出して所定の位置へ（少し行き過ぎて戻る）
-      el.animate(
-        [
-          { transform: `translate(${ox - x}px, ${oy - y}px) scale(0)`, opacity: 0 },
-          { opacity: 1, offset: 0.15 },
-          {
-            transform: `translate(${(x - ox) * 0.08}px, ${(y - oy) * 0.08}px) scale(1.15)`,
-            offset: 0.75,
-          },
-          { transform: "translate(0, 0) scale(1)", opacity: 1 },
-        ],
-        {
-          duration: r(2000, 2800),
-          delay: 1100 + i * 160,
-          easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
-          fill: "backwards",
-        },
-      );
     }
   }
 }

@@ -1482,3 +1482,26 @@ html {
     left: calc(50% + 300px);
   }
 }
+/* スクロールの案内を大きく */
+@media (min-width: 1101px) {
+  .sk-scroll {
+    font-size: 48px;
+    gap: 8px;
+  }
+  .sk-scroll svg {
+    width: 48px;
+    height: 96px;
+  }
+  .sk-scroll path {
+    stroke-width: 3;
+  }
+}
+@media (max-width: 1100px) {
+  .sk-scroll {
+    font-size: 32px;
+  }
+  .sk-scroll svg {
+    width: 34px;
+    height: 64px;
+  }
+}

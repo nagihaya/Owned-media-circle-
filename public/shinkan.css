@@ -1133,3 +1133,25 @@ body.sk {
     padding: 36px 20px 24px;
   }
 }
+
+/* カードは枠ではなく、色のベタ塗りに（角丸・間隔はそのまま） */
+.skm-card,
+.skm-card:nth-child(3n),
+.skm-card:nth-child(2n) {
+  border: 0;
+  background: var(--frame);
+}
+.skm-bg0, .skm-bg1, .skm-bg2, .skm-bg3, .skm-bg4, .skm-bg5, .skm-bg6, .skm-bg7, .skm-bg8 {
+  background: var(--frame);
+}
+.skm-face {
+  padding: 48px 28px 30px;
+}
+.skm-a {
+  background: rgba(255, 255, 255, 0.85);
+}
+@media (max-width: 600px) {
+  .skm-face {
+    padding: 44px 22px 26px;
+  }
+}

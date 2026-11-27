@@ -554,6 +554,8 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     };
     const avoid = [...band.querySelectorAll(".th-copy, .intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 24));
     if (photo) avoid.push(rel(photo, 0));
+    const town = band.querySelector(".th-town");
+    if (town) avoid.push(rel(town, 0));
     for (let i = 0; i < n; i++) {
       const kind = kinds[i % kinds.length];
       const size = Math.round(r(18, 40));

@@ -12,7 +12,7 @@ const heroPhotos = [
 const heroMarkRe = /[*＊]([^*＊\n]+)[*＊]/g;
 const heroLines = String(settings.introCatch || '').split(/\r?\n/).filter((l) => l.trim());
 const heroHasMark = /[*＊][^*＊\n]+[*＊]/.test(settings.introCatch || ''); %>
-<% if(heroLines.length || settings.introText || heroPhotos.length){ %><section class="intro-band th" aria-label="このメディアについて"><div class="intro-dots" aria-hidden="true"></div><div class="th-inner<%= heroPhotos.length?' has-photos':'' %>">
+<% if(heroLines.length || settings.introText || heroPhotos.length){ %><section class="intro-band th" aria-label="このメディアについて"><div class="intro-dots" aria-hidden="true"></div><%- include('town') %><div class="th-inner<%= heroPhotos.length?' has-photos':'' %>">
 <div class="th-copy"><% if(settings.introLabel){ %><p class="intro-label"><%= settings.introLabel %></p><% } %>
 <% if(heroLines.length){ %><p class="th-catch"><% heroLines.forEach((line, li) => { %><span class="th-line"><% if(heroHasMark){ line.split(heroMarkRe).forEach((part, pi) => { %><% if(pi % 2){ %><span class="intro-mark"><%= part %></span><% } else { %><%= part %><% } %><% }) } else if(heroLines.length > 1 && li === heroLines.length - 1){ %><span class="intro-mark"><%= line %></span><% } else { %><%= line %><% } %></span><% }) %></p><% } %>
 <% if(settings.introText){ %><p class="th-body"><%= String(settings.introText).replace(/[*＊]/g, '') %></p><% } %>

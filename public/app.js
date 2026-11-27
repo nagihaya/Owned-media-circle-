@@ -552,7 +552,7 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
       const q = el.getBoundingClientRect();
       return { l: q.left - br.left - pad, r: q.right - br.left + pad, t: q.top - br.top - pad, b: q.bottom - br.top + pad };
     };
-    const avoid = [...band.querySelectorAll(".th-copy, .intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 24));
+    const avoid = [...band.querySelectorAll(".th-copy, .intro-label, .intro-catch, .intro-body p, .th .ab")].map((el) => rel(el, 24));
     if (photo) avoid.push(rel(photo, 0));
     const town = band.querySelector(".th-town");
     if (town) avoid.push(rel(town, 0));

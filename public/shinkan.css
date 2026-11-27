@@ -1606,3 +1606,34 @@ html {
   transform: rotate(-2deg);
   transform-origin: left center;
 }
+
+/* ボタン共通のスタイル：文字＋太い斜め矢印（↗）。背景・枠なし（トップと同じ） */
+.sk-btn,
+.sk-btn:hover,
+.sk-btn:active,
+.sk-link,
+.sk-link:hover {
+  gap: 22px;
+  min-height: 44px;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: #111;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+}
+.sk-btn .ab-arrow,
+.sk-link .ab-arrow {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+@media (hover: hover) {
+  .sk-btn:hover .ab-arrow,
+  .sk-link:hover .ab-arrow {
+    transform: translate(3px, -3px);
+  }
+}

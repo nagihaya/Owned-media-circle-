@@ -6430,7 +6430,7 @@ header.nav .navlinks .nav-pills a .np-en,
   letter-spacing: 0.08em;
   color: #333;
 }
-.th .intro-btn {
+.th .ab {
   margin-top: 4px;
 }
 /* 写真：ポラロイド風（白フチ・角丸・薄い影）を傾けて少し重ねる */
@@ -6692,5 +6692,54 @@ header.nav .navlinks .nav-pills a .np-en,
   }
   to {
     transform: translateX(1480px);
+  }
+}
+
+/* ===== ボタン共通：文字＋太い斜め矢印（↗）。背景・枠なし ===== */
+.ab:not(.more-link-pc):not(.more-link-sp) {
+  display: inline-flex;
+}
+.ab.ab {
+  align-items: center;
+  gap: 22px;
+  min-height: 44px;
+  margin: 0;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: #111;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ab-arrow {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+@media (hover: hover) {
+  .ab.ab:hover .ab-arrow {
+    transform: translate(3px, -3px);
+  }
+}
+.ab.ab:active .ab-arrow {
+  transform: translate(3px, -3px);
+}
+.ab.ab:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 4px;
+}
+/* スマホの「see more」は記事の下に中央寄せ */
+@media (max-width: 800px) {
+  .ab.more-link-sp {
+    justify-content: center;
   }
 }

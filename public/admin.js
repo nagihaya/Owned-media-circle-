@@ -53,6 +53,17 @@
       e.preventDefault();
       openTab(a.getAttribute("href").slice(1), true);
     });
+  // 別のタブにある欄へ移動するリンク（例：新歓メンバー → サイト設定の「よくある質問」）
+  for (const a of document.querySelectorAll("a[data-goto-tab]"))
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      openTab(a.dataset.gotoTab);
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target) {
+        target.scrollIntoView({ block: "start" });
+        target.querySelector("textarea, input")?.focus({ preventScroll: true });
+      }
+    });
   for (const id of tabIds)
     document
       .getElementById(id)

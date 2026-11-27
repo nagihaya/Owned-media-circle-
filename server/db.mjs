@@ -112,6 +112,21 @@ export function cleanGallery(list) {
     .slice(0, 12)
     .map((p) => ({ url: p.url, alt: String(p.alt || "").slice(0, 80) }));
 }
+// 新歓ページのメンバー紹介：写真（保存済み画像のみ）・吹き出し（入った理由）・タグ
+export function cleanShinkanMembers(list) {
+  return (Array.isArray(list) ? list : [])
+    .filter((m) => m && typeof m === "object")
+    .slice(0, 30)
+    .map((m) => ({
+      url: typeof m.url === "string" && GALLERY_PATH.test(m.url) ? m.url : "",
+      bubble: String(m.bubble || "").trim().slice(0, 60),
+      tags: (Array.isArray(m.tags) ? m.tags : [])
+        .map((t) => String(t).replace(/^[#＃]+/, "").trim().slice(0, 20))
+        .filter(Boolean)
+        .slice(0, 5),
+    }))
+    .filter((m) => m.url || m.bubble || m.tags.length);
+}
 export function publicSettings(s) {
   const {
     siteName,
@@ -170,6 +185,7 @@ export function publicSettings(s) {
     logoUrl,
     googleForms: cleanForms(s.googleForms),
     gallery: cleanGallery(s.gallery),
+    shinkanMembers: cleanShinkanMembers(s.shinkanMembers),
   };
 }
 export function mapArticle(a) {

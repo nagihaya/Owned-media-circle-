@@ -316,6 +316,91 @@
       "#introImageStatus",
     ),
   );
+  // ===== 新歓ページのメンバー紹介：追加・写真・吹き出し・タグ・並べ替え・削除 =====
+  let members = [];
+  function renderMembers() {
+    $("#memberList").innerHTML = members.length
+      ? members
+          .map(
+            (m, i) =>
+              `<li class="member-admin-item">${m.url ? `<img src="${h(m.url)}" alt="">` : '<span class="member-admin-noimg">写真なし</span>'}<div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}人目</span><label>写真（JPEG/PNG/WebP・8MB以内）<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${i}"></label><label>吹き出し：入った理由など（60文字まで）<input data-bubble="${i}" maxlength="60" value="${h(m.bubble || "")}" placeholder="例：ビジコンに挑戦したくて！"></label><label>タグ（カンマ区切り・5つまで。# は自動で付きます）<input data-tags="${i}" maxlength="120" value="${h((m.tags || []).join(", "))}" placeholder="例：経営学科, 映画鑑賞, サウナ"></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-mmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-mmove="${i}" data-dir="1" ${i === members.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-mremove="${i}">削除</button></div></div></li>`,
+          )
+          .join("")
+      : '<li class="gallery-admin-empty">メンバーはまだいません。</li>';
+  }
+  async function loadMembers() {
+    const s = await api("/api/admin/settings");
+    members = Array.isArray(s.shinkanMembers)
+      ? s.shinkanMembers.map((m) => ({ url: m.url || "", bubble: m.bubble || "", tags: [...(m.tags || [])] }))
+      : [];
+    renderMembers();
+  }
+  const splitTags = (v) =>
+    v
+      .split(/[,、，]/)
+      .map((t) => t.replace(/^[#＃\s]+/, "").trim())
+      .filter(Boolean)
+      .slice(0, 5);
+  $("#memberList").addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.bubble !== undefined) members[Number(t.dataset.bubble)].bubble = t.value;
+    if (t.dataset.tags !== undefined) members[Number(t.dataset.tags)].tags = splitTags(t.value);
+  });
+  $("#memberList").addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.dataset.photo === undefined || !t.files[0]) return;
+    const i = Number(t.dataset.photo);
+    action(
+      t,
+      async () => {
+        message("#membersStatus", "写真をアップロード中…");
+        members[i].url = await upload(t.files[0]);
+        renderMembers();
+        message("#membersStatus", "写真を追加しました。「メンバー紹介を保存」で公開されます。");
+      },
+      "#membersStatus",
+    );
+  });
+  $("#memberList").addEventListener("click", (e) => {
+    const mv = e.target.closest("[data-mmove]");
+    const rm = e.target.closest("[data-mremove]");
+    if (mv) {
+      const i = Number(mv.dataset.mmove),
+        j = i + Number(mv.dataset.dir);
+      [members[i], members[j]] = [members[j], members[i]];
+      renderMembers();
+    } else if (rm) {
+      members.splice(Number(rm.dataset.mremove), 1);
+      renderMembers();
+    }
+  });
+  $("#addMember").addEventListener("click", () => {
+    if (members.length >= 30)
+      return message("#membersStatus", "メンバー紹介は30人までです。", true);
+    members.push({ url: "", bubble: "", tags: [] });
+    renderMembers();
+  });
+  $("#saveMembers").addEventListener("click", (e) =>
+    action(
+      e.currentTarget,
+      async () => {
+        await api("/api/admin/shinkan-members", {
+          method: "PUT",
+          body: {
+            members: members.map((m) => ({
+              url: m.url || "",
+              bubble: (m.bubble || "").trim(),
+              tags: (m.tags || []).map((t) => t.slice(0, 20)),
+            })),
+          },
+        });
+        await loadSettings();
+        message("#membersStatus", "保存しました。新歓ページの再読み込みで確認できます。");
+      },
+      "#membersStatus",
+    ),
+  );
+  loadMembers().catch((e) => message("#membersStatus", e.message, true));
   $("#logoForm").addEventListener("submit", (e) => {
     e.preventDefault();
     action(

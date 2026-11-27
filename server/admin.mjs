@@ -295,6 +295,38 @@ admin.put("/about-image", async (req, res) => {
   );
   res.json({ ok: true });
 });
+// 新歓ページのメンバー紹介（30人まで、並び順どおり）
+admin.put("/shinkan-members", async (req, res) => {
+  const { members } = z
+    .object({
+      members: z
+        .array(
+          z
+            .object({
+              url: z.string().regex(MEDIA_PATH).max(768).or(z.literal("")),
+              bubble: z.string().trim().max(60).default(""),
+              tags: z.array(z.string().trim().max(21)).max(5).default([]),
+            })
+            .strict(),
+        )
+        .max(30),
+    })
+    .strict()
+    .parse(req.body);
+  const [row] = await query(
+    "SELECT data,revision FROM site_settings WHERE id=1",
+  );
+  const data = typeof row.data === "string" ? JSON.parse(row.data) : row.data;
+  const r = await query(
+    "UPDATE site_settings SET data=?,revision=revision+1 WHERE id=1 AND revision=?",
+    [JSON.stringify({ ...data, shinkanMembers: members }), row.revision],
+  );
+  if (!r.affectedRows)
+    return res.status(409).json({
+      error: "別の編集者が同時に更新しました。もう一度保存してください。",
+    });
+  res.json({ ok: true });
+});
 // トップのギャラリー（活動写真の帯）。12枚まで、並び順どおりに保存する
 const GALLERY_MAX = 12;
 admin.put("/gallery", async (req, res) => {

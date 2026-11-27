@@ -311,3 +311,15 @@ test("gallery keeps only stored media images, at most 12, with short alt text", 
   assert.equal(cleanGallery(Array(20).fill({ url: ok })).length, 12);
   assert.equal(cleanGallery([{ url: ok, alt: "あ".repeat(200) }])[0].alt.length, 80);
 });
+test("shinkan members keep stored images only, trim bubbles and normalize #tags", async () => {
+  const { cleanShinkanMembers } = await import("../server/db.mjs");
+  const ok = "/media/6726228c-ef40-4e50-afbe-d6ba592202ce.webp";
+  const out = cleanShinkanMembers([
+    { url: ok, bubble: " 仲間がほしくて ", tags: ["#経営学科", "＃映画鑑賞", "", "a", "b", "c", "d"] },
+    { url: "https://evil.example/x.webp", bubble: "", tags: [] },
+    "bad",
+  ]);
+  assert.equal(out.length, 1);
+  assert.deepEqual(out[0], { url: ok, bubble: "仲間がほしくて", tags: ["経営学科", "映画鑑賞", "a", "b", "c"] });
+  assert.equal(cleanShinkanMembers(null).length, 0);
+});

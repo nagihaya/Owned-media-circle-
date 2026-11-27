@@ -730,3 +730,217 @@ body.sk {
     opacity: 0.6;
   }
 }
+
+/* ===== メンバー紹介：色とりどりのカード。写真は形を変えて切り抜き、吹き出しとタグ ===== */
+.skm {
+  background: #fff;
+  color: #111;
+  padding: 96px 0 0;
+}
+.skm-head {
+  max-width: 1280px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+.skm-head h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.skm-head h2 > span:first-child {
+  font-size: clamp(36px, 4.4vw, 56px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.skm-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+.skm-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1.5px solid #111;
+}
+.skm-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 56px 28px 32px;
+  border-right: 1.5px solid #111;
+  border-bottom: 1.5px solid #111;
+}
+.skm-card:nth-child(3n) {
+  border-right: 0;
+}
+/* カードの色（9色を順番に） */
+.skm-bg0 { background: #fbb024; }
+.skm-bg1 { background: #8b5be6; }
+.skm-bg2 { background: #79c8fb; }
+.skm-bg3 { background: #ff6b73; }
+.skm-bg4 { background: #12c35b; }
+.skm-bg5 { background: #2ccfcf; }
+.skm-bg6 { background: #f97a16; }
+.skm-bg7 { background: #f4479c; }
+.skm-bg8 { background: #ffe100; }
+.skm-visual {
+  position: relative;
+  width: min(100%, 300px);
+  margin: 0 auto;
+}
+/* 写真の切り抜き（6種類）。黒い細い縁取りを付ける */
+.skm-shape {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 2px;
+  background: #111;
+}
+.skm-shape img,
+.skm-noimg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #f1f1f1;
+}
+.skm-shape.is-circle,
+.skm-shape.is-circle > * {
+  border-radius: 50%;
+}
+.skm-shape.is-arch {
+  aspect-ratio: 4 / 5;
+}
+.skm-shape.is-arch,
+.skm-shape.is-arch > * {
+  border-radius: 999px 999px 0 0;
+}
+.skm-shape.is-hexagon,
+.skm-shape.is-hexagon > * {
+  clip-path: polygon(30% 2%, 82% 6%, 99% 50%, 76% 96%, 22% 98%, 1% 52%);
+}
+.skm-shape.is-blob,
+.skm-shape.is-blob > * {
+  border-radius: 46% 54% 40% 60% / 52% 38% 62% 48%;
+}
+.skm-shape.is-pill {
+  aspect-ratio: 3 / 4;
+  width: 78%;
+  margin: 0 auto;
+}
+.skm-shape.is-pill,
+.skm-shape.is-pill > * {
+  border-radius: 999px;
+}
+.skm-shape.is-squircle {
+  transform: rotate(-4deg);
+}
+.skm-shape.is-squircle,
+.skm-shape.is-squircle > * {
+  border-radius: 28%;
+}
+/* 吹き出し（入った理由） */
+.skm-bubble {
+  position: absolute;
+  max-width: 88%;
+  margin: 0;
+  padding: 10px 20px;
+  border: 2px solid #111;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #111;
+}
+.skm-bubble.is-top {
+  top: 4%;
+  left: -6%;
+  transform: rotate(-6deg);
+}
+.skm-bubble.is-bottom {
+  bottom: 10%;
+  right: -8%;
+  transform: rotate(5deg);
+}
+.skm-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  border-right: 2px solid #111;
+  border-bottom: 2px solid #111;
+  transform: rotate(45deg);
+}
+.skm-bubble.is-top::after {
+  left: 30px;
+}
+.skm-bubble.is-bottom::after {
+  right: 40px;
+}
+.skm-bb0 { background: #5ee6e0; }
+.skm-bb1 { background: #c9a7ff; }
+.skm-bb2 { background: #8fe56b; }
+.skm-bb3 { background: #ffe14d; }
+.skm-bb4 { background: #9fc3ff; }
+/* タグ */
+.skm-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skm-tags li {
+  padding: 6px 14px;
+  border: 1.5px solid #111;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #111;
+}
+@media (max-width: 900px) {
+  .skm-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .skm-card:nth-child(3n) {
+    border-right: 1.5px solid #111;
+  }
+  .skm-card:nth-child(2n) {
+    border-right: 0;
+  }
+}
+@media (max-width: 600px) {
+  .skm {
+    padding-top: 64px;
+  }
+  .skm-head {
+    padding: 0 18px;
+    margin-bottom: 32px;
+  }
+  .skm-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .skm-card,
+  .skm-card:nth-child(3n) {
+    border-right: 0;
+  }
+  .skm-card {
+    padding: 48px 22px 28px;
+  }
+  .skm-bubble {
+    font-size: 14px;
+  }
+}
+/* 2行になる吹き出しでも形がくずれないように */
+.skm-bubble {
+  border-radius: 26px;
+}

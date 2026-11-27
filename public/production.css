@@ -6295,3 +6295,38 @@ header.nav .navlinks .nav-pills a .np-en,
     padding-right: 0;
   }
 }
+
+/* 編集画面：新歓メンバー一覧 */
+.member-admin-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.member-admin-item {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+}
+.member-admin-item img,
+.member-admin-noimg {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #eef0f3;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #6b7480;
+}
+@media (max-width: 640px) {
+  .member-admin-item {
+    grid-template-columns: 1fr;
+  }
+}

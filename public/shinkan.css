@@ -1595,8 +1595,9 @@ html {
   stroke-width: 1.6;
 }
 
-/* 見出し「Keyword」を手書き風に */
-.skm-head h2 > span:first-child {
+/* 見出し「Keyword」「FAQ」を手書き風に */
+.skm-head h2 > span:first-child,
+.skq .skv-head h2 > span:first-child {
   font-family: "Caveat", "Segoe Print", "Bradley Hand", cursive;
   font-weight: 700;
   font-size: clamp(56px, 6.4vw, 88px);

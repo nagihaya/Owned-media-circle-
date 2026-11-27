@@ -1155,3 +1155,85 @@ body.sk {
     padding: 44px 22px 26px;
   }
 }
+
+/* ===== メンバー紹介：タグで絞り込み ===== */
+.skm-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 1280px;
+  margin: -16px auto 36px;
+  padding: 0 28px;
+}
+.skm-chip {
+  appearance: none;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1.5px solid #111;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.skm-chip:hover {
+  background: #f1f1f1;
+}
+.skm-chip[aria-pressed="true"] {
+  background: #111;
+  color: #fff;
+}
+.skm-chip:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+.skm-count {
+  margin: 0 0 0 auto;
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+}
+.skm-card[hidden] {
+  display: none !important;
+}
+.skm-card.is-in {
+  animation: skm-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes skm-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 600px) {
+  .skm-filter {
+    padding: 0 18px;
+    margin-bottom: 28px;
+    gap: 8px;
+  }
+  .skm-chip {
+    min-height: 36px;
+    padding: 0 13px;
+    font-size: 13px;
+  }
+  .skm-count {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skm-card.is-in {
+    animation: none;
+  }
+}

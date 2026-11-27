@@ -6699,11 +6699,10 @@ header.nav .navlinks .nav-pills a .np-en,
 .ab:not(.more-link-pc):not(.more-link-sp) {
   display: inline-flex;
 }
-.ab.ab {
+body .ab.ab {
   align-items: center;
   gap: 22px;
   min-height: 52px;
-  margin: 0;
   padding: 8px 30px;
   /* 左右に細い縦の区切り線 */
   border: 0;
@@ -6729,14 +6728,14 @@ header.nav .navlinks .nav-pills a .np-en,
   transition: transform 0.2s ease;
 }
 @media (hover: hover) {
-  .ab.ab:hover .ab-arrow {
+  body .ab.ab:hover .ab-arrow {
     transform: translate(3px, -3px);
   }
 }
-.ab.ab:active .ab-arrow {
+body .ab.ab:active .ab-arrow {
   transform: translate(3px, -3px);
 }
-.ab.ab:focus-visible {
+body .ab.ab:focus-visible {
   outline: 2px solid #111;
   outline-offset: 4px;
 }
@@ -6780,5 +6779,26 @@ header.nav .navlinks .nav-pills a .np-en,
   }
   .th .ab {
     margin-top: 36px;
+  }
+}
+
+/* ホームの記事欄（Interview・Activity・Knowledge）：見出し・ボタン・カードの間にゆとりを */
+main .section-title.section-title-en {
+  gap: 12px;
+}
+.section-split .section-head {
+  gap: 32px;
+}
+.section-split .post-card .card-body {
+  gap: 14px;
+  padding-top: 26px;
+}
+@media (max-width: 900px) {
+  .section-split .section-head {
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .section-split .more-link-sp {
+    margin-top: 48px;
   }
 }

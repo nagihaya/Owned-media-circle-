@@ -93,8 +93,6 @@
       "xUrl",
       "introLabel",
       "introImageAlt",
-      "shinkanVoices",
-      "shinkanVoicesNote",
       "shinkanFaq",
       "aboutLead",
       "aboutHistory",

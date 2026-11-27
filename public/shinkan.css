@@ -1302,3 +1302,19 @@ body.sk {
   border-color: #111;
   color: #fff;
 }
+
+/* カードの中のタグ：マウスを乗せると黒に（タグの上ではカードは裏返らない） */
+@media (hover: hover) and (pointer: fine) {
+  .skm-tag {
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .skm-tag:hover {
+    background: #111;
+    color: #fff;
+  }
+  .skm-flip:has(.skm-tags:hover) .skm-inner {
+    transform: none;
+  }
+}

@@ -1646,3 +1646,134 @@ html {
 .sk-btn + .sk-link {
   margin-left: -1px;
 }
+
+/* ===== よくある質問：開いて読む（Q は赤・A は青の手書き文字） ===== */
+.skq {
+  background: #fff;
+  color: #1a1a1a;
+  padding: 88px 0 96px;
+}
+.skq-list {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.skq-item {
+  border-bottom: 1px solid #d9d9d9;
+}
+.skq-item:first-child {
+  border-top: 1px solid #d9d9d9;
+}
+/* 見出しも質問の列と左をそろえる */
+.skq .skv-head {
+  max-width: 880px;
+}
+.skq-item summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+  padding: 22px 4px;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.skq-item summary::-webkit-details-marker {
+  display: none;
+}
+.skq-item summary:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+.skq-mark {
+  flex: none;
+  width: 28px;
+  font-family: "Caveat", cursive;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+.skq-q {
+  color: #e5484d;
+}
+.skq-a {
+  color: #2f5bd8;
+}
+.skq-question {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+}
+/* ＋ が開くと − に */
+.skq-icon {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.skq-icon::before,
+.skq-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 16px;
+  height: 2px;
+  background: #111;
+  transition: transform 0.25s ease;
+}
+.skq-icon::after {
+  transform: rotate(90deg);
+}
+.skq-item[open] .skq-icon::after {
+  transform: rotate(0deg);
+}
+.skq-answer {
+  display: flex;
+  gap: 18px;
+  padding: 0 4px 28px;
+}
+.skq-text {
+  flex: 1;
+  padding-top: 4px;
+}
+.skq-text p {
+  margin: 0 0 0.8em;
+  font-size: 15px;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #333;
+}
+.skq-text p:last-child {
+  margin-bottom: 0;
+}
+@media (hover: hover) {
+  .skq-item summary:hover .skq-question {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+}
+@media (max-width: 600px) {
+  .skq {
+    padding: 64px 0 72px;
+  }
+  .skq-list {
+    padding: 0 18px;
+  }
+  .skq-item summary,
+  .skq-answer {
+    gap: 12px;
+  }
+  .skq-question {
+    font-size: 15px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skq-icon::before,
+  .skq-icon::after {
+    transition: none;
+  }
+}

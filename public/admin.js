@@ -84,6 +84,7 @@
       "introImageAlt",
       "shinkanVoices",
       "shinkanVoicesNote",
+      "shinkanFaq",
       "aboutLead",
       "aboutHistory",
       "joinTitle",

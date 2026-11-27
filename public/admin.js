@@ -53,17 +53,6 @@
       e.preventDefault();
       openTab(a.getAttribute("href").slice(1), true);
     });
-  // 別のタブにある欄へ移動するリンク（例：新歓メンバー → サイト設定の「よくある質問」）
-  for (const a of document.querySelectorAll("a[data-goto-tab]"))
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      openTab(a.dataset.gotoTab);
-      const target = document.querySelector(a.getAttribute("href"));
-      if (target) {
-        target.scrollIntoView({ block: "start" });
-        target.querySelector("textarea, input")?.focus({ preventScroll: true });
-      }
-    });
   for (const id of tabIds)
     document
       .getElementById(id)
@@ -106,6 +95,8 @@
       "policyDate",
     ])
       f.elements[name].value = config[name] || "";
+    faq = faqParse(config.shinkanFaq);
+    renderFaq();
     if ($("#rssForm"))
       $("#rssForm").elements.rssUrl.value = config.rssUrl || "";
     fillGoogleForms(config.googleForms);
@@ -125,8 +116,67 @@
       ? `<img src="${h(config.introImageUrl)}" alt="現在の写真">`
       : "<p>写真は未設定です。</p>";
   }
+  // ===== 新歓：よくある質問（質問は候補リストから選べる。保存はサイト設定と同じフォーム） =====
+  let faq = [];
+  const faqParse = (text) => {
+    const items = [];
+    for (const raw of String(text || "").split(/\r?\n/)) {
+      const mq = raw.match(/^\s*[QＱ][.．:：]\s*(.*)$/);
+      const ma = raw.match(/^\s*[AＡ][.．:：]\s*(.*)$/);
+      if (mq) items.push({ q: mq[1].trim(), a: [] });
+      else if (ma && items.length) items[items.length - 1].a.push(ma[1]);
+      else if (items.length && items[items.length - 1].a.length) items[items.length - 1].a.push(raw.trim());
+    }
+    return items.map((f) => ({ q: f.q, a: f.a.join("\n").trim() }));
+  };
+  const faqSync = () => {
+    const t = document.querySelector('textarea[name="shinkanFaq"]');
+    if (t)
+      t.value = faq
+        .filter((f) => f.q.trim() || f.a.trim())
+        .map((f) => `Q. ${f.q.trim().replace(/\s*\n\s*/g, " ")}\nA. ${f.a.trim()}`)
+        .join("\n\n");
+  };
+  function renderFaq() {
+    const list = $("#faqList");
+    if (!list) return;
+    list.innerHTML = faq.length
+      ? faq
+          .map(
+            (f, i) =>
+              `<li class="faq-admin-item"><span class="qa-no">Q${i + 1}</span><label>質問<input list="faqSuggest" data-faqq="${i}" maxlength="100" value="${h(f.q)}" placeholder="クリックして候補から選ぶ／自由に入力"></label><label>回答<textarea data-faqa="${i}" maxlength="800" rows="3" placeholder="実際の内容で回答を書く">${h(f.a)}</textarea></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-faqmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-faqmove="${i}" data-dir="1" ${i === faq.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-faqdel="${i}" aria-label="Q${i + 1}を削除">削除</button></div></li>`,
+          )
+          .join("")
+      : '<li class="qa-empty">まだありません。「＋ 質問を追加」から入れてください。</li>';
+    faqSync();
+  }
+  $("#faqList")?.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.faqq !== undefined) faq[+t.dataset.faqq].q = t.value;
+    if (t.dataset.faqa !== undefined) faq[+t.dataset.faqa].a = t.value;
+    faqSync();
+  });
+  $("#faqList")?.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.faqdel !== undefined) faq.splice(+b.dataset.faqdel, 1);
+    else if (b.dataset.faqmove !== undefined) {
+      const i = +b.dataset.faqmove,
+        j = i + +b.dataset.dir;
+      if (j < 0 || j >= faq.length) return;
+      [faq[i], faq[j]] = [faq[j], faq[i]];
+    } else return;
+    renderFaq();
+  });
+  $("#addFaq")?.addEventListener("click", () => {
+    faq.push({ q: "", a: "" });
+    renderFaq();
+    document.querySelector(`[data-faqq="${faq.length - 1}"]`)?.focus();
+  });
   $("#settingsForm").addEventListener("submit", (e) => {
     e.preventDefault();
+    // 新歓タブの「よくある質問を保存」も同じフォームで保存し、結果はそのボタンの近くに出す
+    const status = e.submitter?.dataset.status || "#settingsStatus";
     action(
       e.submitter,
       async () => {
@@ -137,11 +187,11 @@
         const r = await api("/api/admin/settings", { method: "PUT", body });
         config = r.settings;
         message(
-          "#settingsStatus",
+          status,
           "保存しました。公開ページの再読み込みで確認できます。",
         );
       },
-      "#settingsStatus",
+      status,
     );
   });
   // ===== ギャラリー：追加・並べ替え・説明・削除 =====

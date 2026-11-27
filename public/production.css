@@ -6802,3 +6802,41 @@ main .section-title.section-title-en {
     margin-top: 48px;
   }
 }
+
+/* 編集画面：新歓タブの「よくある質問」 */
+.shinkan-faq-edit {
+  display: grid;
+  gap: 12px;
+  margin: 40px 0 0;
+}
+.shinkan-faq-edit textarea {
+  width: 100%;
+}
+.faq-admin-list {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.faq-admin-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 14px;
+  padding: 16px;
+  border: 1px solid #dde1e6;
+  border-radius: 8px;
+}
+.faq-admin-item .qa-no {
+  grid-row: span 3;
+  align-self: start;
+  padding-top: 34px;
+  font-weight: 700;
+}
+.faq-admin-item label {
+  display: grid;
+  gap: 6px;
+}
+.faq-admin-item textarea {
+  width: 100%;
+}

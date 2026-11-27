@@ -1237,3 +1237,13 @@ body.sk {
     animation: none;
   }
 }
+
+/* マウスのある端末：カードにマウスを乗せると裏返る */
+@media (hover: hover) and (pointer: fine) {
+  .skm-flip:hover .skm-inner {
+    transform: rotateY(180deg);
+  }
+  .skm-back .skm-hint {
+    visibility: hidden;
+  }
+}

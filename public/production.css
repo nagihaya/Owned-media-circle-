@@ -6625,7 +6625,7 @@ header.nav .navlinks .nav-pills a .np-en,
   /* 絵の縦横比（1440×150）に合わせる */
   --town-h: min(10.42vw, 200px);
 }
-.intro-band.th .th-inner {
+.intro-band.th.has-town .th-inner {
   padding-bottom: calc(var(--town-h) + 40px);
 }
 /* イラストのキャプション（1行・小さめのグレー） */

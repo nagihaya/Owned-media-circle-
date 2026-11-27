@@ -496,7 +496,8 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
   if (e.target.closest("a")) return;
   const band = e.currentTarget;
   const href = band.dataset.href;
-  if (/^https:/.test(href)) window.open(href, "_blank", "noopener");
+  // サイトの外と新歓特設ページは別タブで開く
+  if (/^https:/.test(href) || href === "/shinkan") window.open(href, "_blank", "noopener");
   else location.assign(href);
 });
 // 少しスクロールしたら html に is-scrolled を付ける（ヘッダーのロゴを隠し、メニューだけ残す）

@@ -6422,34 +6422,6 @@ header.nav .navlinks .nav-pills a .np-en,
 .th-line {
   display: block;
 }
-/* 「形にする」の下の手書きの赤い線（新歓ページと同じ線） */
-.th-mark {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-}
-.th-scribble {
-  position: absolute;
-  left: -2%;
-  bottom: -0.12em;
-  width: 104%;
-  height: 0.32em;
-  overflow: visible;
-  pointer-events: none;
-}
-.th-scribble path {
-  fill: none;
-  stroke: #e5484d;
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-}
-.th-scribble path + path {
-  stroke-width: 4;
-}
 .th-body {
   margin: 0;
   max-width: 34em;
@@ -6570,16 +6542,14 @@ header.nav .navlinks .nav-pills a .np-en,
     margin-top: 18px;
   }
 }
-/* 読み込み時の動き：①コピーがふわっと → ②赤い線が左から描かれる → ③写真が時間差で回りながら置かれる */
+/* 読み込み時の動き：①コピーがふわっと → ②マーカーが左から引かれる → ③写真が時間差で回りながら置かれる */
 @media (prefers-reduced-motion: no-preference) {
   .th-copy {
     animation: th-copy-in 0.5s ease-out both;
   }
-  .th-scribble path {
-    animation: th-draw 0.8s ease-out 0.5s forwards;
-  }
-  .th-scribble path + path {
-    animation-delay: 0.75s;
+  /* マーカーが左から引かれる（元の紹介ブロックと同じ形式） */
+  .th .intro-mark {
+    animation: intro-mark-draw 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.5s both;
   }
   .th-photo {
     animation: th-photo-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
@@ -6604,11 +6574,6 @@ header.nav .navlinks .nav-pills a .np-en,
     transform: none;
   }
 }
-@keyframes th-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
 @keyframes th-photo-in {
   from {
     opacity: 0;
@@ -6623,11 +6588,8 @@ header.nav .navlinks .nav-pills a .np-en,
 @media (prefers-reduced-motion: reduce) {
   .th-copy,
   .th-photo,
-  .th-scribble path {
+  .th .intro-mark {
     animation: none !important;
-  }
-  .th-scribble path {
-    stroke-dashoffset: 0;
   }
   .th-photo {
     transition: none;

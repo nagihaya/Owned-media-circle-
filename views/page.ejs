@@ -11,11 +11,10 @@ const heroPhotos = [
 ].filter((p) => p.src).slice(0, 3).map((p) => ({ src: p.src, alt: p.alt || 'T-Bizのメンバーが活動している様子' }));
 const heroMarkRe = /[*＊]([^*＊\n]+)[*＊]/g;
 const heroLines = String(settings.introCatch || '').split(/\r?\n/).filter((l) => l.trim());
-const heroHasMark = /[*＊][^*＊\n]+[*＊]/.test(settings.introCatch || '');
-const heroUnderline = '<svg class="th-scribble" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><path d="M4 26 C 60 12, 120 34, 180 20 S 270 14, 296 24" /><path d="M14 34 C 80 24, 160 38, 286 30" /></svg>'; %>
+const heroHasMark = /[*＊][^*＊\n]+[*＊]/.test(settings.introCatch || ''); %>
 <% if(heroLines.length || settings.introText || heroPhotos.length){ %><section class="intro-band th" aria-label="このメディアについて"><div class="intro-dots" aria-hidden="true"></div><div class="th-inner<%= heroPhotos.length?' has-photos':'' %>">
 <div class="th-copy"><% if(settings.introLabel){ %><p class="intro-label"><%= settings.introLabel %></p><% } %>
-<% if(heroLines.length){ %><p class="th-catch"><% heroLines.forEach((line, li) => { %><span class="th-line"><% if(heroHasMark){ line.split(heroMarkRe).forEach((part, pi) => { %><% if(pi % 2){ %><span class="th-mark"><%= part %><%- heroUnderline %></span><% } else { %><%= part %><% } %><% }) } else if(heroLines.length > 1 && li === heroLines.length - 1){ %><span class="th-mark"><%= line %><%- heroUnderline %></span><% } else { %><%= line %><% } %></span><% }) %></p><% } %>
+<% if(heroLines.length){ %><p class="th-catch"><% heroLines.forEach((line, li) => { %><span class="th-line"><% if(heroHasMark){ line.split(heroMarkRe).forEach((part, pi) => { %><% if(pi % 2){ %><span class="intro-mark"><%= part %></span><% } else { %><%= part %><% } %><% }) } else if(heroLines.length > 1 && li === heroLines.length - 1){ %><span class="intro-mark"><%= line %></span><% } else { %><%= line %><% } %></span><% }) %></p><% } %>
 <% if(settings.introText){ %><p class="th-body"><%= String(settings.introText).replace(/[*＊]/g, '') %></p><% } %>
 <a class="intro-btn" href="/about">T-Bizとは？<span aria-hidden="true">›</span></a></div>
 <% if(heroPhotos.length){ %><div class="th-photos"><% heroPhotos.forEach((p, i) => { %><figure class="th-photo th-photo-<%= i + 1 %>"><img src="<%= p.src %>" alt="<%= p.alt %>" width="520" height="650" loading="eager" <%- i === 0 ? 'fetchpriority="high"' : '' %>></figure><% }) %></div><% } %>

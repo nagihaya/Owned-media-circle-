@@ -543,6 +543,8 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     const n = innerWidth < 768 ? 2 : 3;
     const colors = ["#e5484d", "#f2b705", "#2f5bd8"];
     const kinds = ["circle", "triangle", "circle"];
+    const DX = 40,
+      DY = 30;
     const photo = band.querySelector(".th-photos, .intro-photo");
     const br = band.getBoundingClientRect();
     const pr = photo ? photo.getBoundingClientRect() : null;
@@ -556,21 +558,26 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
       const kind = kinds[i % kinds.length];
       const size = Math.round(r(18, 40));
       // 文章と写真の上には置かない（読みやすさのため）。空いている場所を探す
+      // 漂う幅（DX, DY）も含めて重ならない場所を探し、見つからなければその図形は置かない
       let x = 0,
-        y = 0;
-      for (let t = 0; t < 40; t++) {
+        y = 0,
+        ok = false;
+      for (let t = 0; t < 80 && !ok; t++) {
         x = r(0.02, 0.98) * br.width;
         y = r(0.04, 0.96) * br.height;
-        if (!avoid.some((a) => x > a.l - size && x < a.r + size && y > a.t - size && y < a.b + size)) break;
+        // 図形は (x, y) が中心で、最大1.25倍に膨らむ
+        const h = size * 0.65;
+        ok = !avoid.some((a) => x + h + DX > a.l && x - h - DX < a.r && y + h + DY > a.t && y - h - DY < a.b);
       }
+      if (!ok) continue;
       const el = document.createElement("span");
       el.className = "intro-shape";
       el.style.cssText = `left:${x.toFixed(0)}px;top:${y.toFixed(0)}px;--s:${size}px;--c:${colors[i % colors.length]};--o:${r(0.55, 0.85).toFixed(2)}`;
       const inner = document.createElement("span");
       inner.className = `intro-shape-in is-${kind}`;
       inner.style.cssText = [
-        `--dx:${Math.round(r(-90, 90))}px`,
-        `--dy:${Math.round(r(-70, 70))}px`,
+        `--dx:${Math.round(r(-DX, DX))}px`,
+        `--dy:${Math.round(r(-DY, DY))}px`,
         `--rot:${Math.round(r(-60, 60))}deg`,
         `--d:${r(20, 32).toFixed(1)}s`,
         `--m:${r(12, 20).toFixed(1)}s`,

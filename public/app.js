@@ -539,21 +539,22 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
   const band = box?.closest(".intro-band");
   if (box && band) {
     const r = (a, b) => a + Math.random() * (b - a);
-    const n = innerWidth < 800 ? 6 : 10;
-    const colors = ["#e5484d", "#2f5bd8", "#12a26b", "#f2b705", "#ff7a1a", "#8e5bd8"];
-    const kinds = ["circle", "square", "blob", "ring", "triangle", "pill"];
-    const photo = band.querySelector(".intro-photo");
+    // 図形は新歓ページと同じ色で3つまで（スマホは2つ）。コピーと写真には重ねない
+    const n = innerWidth < 768 ? 2 : 3;
+    const colors = ["#e5484d", "#f2b705", "#2f5bd8"];
+    const kinds = ["circle", "triangle", "circle"];
+    const photo = band.querySelector(".th-photos, .intro-photo");
     const br = band.getBoundingClientRect();
     const pr = photo ? photo.getBoundingClientRect() : null;
     const rel = (el, pad = 0) => {
       const q = el.getBoundingClientRect();
       return { l: q.left - br.left - pad, r: q.right - br.left + pad, t: q.top - br.top - pad, b: q.bottom - br.top + pad };
     };
-    const avoid = [...band.querySelectorAll(".intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 12));
+    const avoid = [...band.querySelectorAll(".th-copy, .intro-label, .intro-catch, .intro-body p, .intro-btn")].map((el) => rel(el, 24));
     if (photo) avoid.push(rel(photo, 0));
     for (let i = 0; i < n; i++) {
       const kind = kinds[i % kinds.length];
-      const size = Math.round(r(10, 54));
+      const size = Math.round(r(18, 40));
       // 文章と写真の上には置かない（読みやすさのため）。空いている場所を探す
       let x = 0,
         y = 0;

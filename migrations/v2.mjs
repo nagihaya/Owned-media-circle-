@@ -335,3 +335,16 @@ export async function migrateV19() {
     );
   await query("INSERT IGNORE INTO schema_migrations (version) VALUES (19)");
 }
+// v20: トップのキャッチコピーを「『やってみたい』を／形にする」に（「形にする」に手書きの下線）
+export async function migrateV20() {
+  if (
+    (await query("SELECT version FROM schema_migrations WHERE version=20"))
+      .length
+  )
+    return;
+  await query(
+    "UPDATE site_settings SET data=JSON_SET(data,'$.introCatch',?),revision=revision+1 WHERE id=1",
+    ["『やってみたい』を\n*形にする*"],
+  );
+  await query("INSERT IGNORE INTO schema_migrations (version) VALUES (20)");
+}

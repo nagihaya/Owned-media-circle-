@@ -6376,3 +6376,269 @@ header.nav .navlinks .nav-pills a .np-en,
     justify-self: start;
   }
 }
+
+/* =====================================================================
+   トップのヒーロー（.th）：左にコピー（約58%）、右にポラロイド風の写真3枚（約42%）
+   色は新歓ページと同じ（赤 #e5484d の手書き線）。768px 未満はコピー → 写真の縦並び
+   ===================================================================== */
+.intro-band.th {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 0;
+}
+.intro-band.th::before,
+.intro-band.th::after {
+  display: none;
+}
+.th-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px var(--safe-inline-end, 22px) 56px var(--safe-inline, 22px);
+}
+.th-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+}
+.th .intro-label {
+  margin: 0;
+}
+.th-catch {
+  margin: 0;
+  font-size: clamp(44px, 4.8vw, 72px);
+  font-weight: 500;
+  line-height: 1.32;
+  letter-spacing: 0.04em;
+  color: #111;
+}
+.th-line {
+  display: block;
+}
+/* 「形にする」の下の手書きの赤い線（新歓ページと同じ線） */
+.th-mark {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.th-scribble {
+  position: absolute;
+  left: -2%;
+  bottom: -0.12em;
+  width: 104%;
+  height: 0.32em;
+  overflow: visible;
+  pointer-events: none;
+}
+.th-scribble path {
+  fill: none;
+  stroke: #e5484d;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+.th-scribble path + path {
+  stroke-width: 4;
+}
+.th-body {
+  margin: 0;
+  max-width: 34em;
+  font-size: 16px;
+  line-height: 2.05;
+  letter-spacing: 0.08em;
+  color: #333;
+}
+.th .intro-btn {
+  margin-top: 4px;
+}
+/* 写真：ポラロイド風（白フチ・角丸・薄い影）を傾けて少し重ねる */
+.th-photos {
+  position: relative;
+}
+.th-photo {
+  position: absolute;
+  margin: 0;
+  padding: 7px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 22px rgba(0, 0, 0, 0.1);
+  transform: rotate(var(--r));
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.35s ease;
+}
+.th-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #eef0f3;
+}
+.th-photo-1 {
+  --r: 5deg;
+  z-index: 3;
+}
+.th-photo-2 {
+  --r: -4deg;
+  z-index: 2;
+}
+.th-photo-3 {
+  --r: 3deg;
+  z-index: 4;
+}
+@media (hover: hover) {
+  .th-photo:hover {
+    z-index: 10;
+    transform: rotate(0deg) scale(1.04);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.08),
+      0 16px 34px rgba(0, 0, 0, 0.16);
+  }
+}
+/* PC・タブレット（768px以上）：2カラム */
+@media (min-width: 768px) {
+  .th-inner.has-photos {
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    column-gap: 32px;
+  }
+  .th-photos {
+    height: clamp(420px, 40vw, 560px);
+  }
+  .th-photo-1 {
+    width: min(68%, 260px);
+    left: 2%;
+    top: 2%;
+  }
+  .th-photo-2 {
+    width: min(58%, 220px);
+    right: 0;
+    top: 30%;
+  }
+  .th-photo-3 {
+    width: min(48%, 180px);
+    left: 18%;
+    bottom: 0;
+  }
+}
+/* スマホ（767px以下）：コピーを上に、写真3枚は下に小さく横並びで重ねる */
+@media (max-width: 767px) {
+  .th-inner {
+    padding-top: 24px;
+    padding-bottom: 40px;
+    row-gap: 36px;
+  }
+  .th-copy {
+    gap: 18px;
+  }
+  .th-catch {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+  .th-body {
+    font-size: 15px;
+    line-height: 1.95;
+    letter-spacing: 0.04em;
+  }
+  .th-photos {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 8px 4px 0;
+  }
+  .th-photo {
+    position: relative;
+    width: 36%;
+    padding: 5px;
+  }
+  .th-photo + .th-photo {
+    margin-left: -6%;
+  }
+  .th-photo-2 {
+    margin-top: 18px;
+  }
+}
+/* 読み込み時の動き：①コピーがふわっと → ②赤い線が左から描かれる → ③写真が時間差で回りながら置かれる */
+@media (prefers-reduced-motion: no-preference) {
+  .th-copy {
+    animation: th-copy-in 0.5s ease-out both;
+  }
+  .th-scribble path {
+    animation: th-draw 0.8s ease-out 0.5s forwards;
+  }
+  .th-scribble path + path {
+    animation-delay: 0.75s;
+  }
+  .th-photo {
+    animation: th-photo-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .th-photo-1 {
+    animation-delay: 1.3s;
+  }
+  .th-photo-2 {
+    animation-delay: 1.4s;
+  }
+  .th-photo-3 {
+    animation-delay: 1.5s;
+  }
+}
+@keyframes th-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes th-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes th-photo-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(calc(var(--r) + 14deg)) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--r));
+  }
+}
+/* 動きを減らす設定：最終の状態をすぐに表示 */
+@media (prefers-reduced-motion: reduce) {
+  .th-copy,
+  .th-photo,
+  .th-scribble path {
+    animation: none !important;
+  }
+  .th-scribble path {
+    stroke-dashoffset: 0;
+  }
+  .th-photo {
+    transition: none;
+  }
+}
+/* キャッチコピーは PC で必ず2行（1行が左の列に収まる大きさに） */
+@media (min-width: 768px) {
+  .th-catch {
+    font-size: clamp(38px, 4.4vw, 66px);
+  }
+  .th-line {
+    white-space: nowrap;
+  }
+}

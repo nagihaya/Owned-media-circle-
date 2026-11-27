@@ -86,6 +86,7 @@ export const settingSchema = z
         }
       }, "XのURLは https://x.com/アカウント名 の形で入力してください（空欄なら非表示）。"),
     introLabel: z.string().trim().max(40).default(""),
+    introImageAlt: z.string().trim().max(120).default(""),
     shinkanVoices: z.string().trim().max(4000).default(""),
     shinkanVoicesNote: z.string().trim().max(200).default(""),
     aboutLead: z.string().trim().max(300).default(""),

@@ -6702,10 +6702,13 @@ header.nav .navlinks .nav-pills a .np-en,
 .ab.ab {
   align-items: center;
   gap: 22px;
-  min-height: 44px;
+  min-height: 52px;
   margin: 0;
-  padding: 6px 0;
+  padding: 8px 30px;
+  /* 左右に細い縦の区切り線 */
   border: 0;
+  border-left: 1px solid #a8a8a8;
+  border-right: 1px solid #a8a8a8;
   border-radius: 0;
   background: none;
   box-shadow: none;
@@ -6736,6 +6739,10 @@ header.nav .navlinks .nav-pills a .np-en,
 .ab.ab:focus-visible {
   outline: 2px solid #111;
   outline-offset: 4px;
+}
+/* ボタンが並ぶときは、間の線を1本に */
+.ab.ab + .ab.ab {
+  margin-left: -1px;
 }
 /* スマホの「see more」は記事の下に中央寄せ */
 @media (max-width: 800px) {

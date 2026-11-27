@@ -1614,9 +1614,11 @@ html {
 .sk-link,
 .sk-link:hover {
   gap: 22px;
-  min-height: 44px;
-  padding: 6px 0;
+  min-height: 52px;
+  padding: 8px 30px;
   border: 0;
+  border-left: 1px solid #a8a8a8;
+  border-right: 1px solid #a8a8a8;
   border-radius: 0;
   background: none;
   color: #111;
@@ -1636,4 +1638,11 @@ html {
   .sk-link:hover .ab-arrow {
     transform: translate(3px, -3px);
   }
+}
+/* 2つ並ぶときは、すき間なしで間の線を1本に（折り返しても左右の線は残る） */
+.sk-actions {
+  column-gap: 0;
+}
+.sk-btn + .sk-link {
+  margin-left: -1px;
 }

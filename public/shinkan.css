@@ -1247,3 +1247,32 @@ body.sk {
     visibility: hidden;
   }
 }
+
+/* カードそのもの（色の角丸の板）が丸ごと裏返るように：色と角丸を表・裏の面に持たせる */
+.skm-card,
+.skm-card:nth-child(3n),
+.skm-card:nth-child(2n),
+.skm-bg0, .skm-bg1, .skm-bg2, .skm-bg3, .skm-bg4, .skm-bg5, .skm-bg6, .skm-bg7, .skm-bg8 {
+  background: transparent;
+  overflow: visible;
+  border-radius: 0;
+}
+.skm-card .skm-inner {
+  background: transparent;
+}
+.skm-card .skm-face {
+  background: var(--frame);
+  border-radius: 26px;
+}
+.skm-flip {
+  border-radius: 26px;
+}
+@media (max-width: 600px) {
+  .skm-card .skm-face,
+  .skm-flip {
+    border-radius: 22px;
+  }
+}
+.skm-qa {
+  align-content: start;
+}

@@ -1276,3 +1276,29 @@ body.sk {
 .skm-qa {
   align-content: start;
 }
+
+/* 絞り込みのタグ：マウスを乗せると色が変わる（カードと同じ色を順番に） */
+.skm-chip {
+  --hover: #e9367a;
+}
+.skm-chip:nth-of-type(9n + 2) { --hover: #4fb286; }
+.skm-chip:nth-of-type(9n + 3) { --hover: #3d9be9; }
+.skm-chip:nth-of-type(9n + 4) { --hover: #fbb024; }
+.skm-chip:nth-of-type(9n + 5) { --hover: #8b5be6; }
+.skm-chip:nth-of-type(9n + 6) { --hover: #2ccfcf; }
+.skm-chip:nth-of-type(9n + 7) { --hover: #f97a16; }
+.skm-chip:nth-of-type(9n + 8) { --hover: #12c35b; }
+.skm-chip:nth-of-type(9n + 9) { --hover: #ff6b73; }
+@media (hover: hover) {
+  .skm-chip:hover {
+    background: var(--hover);
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+.skm-chip[aria-pressed="true"],
+.skm-chip[aria-pressed="true"]:hover {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}

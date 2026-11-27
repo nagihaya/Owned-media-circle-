@@ -1505,3 +1505,39 @@ html {
     height: 64px;
   }
 }
+
+/* スクロール案内を手書きの丸で囲む */
+@media (max-width: 1100px) {
+  .sk-scroll {
+    position: relative;
+  }
+}
+.sk-scroll {
+  padding: 18px 26px;
+}
+.sk-scroll .sk-scroll-ring {
+  position: absolute;
+  inset: -6px -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 12px);
+  overflow: visible;
+  animation: none;
+  pointer-events: none;
+}
+.sk-scroll .sk-scroll-ring path {
+  stroke: #2f5bd8;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: sk-draw 1.2s ease-in-out 2s forwards;
+}
+.sk-scroll:hover .sk-scroll-ring path {
+  stroke: #e5484d;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-scroll .sk-scroll-ring path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

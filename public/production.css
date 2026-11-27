@@ -6654,3 +6654,26 @@ header.nav .navlinks .nav-pills a .np-en,
     animation: none !important;
   }
 }
+/* 坂沿いを走る黄色い電車（総武線のイメージ）：左から右へゆっくり */
+.tt-train {
+  transform: translateX(-320px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tt-train {
+    animation: tt-run 16s linear 1.6s infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 動かさないときは赤い建物の前に停めておく */
+  .tt-train {
+    transform: translateX(800px);
+  }
+}
+@keyframes tt-run {
+  from {
+    transform: translateX(-320px);
+  }
+  to {
+    transform: translateX(1480px);
+  }
+}

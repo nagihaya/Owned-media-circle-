@@ -1541,3 +1541,21 @@ html {
     stroke-dashoffset: 0;
   }
 }
+
+/* 「scroll」の文字だけを手書きの丸で囲む（矢印は丸の外） */
+.sk-scroll {
+  padding: 0;
+}
+.sk-scroll-word {
+  position: relative;
+  display: inline-block;
+  padding: 10px 26px 14px;
+}
+.sk-scroll .sk-scroll-ring {
+  inset: -4px -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 8px);
+}
+.sk-scroll .sk-scroll-arrow {
+  margin-top: 6px;
+}

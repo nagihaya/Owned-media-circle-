@@ -6750,3 +6750,35 @@ header.nav .navlinks .nav-pills a .np-en,
     justify-content: center;
   }
 }
+
+/* ホームの紹介ブロック：各項目の間にゆとりを（ラベル → キャッチ → 説明文 → ボタン） */
+.th-copy {
+  gap: 0;
+}
+.th .intro-label {
+  margin-bottom: 44px;
+}
+.th-catch {
+  margin-bottom: 40px;
+  line-height: 1.45;
+}
+.th-body {
+  line-height: 2.2;
+}
+.th .ab {
+  margin-top: 52px;
+}
+@media (max-width: 767px) {
+  .th .intro-label {
+    margin-bottom: 30px;
+  }
+  .th-catch {
+    margin-bottom: 28px;
+  }
+  .th-body {
+    line-height: 2.05;
+  }
+  .th .ab {
+    margin-top: 36px;
+  }
+}

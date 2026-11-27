@@ -1074,3 +1074,62 @@ body.sk {
     transition: none;
   }
 }
+
+/* ===== メンバー紹介：1枚ずつ独立したカードに（太い色の枠・角丸・カードの間に余白） ===== */
+.skm {
+  padding-bottom: 96px;
+}
+.skm-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+  gap: 32px;
+  border-top: 0;
+}
+.skm-card,
+.skm-card:nth-child(3n),
+.skm-card:nth-child(2n) {
+  border: 14px solid var(--frame);
+  border-radius: 26px;
+  background: #fff;
+  overflow: hidden;
+}
+.skm-bg0 { --frame: #e9367a; background: #fff; }
+.skm-bg1 { --frame: #4fb286; background: #fff; }
+.skm-bg2 { --frame: #3d9be9; background: #fff; }
+.skm-bg3 { --frame: #fbb024; background: #fff; }
+.skm-bg4 { --frame: #8b5be6; background: #fff; }
+.skm-bg5 { --frame: #2ccfcf; background: #fff; }
+.skm-bg6 { --frame: #f97a16; background: #fff; }
+.skm-bg7 { --frame: #12c35b; background: #fff; }
+.skm-bg8 { --frame: #ff6b73; background: #fff; }
+.skm-face {
+  padding: 40px 24px 26px;
+}
+/* 裏面の答えの背景は枠の色をうすく */
+.skm-a {
+  background: color-mix(in srgb, var(--frame) 14%, #fff);
+}
+.skm-flip:focus-visible {
+  outline-offset: -4px;
+}
+@media (max-width: 900px) {
+  .skm-grid {
+    gap: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .skm-grid {
+    padding: 0 18px;
+    gap: 20px;
+  }
+  .skm-card,
+  .skm-card:nth-child(3n),
+  .skm-card:nth-child(2n) {
+    border-width: 10px;
+    border-radius: 22px;
+  }
+  .skm-face {
+    padding: 36px 20px 24px;
+  }
+}

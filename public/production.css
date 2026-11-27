@@ -6330,3 +6330,49 @@ header.nav .navlinks .nav-pills a .np-en,
     grid-template-columns: 1fr;
   }
 }
+
+/* 編集画面：新歓メンバーの Q&A 入力 */
+.qa-edit {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 0;
+  padding: 12px 14px 14px;
+  border: 1px solid #d9dde2;
+  border-radius: 10px;
+}
+.qa-edit legend {
+  padding: 0 6px;
+  font-weight: 700;
+}
+.qa-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1.4fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+.qa-no {
+  align-self: center;
+  margin-top: 18px;
+  font-weight: 800;
+  color: #6b7480;
+}
+.qa-empty {
+  margin: 0;
+  color: #6b7480;
+  font-size: 14px;
+}
+.qa-edit > .btn {
+  justify-self: start;
+}
+@media (max-width: 760px) {
+  .qa-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .qa-row label:nth-of-type(2),
+  .qa-row .btn {
+    grid-column: 2;
+  }
+  .qa-row .btn {
+    justify-self: start;
+  }
+}

@@ -323,7 +323,7 @@
       ? members
           .map(
             (m, i) =>
-              `<li class="member-admin-item">${m.url ? `<img src="${h(m.url)}" alt="">` : '<span class="member-admin-noimg">写真なし</span>'}<div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}人目</span><label>写真（JPEG/PNG/WebP・8MB以内）<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${i}"></label><label>吹き出し：入った理由など（60文字まで）<input data-bubble="${i}" maxlength="60" value="${h(m.bubble || "")}" placeholder="例：ビジコンに挑戦したくて！"></label><label>タグ（カンマ区切り・5つまで。# は自動で付きます）<input data-tags="${i}" maxlength="120" value="${h((m.tags || []).join(", "))}" placeholder="例：経営学科, 映画鑑賞, サウナ"></label><label>Q&amp;A（カードを押すと裏返って表示。1行に1つ「質問 | 答え」・6つまで）<textarea data-qa="${i}" rows="4" maxlength="1200" placeholder="好きな授業は？ | マーケティング論&#10;休日の過ごし方は？ | サウナと映画">${h((m.qa || []).map((x) => x.q + " | " + x.a).join("\n"))}</textarea></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-mmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-mmove="${i}" data-dir="1" ${i === members.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-mremove="${i}">削除</button></div></div></li>`,
+              `<li class="member-admin-item">${m.url ? `<img src="${h(m.url)}" alt="">` : '<span class="member-admin-noimg">写真なし</span>'}<div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}人目</span><label>写真（JPEG/PNG/WebP・8MB以内）<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${i}"></label><label>吹き出し：入った理由など（60文字まで）<input data-bubble="${i}" maxlength="60" value="${h(m.bubble || "")}" placeholder="例：ビジコンに挑戦したくて！"></label><label>タグ（カンマ区切り・5つまで。# は自動で付きます）<input data-tags="${i}" maxlength="120" value="${h((m.tags || []).join(", "))}" placeholder="例：経営学科, 映画鑑賞, サウナ"></label><fieldset class="qa-edit"><legend>Q&amp;A（カードを押すと裏返って表示・6つまで）</legend>${(m.qa || []).length ? "" : '<p class="qa-empty">まだありません。「＋ 質問を追加」から入れてください。</p>'}${(m.qa || []).map((x, k) => `<div class="qa-row"><span class="qa-no">Q${k + 1}</span><label>質問<input list="qaSuggest" data-qaq="${i}-${k}" maxlength="40" value="${h(x.q || "")}" placeholder="例：好きな授業は？"></label><label>答え<input data-qaa="${i}-${k}" maxlength="120" value="${h(x.a || "")}" placeholder="例：マーケティング論"></label><button class="btn small danger" type="button" data-qadel="${i}-${k}" aria-label="Q${k + 1}を削除">削除</button></div>`).join("")}${(m.qa || []).length < 6 ? `<button class="btn small alt" type="button" data-qaadd="${i}">＋ 質問を追加</button>` : ""}</fieldset><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-mmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-mmove="${i}" data-dir="1" ${i === members.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-mremove="${i}">削除</button></div></div></li>`,
           )
           .join("")
       : '<li class="gallery-admin-empty">メンバーはまだいません。</li>';
@@ -345,15 +345,12 @@
     const t = e.target;
     if (t.dataset.bubble !== undefined) members[Number(t.dataset.bubble)].bubble = t.value;
     if (t.dataset.tags !== undefined) members[Number(t.dataset.tags)].tags = splitTags(t.value);
-    if (t.dataset.qa !== undefined)
-      members[Number(t.dataset.qa)].qa = t.value
-        .split(/\r?\n/)
-        .map((line) => {
-          const k = line.indexOf("|");
-          return k > 0 ? { q: line.slice(0, k).trim(), a: line.slice(k + 1).trim() } : null;
-        })
-        .filter((x) => x && x.q && x.a)
-        .slice(0, 6);
+    if (t.dataset.qaq !== undefined || t.dataset.qaa !== undefined) {
+      const [mi, k] = (t.dataset.qaq || t.dataset.qaa).split("-").map(Number);
+      const row = members[mi].qa[k];
+      if (t.dataset.qaq !== undefined) row.q = t.value;
+      else row.a = t.value;
+    }
   });
   $("#memberList").addEventListener("change", (e) => {
     const t = e.target;
@@ -371,6 +368,22 @@
     );
   });
   $("#memberList").addEventListener("click", (e) => {
+    const add = e.target.closest("[data-qaadd]");
+    const del = e.target.closest("[data-qadel]");
+    if (add) {
+      const i = Number(add.dataset.qaadd);
+      members[i].qa = members[i].qa || [];
+      if (members[i].qa.length < 6) members[i].qa.push({ q: "", a: "" });
+      renderMembers();
+      document.querySelector(`[data-qaq="${i}-${members[i].qa.length - 1}"]`)?.focus();
+      return;
+    }
+    if (del) {
+      const [i, k] = del.dataset.qadel.split("-").map(Number);
+      members[i].qa.splice(k, 1);
+      renderMembers();
+      return;
+    }
     const mv = e.target.closest("[data-mmove]");
     const rm = e.target.closest("[data-mremove]");
     if (mv) {
@@ -400,7 +413,9 @@
               url: m.url || "",
               bubble: (m.bubble || "").trim(),
               tags: (m.tags || []).map((t) => t.slice(0, 20)),
-              qa: (m.qa || []).map((x) => ({ q: x.q.slice(0, 40), a: x.a.slice(0, 120) })),
+              qa: (m.qa || [])
+                .map((x) => ({ q: (x.q || "").trim().slice(0, 40), a: (x.a || "").trim().slice(0, 120) }))
+                .filter((x) => x.q && x.a),
             })),
           },
         });

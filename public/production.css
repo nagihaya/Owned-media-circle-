@@ -6605,7 +6605,7 @@ header.nav .navlinks .nav-pills a .np-en,
   }
 }
 
-/* 紹介ブロックの背景：飯田橋〜市ヶ谷の街並みと公園の木（坂を上るほど高くなる＝右肩上がりのグラフ） */
+/* 紹介ブロックの背景：理科大 神楽坂キャンパスから見た景色（坂を上るほど高くなる＝右肩上がりのグラフ） */
 .th-town {
   position: absolute;
   left: 0;
@@ -6626,7 +6626,24 @@ header.nav .navlinks .nav-pills a .np-en,
   --town-h: min(10.42vw, 200px);
 }
 .intro-band.th .th-inner {
-  padding-bottom: calc(var(--town-h) + 12px);
+  padding-bottom: calc(var(--town-h) + 40px);
+}
+/* イラストのキャプション（1行・小さめのグレー） */
+.th-town-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--town-h) + 8px);
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--safe-inline-end, 22px) 0 var(--safe-inline, 22px);
+  font-size: 12.5px;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  color: #6b665e;
+  text-align: right;
+  white-space: nowrap;
 }
 .tt-b {
   transform-box: fill-box;
@@ -6654,13 +6671,13 @@ header.nav .navlinks .nav-pills a .np-en,
     animation: none !important;
   }
 }
-/* 坂沿いを走る黄色い電車（総武線のイメージ）：左から右へゆっくり */
+/* 坂沿いを走る黄色い電車（中央・総武線）：左から右へゆっくり。黄色は新歓ページの三角と同じ */
 .tt-train {
   transform: translateX(-320px);
 }
 @media (prefers-reduced-motion: no-preference) {
   .tt-train {
-    animation: tt-run 16s linear 1.6s infinite;
+    animation: tt-run 30s linear 1.6s infinite;
   }
 }
 @media (prefers-reduced-motion: reduce) {

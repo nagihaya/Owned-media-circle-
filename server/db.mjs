@@ -124,8 +124,16 @@ export function cleanShinkanMembers(list) {
         .map((t) => String(t).replace(/^[#＃]+/, "").trim().slice(0, 20))
         .filter(Boolean)
         .slice(0, 5),
+      qa: (Array.isArray(m.qa) ? m.qa : [])
+        .filter((x) => x && typeof x === "object")
+        .map((x) => ({
+          q: String(x.q || "").trim().slice(0, 40),
+          a: String(x.a || "").trim().slice(0, 120),
+        }))
+        .filter((x) => x.q && x.a)
+        .slice(0, 6),
     }))
-    .filter((m) => m.url || m.bubble || m.tags.length);
+    .filter((m) => m.url || m.bubble || m.tags.length || m.qa.length);
 }
 export function publicSettings(s) {
   const {

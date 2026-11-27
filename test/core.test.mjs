@@ -315,11 +315,16 @@ test("shinkan members keep stored images only, trim bubbles and normalize #tags"
   const { cleanShinkanMembers } = await import("../server/db.mjs");
   const ok = "/media/6726228c-ef40-4e50-afbe-d6ba592202ce.webp";
   const out = cleanShinkanMembers([
-    { url: ok, bubble: " 仲間がほしくて ", tags: ["#経営学科", "＃映画鑑賞", "", "a", "b", "c", "d"] },
+    { url: ok, bubble: " 仲間がほしくて ", tags: ["#経営学科", "＃映画鑑賞", "", "a", "b", "c", "d"], qa: [{ q: " 好きな授業は？ ", a: "マーケティング論" }, { q: "空の答え", a: "" }, "bad"] },
     { url: "https://evil.example/x.webp", bubble: "", tags: [] },
     "bad",
   ]);
   assert.equal(out.length, 1);
-  assert.deepEqual(out[0], { url: ok, bubble: "仲間がほしくて", tags: ["経営学科", "映画鑑賞", "a", "b", "c"] });
+  assert.deepEqual(out[0], {
+    url: ok,
+    bubble: "仲間がほしくて",
+    tags: ["経営学科", "映画鑑賞", "a", "b", "c"],
+    qa: [{ q: "好きな授業は？", a: "マーケティング論" }],
+  });
   assert.equal(cleanShinkanMembers(null).length, 0);
 });

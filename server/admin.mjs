@@ -306,6 +306,17 @@ admin.put("/shinkan-members", async (req, res) => {
               url: z.string().regex(MEDIA_PATH).max(768).or(z.literal("")),
               bubble: z.string().trim().max(60).default(""),
               tags: z.array(z.string().trim().max(21)).max(5).default([]),
+              qa: z
+                .array(
+                  z
+                    .object({
+                      q: z.string().trim().max(40),
+                      a: z.string().trim().max(120),
+                    })
+                    .strict(),
+                )
+                .max(6)
+                .default([]),
             })
             .strict(),
         )

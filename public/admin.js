@@ -323,7 +323,7 @@
       ? members
           .map(
             (m, i) =>
-              `<li class="member-admin-item">${m.url ? `<img src="${h(m.url)}" alt="">` : '<span class="member-admin-noimg">写真なし</span>'}<div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}人目</span><label>写真（JPEG/PNG/WebP・8MB以内）<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${i}"></label><label>吹き出し：入った理由など（60文字まで）<input data-bubble="${i}" maxlength="60" value="${h(m.bubble || "")}" placeholder="例：ビジコンに挑戦したくて！"></label><label>タグ（カンマ区切り・5つまで。# は自動で付きます）<input data-tags="${i}" maxlength="120" value="${h((m.tags || []).join(", "))}" placeholder="例：経営学科, 映画鑑賞, サウナ"></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-mmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-mmove="${i}" data-dir="1" ${i === members.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-mremove="${i}">削除</button></div></div></li>`,
+              `<li class="member-admin-item">${m.url ? `<img src="${h(m.url)}" alt="">` : '<span class="member-admin-noimg">写真なし</span>'}<div class="gallery-admin-fields"><span class="gallery-admin-no">${i + 1}人目</span><label>写真（JPEG/PNG/WebP・8MB以内）<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${i}"></label><label>吹き出し：入った理由など（60文字まで）<input data-bubble="${i}" maxlength="60" value="${h(m.bubble || "")}" placeholder="例：ビジコンに挑戦したくて！"></label><label>タグ（カンマ区切り・5つまで。# は自動で付きます）<input data-tags="${i}" maxlength="120" value="${h((m.tags || []).join(", "))}" placeholder="例：経営学科, 映画鑑賞, サウナ"></label><label>Q&amp;A（カードを押すと裏返って表示。1行に1つ「質問 | 答え」・6つまで）<textarea data-qa="${i}" rows="4" maxlength="1200" placeholder="好きな授業は？ | マーケティング論&#10;休日の過ごし方は？ | サウナと映画">${h((m.qa || []).map((x) => x.q + " | " + x.a).join("\n"))}</textarea></label><div class="gallery-admin-buttons"><button class="btn small alt" type="button" data-mmove="${i}" data-dir="-1" ${i === 0 ? "disabled" : ""}>↑ 前へ</button><button class="btn small alt" type="button" data-mmove="${i}" data-dir="1" ${i === members.length - 1 ? "disabled" : ""}>↓ 後ろへ</button><button class="btn small danger" type="button" data-mremove="${i}">削除</button></div></div></li>`,
           )
           .join("")
       : '<li class="gallery-admin-empty">メンバーはまだいません。</li>';
@@ -331,7 +331,7 @@
   async function loadMembers() {
     const s = await api("/api/admin/settings");
     members = Array.isArray(s.shinkanMembers)
-      ? s.shinkanMembers.map((m) => ({ url: m.url || "", bubble: m.bubble || "", tags: [...(m.tags || [])] }))
+      ? s.shinkanMembers.map((m) => ({ url: m.url || "", bubble: m.bubble || "", tags: [...(m.tags || [])], qa: (m.qa || []).map((x) => ({ ...x })) }))
       : [];
     renderMembers();
   }
@@ -345,6 +345,15 @@
     const t = e.target;
     if (t.dataset.bubble !== undefined) members[Number(t.dataset.bubble)].bubble = t.value;
     if (t.dataset.tags !== undefined) members[Number(t.dataset.tags)].tags = splitTags(t.value);
+    if (t.dataset.qa !== undefined)
+      members[Number(t.dataset.qa)].qa = t.value
+        .split(/\r?\n/)
+        .map((line) => {
+          const k = line.indexOf("|");
+          return k > 0 ? { q: line.slice(0, k).trim(), a: line.slice(k + 1).trim() } : null;
+        })
+        .filter((x) => x && x.q && x.a)
+        .slice(0, 6);
   });
   $("#memberList").addEventListener("change", (e) => {
     const t = e.target;
@@ -377,7 +386,7 @@
   $("#addMember").addEventListener("click", () => {
     if (members.length >= 30)
       return message("#membersStatus", "メンバー紹介は30人までです。", true);
-    members.push({ url: "", bubble: "", tags: [] });
+    members.push({ url: "", bubble: "", tags: [], qa: [] });
     renderMembers();
   });
   $("#saveMembers").addEventListener("click", (e) =>
@@ -391,6 +400,7 @@
               url: m.url || "",
               bubble: (m.bubble || "").trim(),
               tags: (m.tags || []).map((t) => t.slice(0, 20)),
+              qa: (m.qa || []).map((x) => ({ q: x.q.slice(0, 40), a: x.a.slice(0, 120) })),
             })),
           },
         });

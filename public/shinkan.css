@@ -1306,7 +1306,6 @@ body.sk {
 /* ===== 新歓ページの紹介ブロック：手書き風 ===== */
 .sk-hero {
   --hand-en: "Caveat", "Segoe Print", "Bradley Hand", cursive;
-  --hand-ja: "Klee One", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
 }
 .sk-title {
   font-family: var(--hand-en);
@@ -1316,22 +1315,6 @@ body.sk {
   letter-spacing: 0;
   transform: rotate(-2deg);
   transform-origin: left center;
-}
-.sk-kicker,
-.sk-catch,
-.sk-text,
-.sk-actions {
-  font-family: var(--hand-ja);
-}
-.sk-catch {
-  font-weight: 600;
-  font-size: clamp(22px, 2.8vw, 32px);
-  letter-spacing: 0.06em;
-}
-.sk-text {
-  font-weight: 600;
-  font-size: 17px;
-  color: #333;
 }
 /* 「T-Biz」の下に手書きの二重線（ページを開くと引かれる） */
 .sk-hand-mark {
@@ -1393,11 +1376,6 @@ body.sk {
   to {
     stroke-dashoffset: 0;
   }
-}
-.sk-btn,
-.sk-link {
-  font-family: var(--hand-ja);
-  font-weight: 600;
 }
 @media (max-width: 600px) {
   .sk-title {

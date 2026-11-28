@@ -7111,6 +7111,11 @@ main .section-title.section-title-en {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.hx-photo.is-on {
+  opacity: 1;
 }
 /* 文字が読めるよう、写真を少し暗く */
 .hx-shade {
@@ -7163,28 +7168,34 @@ body .ab.ab.hx-more:focus-visible {
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
-  column-gap: 18px;
-  padding: 18px 26px 18px 30px;
+  column-gap: 28px;
+  min-width: 300px;
+  justify-content: space-between;
+  padding: 20px 34px 20px 40px;
   border-radius: 999px;
   background: #fff;
   color: #111;
+  /* ボタンの中の文字は1つのフォントにそろえる（英字も日本語フォントの字形で） */
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  font-weight: 700;
   text-decoration: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
   transition: transform 0.2s ease;
 }
-.hx-badge-sub {
+.hx-badge-sub,
+.hx-badge-main {
   grid-column: 1;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font: inherit;
+  letter-spacing: 0.12em;
+}
+.hx-badge-sub {
+  font-size: 13px;
   color: #666;
 }
 .hx-badge-main {
-  grid-column: 1;
   font-size: 19px;
-  font-weight: 800;
-  line-height: 1.35;
-  letter-spacing: 0.12em;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 .hx-badge svg {
   grid-column: 2;
@@ -7207,8 +7218,9 @@ body .ab.ab.hx-more:focus-visible {
 }
 /* 読み込み時：見出し → ひとこと → ボタンの順にふわっと */
 @media (prefers-reduced-motion: no-preference) {
-  .hx-photo {
-    animation: hx-zoom 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  /* 表示中の写真はゆっくり寄る */
+  .hx-photo.is-on {
+    animation: hx-zoom 7.5s ease-out both;
   }
   .hx-en,
   .hx-ja,
@@ -7228,7 +7240,7 @@ body .ab.ab.hx-more:focus-visible {
 }
 @keyframes hx-zoom {
   from {
-    transform: scale(1.06);
+    transform: scale(1.08);
   }
 }
 @keyframes hx-rise {
@@ -7247,13 +7259,14 @@ body .ab.ab.hx-more:focus-visible {
     gap: 20px;
   }
   .hx-badge {
-    column-gap: 12px;
-    padding: 12px 18px 12px 22px;
+    column-gap: 20px;
+    min-width: 230px;
+    padding: 14px 24px 14px 28px;
   }
   .hx-badge-main {
     font-size: 15px;
   }
   .hx-badge-sub {
-    font-size: 10px;
+    font-size: 11px;
   }
 }

@@ -533,3 +533,17 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     });
   }
 }
+
+// トップのヒーロー：写真を6秒ごとに切り替える（動きを減らす設定・1枚だけのときは切り替えない）
+{
+  const photos = [...document.querySelectorAll(".hx-photo")];
+  if (photos.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      photos[i].classList.remove("is-on");
+      i = (i + 1) % photos.length;
+      photos[i].classList.add("is-on");
+    }, 6000);
+  }
+}

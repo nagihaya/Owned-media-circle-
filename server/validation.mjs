@@ -95,6 +95,7 @@ export const settingSchema = z
     joinUrl: webUrl.or(z.literal("")).default(""),
     introCatch: z.string().trim().max(60).default(""),
     introText: z.string().trim().max(300).default(""),
+    heroEn: z.string().trim().max(60).default(""),
     homeStats: z.string().trim().max(1000).default(""),
     homeTimeline: z.string().trim().max(2000).default(""),
     response: z.string().trim().min(1).max(40),

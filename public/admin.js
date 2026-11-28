@@ -90,6 +90,7 @@
       "joinUrl",
       "introCatch",
       "introText",
+      "heroEn",
       "homeStats",
       "homeTimeline",
       "response",

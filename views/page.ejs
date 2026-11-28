@@ -2,23 +2,14 @@
 <main class="shell" id="main"><section class="page active<%= route==='/'?' page-home':'' %>">
 <% if(route==='/'){ %>
 <h1 class="sr-only"><%= settings.siteName %> — 企業インタビューとビジネス知識</h1>
-<% /* ===== トップのヒーロー：左にコピー、右にポラロイド風の写真3枚 =====
-   写真はここで1か所にまとめる（1枚目：紹介ブロックの写真、2・3枚目：ギャラリーの先頭2枚）。
-   alt は編集画面の「写真の説明」から。差し替えは編集画面で行う。 */
-const heroPhotos = [
-  { src: settings.introImageUrl, alt: settings.introImageAlt },
-  ...((settings.gallery || []).slice(0, 2).map((g) => ({ src: g.url, alt: g.alt }))),
-].filter((p) => p.src).slice(0, 3).map((p) => ({ src: p.src, alt: p.alt || 'T-Bizのメンバーが活動している様子' }));
-const heroMarkRe = /[*＊]([^*＊\n]+)[*＊]/g;
-const heroLines = String(settings.introCatch || '').split(/\r?\n/).filter((l) => l.trim());
-const heroHasMark = /[*＊][^*＊\n]+[*＊]/.test(settings.introCatch || ''); %>
-<% if(heroLines.length || settings.introText || heroPhotos.length){ %><% /* 街並みイラスト（views/town.ejs）。いったん非表示。出すときは true に */ const showTown = false; %><section class="intro-band th<%= showTown ? ' has-town' : '' %>" aria-label="このメディアについて"><% if(showTown){ %><%- include('town') %><% } %><div class="th-inner<%= heroPhotos.length?' has-photos':'' %>">
-<div class="th-copy"><% if(settings.introLabel){ %><p class="intro-label"><%= settings.introLabel %></p><% } %>
-<% if(heroLines.length){ %><p class="th-catch"><% heroLines.forEach((line, li) => { %><span class="th-line"><% if(heroHasMark){ line.split(heroMarkRe).forEach((part, pi) => { %><% if(pi % 2){ %><span class="intro-mark"><%= part %></span><% } else { %><%= part %><% } %><% }) } else if(heroLines.length > 1 && li === heroLines.length - 1){ %><span class="intro-mark"><%= line %></span><% } else { %><%= line %><% } %></span><% }) %></p><% } %>
-<% if(settings.introText){ %><p class="th-body"><%= String(settings.introText).replace(/[*＊]/g, '') %></p><% } %>
-<a class="ab" href="/about">T-Bizとは？<%- include('arrow') %></a></div>
-<% if(heroPhotos.length){ %><div class="th-photos"><% heroPhotos.forEach((p, i) => { %><figure class="th-photo th-photo-<%= i + 1 %>"><img src="<%= p.src %>" alt="<%= p.alt %>" width="520" height="650" loading="eager" <%- i === 0 ? 'fetchpriority="high"' : '' %>></figure><% }) %></div><% } %>
-</div></section><% } %><% const gallery=settings.gallery||[]; if(gallery.length){ %><section class="gallery-band" aria-label="活動の様子"><div class="gallery-viewport" tabindex="0" aria-label="活動写真（横にスクロールできます）"><div class="gallery-track" style="--n:<%= gallery.length %>"><% for(const copy of [0,1]){ for(const g of gallery){ %><figure class="gallery-item" <%- copy?'aria-hidden="true" data-copy':'' %>><img src="<%= g.url %>" alt="<%= copy?'':g.alt %>" loading="lazy"></figure><% } } %></div></div></section><% } %>
+<% /* ===== トップのヒーロー：写真を画面いっぱいに敷き、中央に大きな英語の見出し＋日本語のひとこと。右下に新歓への丸いボタン =====
+   写真：編集画面「紹介ブロックの写真」。英語の見出し：「ヒーローの英語の見出し」（空欄なら既定の一文）。日本語：キャッチコピー（* は外す） */
+const heroImg = settings.introImageUrl || '';
+const heroEn = String(settings.heroEn || '').trim() || 'Turn Ideas into Action';
+const heroJa = String(settings.introCatch || '').replace(/[*＊]/g, '').split(/\r?\n/).map((l) => l.trim()).filter(Boolean).join(''); %>
+<section class="hx<%= heroImg ? ' has-photo' : '' %>" aria-label="このメディアについて"><% if(heroImg){ %><img class="hx-photo" src="<%= heroImg %>" alt="<%= settings.introImageAlt || 'T-Bizのメンバーが活動している様子' %>" width="1920" height="1080" loading="eager" fetchpriority="high"><% } %><div class="hx-shade" aria-hidden="true"></div>
+<div class="hx-copy"><p class="hx-en" lang="en"><%= heroEn %></p><% if(heroJa){ %><p class="hx-ja"><%= heroJa %></p><% } %><a class="ab hx-more" href="/about">T-Bizとは？<%- include('arrow') %></a></div>
+<a class="hx-badge" href="/shinkan" target="_blank" rel="noopener"><span class="hx-badge-sub" lang="en">Welcome!</span><span class="hx-badge-main">新歓・入会<br>受付中！</span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 15 15 5M7 5h8v8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg><span class="sr-only">（新歓特設ページを新しいタブで開く）</span></a></section><% const gallery=settings.gallery||[]; if(gallery.length){ %><section class="gallery-band" aria-label="活動の様子"><div class="gallery-viewport" tabindex="0" aria-label="活動写真（横にスクロールできます）"><div class="gallery-track" style="--n:<%= gallery.length %>"><% for(const copy of [0,1]){ for(const g of gallery){ %><figure class="gallery-item" <%- copy?'aria-hidden="true" data-copy':'' %>><img src="<%= g.url %>" alt="<%= copy?'':g.alt %>" loading="lazy"></figure><% } } %></div></div></section><% } %>
 
 <section class="section section-split"><div class="section-head"><h2 class="section-title section-title-en"><span class="en" lang="en">Interview</span><span class="ja">インタビュー</span></h2><a class="ab more-link-pc" href="/interviews" lang="en" aria-label="インタビューの記事をもっと見る">see more<%- include('arrow') %></a></div><div class="cards"><%- include('cards',{items:data.interviews}) %></div><a class="ab more-link-sp" href="/interviews" lang="en" aria-label="インタビューの記事をもっと見る">see more<%- include('arrow') %></a></section>
 <% const activityHref='/articles?type='+encodeURIComponent('活動記録'); %><section class="section section-split"><div class="section-head"><h2 class="section-title section-title-en"><span class="en" lang="en">Activity</span><span class="ja">活動記録</span></h2><a class="ab more-link-pc" href="<%= activityHref %>" lang="en" aria-label="活動記録の記事をもっと見る">see more<%- include('arrow') %></a></div><div class="cards"><%- include('cards',{items:data.activity}) %></div><a class="ab more-link-sp" href="<%= activityHref %>" lang="en" aria-label="活動記録の記事をもっと見る">see more<%- include('arrow') %></a></section>

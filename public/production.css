@@ -7091,3 +7091,169 @@ main .section-title.section-title-en {
     padding: 28px 22px 22px;
   }
 }
+
+/* ===================== トップのヒーロー：全面写真＋中央に大きな英語の見出し ===================== */
+.hx {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: clamp(520px, calc(100svh - 96px), 860px);
+  margin: 0 calc(50% - 50vw);
+  overflow: hidden;
+  background: #1a1a1a;
+  color: #fff;
+}
+.hx-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* 文字が読めるよう、写真を少し暗く */
+.hx-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.42) 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+.hx-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  max-width: 1280px;
+  padding: 0 24px;
+  text-align: center;
+}
+.hx-en {
+  margin: 0;
+  font-size: clamp(44px, 9vw, 132px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+.hx-ja {
+  margin: 0;
+  font-size: clamp(18px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+/* 写真の上のボタンは白い文字と白い線 */
+body .ab.ab.hx-more {
+  margin-top: 12px;
+  border-left-color: rgba(255, 255, 255, 0.7);
+  border-right-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+}
+body .ab.ab.hx-more:focus-visible {
+  outline-color: #fff;
+}
+/* 右下の丸いボタン（新歓へ） */
+.hx-badge {
+  position: absolute;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(16px, 3vw, 40px);
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 18px;
+  padding: 18px 26px 18px 30px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease;
+}
+.hx-badge-sub {
+  grid-column: 1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #666;
+}
+.hx-badge-main {
+  grid-column: 1;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+}
+.hx-badge svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+@media (hover: hover) {
+  .hx-badge:hover {
+    transform: translateY(-3px);
+  }
+  .hx-badge:hover svg {
+    transform: translate(3px, -3px);
+  }
+}
+.hx-badge:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+/* 読み込み時：見出し → ひとこと → ボタンの順にふわっと */
+@media (prefers-reduced-motion: no-preference) {
+  .hx-photo {
+    animation: hx-zoom 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hx-en,
+  .hx-ja,
+  .hx-more,
+  .hx-badge {
+    animation: hx-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hx-ja {
+    animation-delay: 0.2s;
+  }
+  .hx-more {
+    animation-delay: 0.35s;
+  }
+  .hx-badge {
+    animation-delay: 0.6s;
+  }
+}
+@keyframes hx-zoom {
+  from {
+    transform: scale(1.06);
+  }
+}
+@keyframes hx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@media (max-width: 767px) {
+  .hx {
+    min-height: clamp(480px, calc(100svh - 80px), 720px);
+    place-items: center;
+    padding-bottom: 96px;
+  }
+  .hx-copy {
+    gap: 20px;
+  }
+  .hx-badge {
+    column-gap: 12px;
+    padding: 12px 18px 12px 22px;
+  }
+  .hx-badge-main {
+    font-size: 15px;
+  }
+  .hx-badge-sub {
+    font-size: 10px;
+  }
+}

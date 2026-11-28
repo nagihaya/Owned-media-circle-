@@ -90,6 +90,8 @@
       "joinUrl",
       "introCatch",
       "introText",
+      "homeStats",
+      "homeTimeline",
       "response",
       "contact",
       "policyDate",

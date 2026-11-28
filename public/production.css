@@ -6840,3 +6840,344 @@ main .section-title.section-title-en {
 .faq-admin-item textarea {
   width: 100%;
 }
+
+/* ===================== ホームの構成：ヒーロー → 数字 → 3つの活動 → 1年の流れ → 最新の記事 → メンバーの声 ===================== */
+/* 1. ヒーロー：ボタン2つと、右上の「取材のご依頼はこちら」 */
+.th .ab {
+  margin-top: 0;
+}
+.th-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 52px;
+}
+.th-press {
+  position: absolute;
+  top: 14px;
+  right: var(--safe-inline-end, 22px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #333;
+  text-decoration: none;
+}
+.th-press svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+}
+.th-press:hover {
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.th-press:hover svg {
+  transform: translate(2px, -2px);
+}
+.th-press:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+@media (max-width: 767px) {
+  .th-ctas {
+    margin-top: 36px;
+  }
+  .th-press {
+    position: static;
+    order: -1;
+    justify-self: end;
+    margin-bottom: 8px;
+  }
+}
+
+/* 共通：見出し */
+.section.hs {
+  padding-top: 96px;
+  padding-bottom: 32px;
+}
+.hs-head {
+  margin-bottom: 48px;
+}
+
+/* 2. 数字で見るT-Biz：数字を大きく、間に縦の区切り線 */
+.hs-stats-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hs-stats-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 28px;
+  border-left: 1px solid #a8a8a8;
+}
+.hs-stats-list li:last-child {
+  border-right: 1px solid #a8a8a8;
+}
+.hs-num {
+  font-size: clamp(40px, 4.6vw, 60px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #111;
+}
+.hs-unit {
+  margin-left: 4px;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+.hs-label {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: #555;
+}
+
+/* 3. 3つの活動：カード3枚（色の図形をアイコンに） */
+.hs-acts-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hs-act {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 36px 32px 28px;
+  border: 1px solid #e3e6ea;
+  border-radius: 16px;
+  background: #fff;
+}
+.hs-act-icon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 10px;
+}
+.hs-act-icon.is-circle {
+  border-radius: 50%;
+  background: #e5484d;
+}
+.hs-act-icon.is-square {
+  border-radius: 7px;
+  background: #2f5bd8;
+}
+.hs-act-icon.is-triangle {
+  background: #f2b705;
+  clip-path: polygon(50% 4%, 98% 94%, 2% 94%);
+}
+.hs-act-no {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #888;
+}
+.hs-act h3 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.hs-act p {
+  flex: 1;
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #444;
+}
+
+/* 4. 1年の流れ：横一列のタイムライン（スマホは縦） */
+.hs-year-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hs-year-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42px;
+  height: 2px;
+  background: #e3e6ea;
+}
+.hs-year-list li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hs-year-when {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #111;
+}
+.hs-year-dot {
+  width: 14px;
+  height: 14px;
+  margin: 1px 0 6px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #e5484d;
+  box-shadow: 0 0 0 1px #e5484d;
+}
+.hs-year-list li:nth-child(4n + 2) .hs-year-dot {
+  background: #2f5bd8;
+  box-shadow: 0 0 0 1px #2f5bd8;
+}
+.hs-year-list li:nth-child(4n + 3) .hs-year-dot {
+  background: #f2b705;
+  box-shadow: 0 0 0 1px #f2b705;
+}
+.hs-year-list li:nth-child(4n + 4) .hs-year-dot {
+  background: #12a26b;
+  box-shadow: 0 0 0 1px #12a26b;
+}
+.hs-year-what {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.hs-year-note {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #555;
+}
+
+/* 5. 最新の記事 */
+.hs-cats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 56px;
+}
+
+/* 6. メンバーの声：丸い写真＋吹き出し */
+.hs-voices-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hs-voice {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px 18px;
+  align-items: start;
+}
+.hs-voice img,
+.hs-voice-noimg {
+  grid-row: span 2;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f4f5f7;
+}
+.hs-voice-text {
+  position: relative;
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #f4f5f7;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+.hs-voice-text::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 22px;
+  border: 8px solid transparent;
+  border-left: 0;
+  border-right-color: #f4f5f7;
+}
+.hs-voice-tags {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #666;
+}
+.hs-voices-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+.hs-voices {
+  padding-bottom: 112px;
+}
+
+@media (max-width: 900px) {
+  .hs-acts-list,
+  .hs-voices-list {
+    grid-template-columns: 1fr;
+  }
+  .hs-year-list {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding-left: 28px;
+  }
+  .hs-year-list::before {
+    left: 6px;
+    right: auto;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    height: auto;
+  }
+  .hs-year-dot {
+    position: absolute;
+    left: -28px;
+    top: 2px;
+    margin: 0;
+  }
+}
+@media (max-width: 640px) {
+  .section.hs {
+    padding-top: 72px;
+  }
+  .hs-head {
+    margin-bottom: 32px;
+  }
+  .hs-stats-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+  .hs-stats-list li {
+    padding: 6px 18px;
+  }
+  .hs-stats-list li:nth-child(2n) {
+    border-right: 1px solid #a8a8a8;
+  }
+  .hs-act {
+    padding: 28px 22px 22px;
+  }
+}
+/* スマホ：ヒーローのボタン2つを横に並べる */
+@media (max-width: 480px) {
+  body .th-ctas .ab.ab {
+    gap: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
+    letter-spacing: 0.1em;
+  }
+}

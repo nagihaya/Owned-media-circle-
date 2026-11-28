@@ -6841,59 +6841,7 @@ main .section-title.section-title-en {
   width: 100%;
 }
 
-/* ===================== ホームの構成：ヒーロー → 数字 → 3つの活動 → 1年の流れ → 最新の記事 → メンバーの声 ===================== */
-/* 1. ヒーロー：ボタン2つと、右上の「取材のご依頼はこちら」 */
-.th .ab {
-  margin-top: 0;
-}
-.th-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 52px;
-}
-.th-press {
-  position: absolute;
-  top: 14px;
-  right: var(--safe-inline-end, 22px);
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: #333;
-  text-decoration: none;
-}
-.th-press svg {
-  width: 12px;
-  height: 12px;
-  transition: transform 0.2s ease;
-}
-.th-press:hover {
-  color: #111;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.th-press:hover svg {
-  transform: translate(2px, -2px);
-}
-.th-press:focus-visible {
-  outline: 2px solid #111;
-  outline-offset: 3px;
-}
-@media (max-width: 767px) {
-  .th-ctas {
-    margin-top: 36px;
-  }
-  .th-press {
-    position: static;
-    order: -1;
-    justify-self: end;
-    margin-bottom: 8px;
-  }
-}
-
+/* ===================== Aboutページ下部：数字 → 3つの活動 → 1年の流れ → 最新の記事 → メンバーの声 ===================== */
 /* 共通：見出し */
 .section.hs {
   padding-top: 96px;
@@ -7170,14 +7118,5 @@ main .section-title.section-title-en {
   }
   .hs-act {
     padding: 28px 22px 22px;
-  }
-}
-/* スマホ：ヒーローのボタン2つを横に並べる */
-@media (max-width: 480px) {
-  body .th-ctas .ab.ab {
-    gap: 14px;
-    padding-left: 18px;
-    padding-right: 18px;
-    letter-spacing: 0.1em;
   }
 }

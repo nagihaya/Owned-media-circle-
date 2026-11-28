@@ -190,7 +190,7 @@ const names = {
 for (const [route, title] of Object.entries(names))
   app.get(route, async (req, res) => {
     const data =
-      route === "/"
+      route === "/" || route === "/about"
         ? await homeData()
         : { settings: publicSettings(await settings()) };
     let listing;

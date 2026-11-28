@@ -7431,3 +7431,54 @@ body .ab.ab.hx-more:focus-visible {
     transform: none;
   }
 }
+
+/* ヒーロー：「T-Bizとは？」の下の「SCROLL」と下向きの矢印（押すと次の紹介文へ） */
+.hx-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 6px 12px;
+  color: #fff;
+  text-decoration: none;
+}
+.hx-scroll-word {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+}
+.hx-scroll-arrow {
+  width: 18px;
+  height: 36px;
+}
+.hx-scroll:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hx-scroll {
+    animation: hx-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.5s both;
+  }
+  .hx-scroll-arrow {
+    animation: hx-scroll-bob 1.8s ease-in-out 1.3s infinite;
+  }
+}
+@keyframes hx-scroll-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+@media (max-width: 767px) {
+  .hx-scroll {
+    margin-top: 6px;
+  }
+  .hx-scroll-arrow {
+    height: 28px;
+  }
+}

@@ -7160,55 +7160,77 @@ body .ab.ab.hx-more {
 body .ab.ab.hx-more:focus-visible {
   outline-color: #fff;
 }
-/* 右下の丸いボタン（新歓へ） */
+/* 右下の四角いボタン（新歓へ）：「WELCOME!」と「新歓・入会受付中！」が1列で横に流れ続ける */
 .hx-badge {
   position: absolute;
   right: clamp(16px, 3vw, 40px);
   bottom: clamp(16px, 3vw, 40px);
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
-  column-gap: 28px;
-  min-width: 300px;
-  justify-content: space-between;
-  padding: 20px 34px 20px 40px;
-  border-radius: 999px;
+  display: flex;
+  align-items: stretch;
+  width: min(380px, calc(100% - 32px));
+  height: 64px;
   background: #fff;
   color: #111;
-  /* ボタンの中の文字は1つのフォントにそろえる（英字も日本語フォントの字形で） */
-  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
-  font-weight: 700;
   text-decoration: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
-  transition: transform 0.2s ease;
-}
-.hx-badge-sub,
-.hx-badge-main {
-  grid-column: 1;
-  font: inherit;
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: 0.12em;
 }
-.hx-badge-sub {
-  font-size: 13px;
-  color: #666;
+.hx-badge-view {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
-.hx-badge-main {
-  font-size: 19px;
-  line-height: 1.4;
+.hx-badge-track {
+  display: flex;
+  width: max-content;
+}
+.hx-badge-set {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+.hx-badge-set > span {
+  padding: 0 0 0 18px;
   white-space: nowrap;
 }
-.hx-badge svg {
-  grid-column: 2;
-  grid-row: 1 / span 2;
+.hx-badge-dot {
+  font-size: 8px;
+  color: #999;
+}
+.hx-badge-go {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  background: #111;
+  color: #fff;
+}
+.hx-badge-go svg {
   width: 20px;
   height: 20px;
   transition: transform 0.2s ease;
 }
-@media (hover: hover) {
-  .hx-badge:hover {
-    transform: translateY(-3px);
+@media (prefers-reduced-motion: no-preference) {
+  .hx-badge-track {
+    animation: hx-marquee 14s linear infinite;
   }
-  .hx-badge:hover svg {
+  .hx-badge:hover .hx-badge-track,
+  .hx-badge:focus-visible .hx-badge-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes hx-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (hover: hover) {
+  .hx-badge:hover .hx-badge-go svg {
     transform: translate(3px, -3px);
   }
 }
@@ -7259,15 +7281,11 @@ body .ab.ab.hx-more:focus-visible {
     gap: 20px;
   }
   .hx-badge {
-    column-gap: 20px;
-    min-width: 230px;
-    padding: 14px 24px 14px 28px;
+    height: 54px;
+    font-size: 14px;
   }
-  .hx-badge-main {
-    font-size: 15px;
-  }
-  .hx-badge-sub {
-    font-size: 11px;
+  .hx-badge-go {
+    width: 54px;
   }
 }
 

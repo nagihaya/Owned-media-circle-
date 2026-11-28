@@ -564,3 +564,36 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     io.observe(ti);
   } else if (ti) ti.classList.add("is-in");
 }
+
+// ページの先頭へ戻るボタン：少しスクロールすると右下に出る。まわりの線はページをどこまで読んだか
+{
+  const btn = document.querySelector(".to-top");
+  if (btn) {
+    const ring = btn.querySelector(".to-top-ring circle");
+    btn.hidden = false;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const y = scrollY;
+      const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+      ring.style.strokeDashoffset = String(100 - p * 100);
+      btn.classList.toggle("is-shown", y > Math.min(480, innerHeight * 0.6));
+    };
+    addEventListener("scroll", () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
+    addEventListener("resize", update);
+    update();
+    btn.addEventListener("click", (e) => {
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (window.tbizLenis) window.tbizLenis.scrollTo(0, { duration: 1 });
+      else scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+      // キーボードで押したとき（e.detail が 0）だけ、先頭のリンクへ移す
+      if (e.detail === 0) document.querySelector(".skip-link, header a")?.focus({ preventScroll: true });
+    });
+  }
+}

@@ -6906,23 +6906,6 @@ main .section-title.section-title-en {
   border-radius: 16px;
   background: #fff;
 }
-.hs-act-icon {
-  width: 34px;
-  height: 34px;
-  margin-bottom: 10px;
-}
-.hs-act-icon.is-circle {
-  border-radius: 50%;
-  background: #e5484d;
-}
-.hs-act-icon.is-square {
-  border-radius: 7px;
-  background: #2f5bd8;
-}
-.hs-act-icon.is-triangle {
-  background: #f2b705;
-  clip-path: polygon(50% 4%, 98% 94%, 2% 94%);
-}
 .hs-act-no {
   font-size: 13px;
   font-weight: 700;
@@ -6981,20 +6964,8 @@ main .section-title.section-title-en {
   margin: 1px 0 6px;
   border: 3px solid #fff;
   border-radius: 50%;
-  background: #e5484d;
-  box-shadow: 0 0 0 1px #e5484d;
-}
-.hs-year-list li:nth-child(4n + 2) .hs-year-dot {
-  background: #2f5bd8;
-  box-shadow: 0 0 0 1px #2f5bd8;
-}
-.hs-year-list li:nth-child(4n + 3) .hs-year-dot {
-  background: #f2b705;
-  box-shadow: 0 0 0 1px #f2b705;
-}
-.hs-year-list li:nth-child(4n + 4) .hs-year-dot {
-  background: #12a26b;
-  box-shadow: 0 0 0 1px #12a26b;
+  background: #111;
+  box-shadow: 0 0 0 1px #111;
 }
 .hs-year-what {
   font-size: 16px;

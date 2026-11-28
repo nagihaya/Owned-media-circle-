@@ -547,3 +547,20 @@ document.querySelector(".join-band[data-href]")?.addEventListener("click", (e) =
     }, 6000);
   }
 }
+
+// ヒーローの下の紹介文：画面に入ったら表示（マーカーもそのとき引く）
+{
+  const ti = document.querySelector(".ti");
+  if (ti && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          ti.classList.add("is-in");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(ti);
+  } else if (ti) ti.classList.add("is-in");
+}

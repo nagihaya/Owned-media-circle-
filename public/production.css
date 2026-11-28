@@ -7270,3 +7270,61 @@ body .ab.ab.hx-more:focus-visible {
     font-size: 11px;
   }
 }
+
+/* ===================== ヒーローの下の紹介文（以前のヒーローの文面） ===================== */
+.intro-band.th.ti .th-inner {
+  padding-top: 112px;
+  padding-bottom: 112px;
+}
+.ti .th-inner {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  align-items: end;
+}
+.ti-left,
+.ti-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.ti .th-catch {
+  margin-bottom: 0;
+}
+.ti .th-body {
+  margin-bottom: 0;
+}
+@media (min-width: 900px) {
+  .ti .th-inner {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    column-gap: 64px;
+  }
+}
+/* マーカーと表示は、画面に入ってから（JS がなければ最初から表示） */
+.ti .intro-mark {
+  animation: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .ti:not(.is-in) .ti-left,
+  .js .ti:not(.is-in) .ti-right {
+    opacity: 0;
+  }
+  .ti.is-in .ti-left,
+  .ti.is-in .ti-right {
+    animation: intro-fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .ti.is-in .ti-right {
+    animation-delay: 0.15s;
+  }
+  .ti.is-in .intro-mark {
+    animation: intro-mark-draw 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.7s both;
+  }
+}
+@media (max-width: 767px) {
+  .intro-band.th.ti .th-inner {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+  .ti .th-inner {
+    gap: 28px;
+  }
+}

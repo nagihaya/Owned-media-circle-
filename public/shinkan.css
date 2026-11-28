@@ -1778,3 +1778,115 @@ html {
     transition: none;
   }
 }
+
+/* ===== 落書き（Keyword・FAQ の欄）：見えたら手で描くように線が引かれる ===== */
+.skm,
+.skq {
+  position: relative;
+}
+.skm-head,
+.skq .skv-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+}
+.sk-doodle {
+  flex: none;
+  overflow: visible;
+  pointer-events: none;
+}
+.sk-doodle path {
+  fill: none;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.sk-doodle .c-red { stroke: #e5484d; }
+.sk-doodle .c-blue { stroke: #2f5bd8; }
+.sk-doodle .c-yellow { stroke: #f2b705; }
+.sk-doodle .c-green { stroke: #12a26b; }
+.sk-doodle .c-purple { stroke: #8e5bd8; }
+.sk-dd-text {
+  font-family: "Caveat", "Segoe Print", cursive;
+  font-size: 30px;
+  font-weight: 700;
+  fill: #111;
+}
+.sk-dd-pick {
+  width: 200px;
+  height: 96px;
+  margin-bottom: -18px;
+  transform: rotate(-3deg);
+}
+.sk-dd-q {
+  width: 180px;
+  height: 99px;
+  transform: rotate(4deg);
+}
+.sk-dd-star,
+.sk-dd-spark,
+.sk-dd-swirl {
+  position: absolute;
+}
+.sk-dd-star {
+  top: 64px;
+  right: 7%;
+  width: 72px;
+  height: 72px;
+  transform: rotate(12deg);
+}
+.sk-dd-spark {
+  top: 150px;
+  right: calc(7% + 92px);
+  width: 40px;
+  height: 40px;
+}
+.sk-dd-swirl {
+  top: 70px;
+  right: 8%;
+  width: 96px;
+  height: 96px;
+}
+/* JS で描く前の状態にしておき、画面に入ったら描く（JS がないときや動きを減らす設定では最初から描いた状態） */
+.sk-doodle.is-pending path {
+  stroke-dashoffset: 1;
+}
+.sk-doodle.is-pending .sk-dd-text {
+  opacity: 0;
+}
+.sk-doodle.is-drawing path {
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.6, 0, 0.3, 1);
+}
+.sk-doodle.is-drawing path:nth-of-type(2) { transition-delay: 0.5s; }
+.sk-doodle.is-drawing path:nth-of-type(3) { transition-delay: 0.8s; }
+.sk-doodle.is-drawing path:nth-of-type(4) { transition-delay: 1.1s; }
+.sk-doodle.is-drawing .sk-dd-text {
+  transition: opacity 0.5s ease 0.6s;
+}
+@media (max-width: 760px) {
+  .sk-dd-pick {
+    width: 150px;
+    height: 72px;
+  }
+  .sk-dd-q {
+    width: 130px;
+    height: 72px;
+  }
+  .sk-dd-spark {
+    display: none;
+  }
+  .sk-dd-star {
+    top: 40px;
+    right: 18px;
+    width: 52px;
+    height: 52px;
+  }
+  .sk-dd-swirl {
+    top: 36px;
+    right: 14px;
+    width: 64px;
+    height: 64px;
+  }
+}

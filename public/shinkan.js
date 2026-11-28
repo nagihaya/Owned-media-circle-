@@ -40,3 +40,23 @@ document.addEventListener("click", (e) => {
     });
   }
 }
+// 新歓ページ：落書きは画面に入ったら描く（1回だけ。動きを減らす設定では最初から描いた状態）
+{
+  const doodles = document.querySelectorAll(".sk-doodle");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (doodles.length && !still && "IntersectionObserver" in window) {
+    doodles.forEach((d) => d.classList.add("is-pending"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries)
+          if (e.isIntersecting) {
+            e.target.classList.add("is-drawing");
+            requestAnimationFrame(() => requestAnimationFrame(() => e.target.classList.remove("is-pending")));
+            io.unobserve(e.target);
+          }
+      },
+      { threshold: 0.4 },
+    );
+    doodles.forEach((d) => io.observe(d));
+  }
+}
